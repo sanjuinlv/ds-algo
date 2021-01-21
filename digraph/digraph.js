@@ -32,13 +32,17 @@ for (let v = 0; v < g.vertices(); v++){
  */
 class Digraph {
     constructor(V) {
+        //number of vertices
         this.V = V;
+        //number of edges
         this.E = 0;
+        //adjacency list
         this.adj = new Array(V);        
-        this.initializeGraph(V);
+        this._initializeGraph(V);
     }
-
-    initializeGraph(V){
+    
+    //private method
+    _initializeGraph(V){
         for (let v = 0; v < V; v++){
             this.adj[v] = new Bag();
         }

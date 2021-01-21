@@ -8,15 +8,16 @@ Example:
 
     Output:
     [5,6]
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+
+ /* 
 Approach:
 We will be negating the numbers seen in the array and use the sign of each of the 
 numbers for finding our missing numbers. We will be treating numbers in the array
 as indices and mark corresponding locations in the array as negative.
- * @param {number[]} nums
- * @return {number[]}
- */
-// nums = [4,3,2,7,8,2,3,1]
-/* 
+
 Runtime: 108 ms, faster than 88.79% of JavaScript online submissions for Find All Numbers Disappeared in an Array.
 Memory Usage: 46.9 MB, less than 6.71% of JavaScript online submissions for Find All Numbers Disappeared in an Array.
 */

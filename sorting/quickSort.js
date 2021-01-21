@@ -29,6 +29,7 @@ class QuickSort {
             if (i >= j) break;
             QuickSort.swap(A, i, j);
         }
+        //swap pivot and element at j
         QuickSort.swap(A, lo, j);
         return j;
     }
