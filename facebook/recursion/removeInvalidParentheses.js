@@ -224,7 +224,7 @@ var removeInvalidParentheses = function(s) {
     return [...resultSet];
 }
 
-/* 
+/*   
 
 Runtime: 80 ms, faster than 97.80% of JavaScript online submissions for Remove Invalid Parentheses.
 Memory Usage: 40.8 MB, less than 78.62% of JavaScript online submissions for Remove Invalid Parentheses.
