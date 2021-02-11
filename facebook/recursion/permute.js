@@ -92,7 +92,7 @@ var permute = function(nums) {
 }
 
 /* 
-DFS + Backtracking
+Backtracking
 
 Runtime: 108 ms, faster than 20.21% of JavaScript online submissions for Permutations.
 Memory Usage: 42.6 MB, less than 27.90% of JavaScript online submissions for Permutations.
@@ -120,5 +120,30 @@ var permute = function(nums) {
         }
     }
     dfs(nums,[])
+    return result;
+}
+
+/*
+DFS
+Runtime: 108 ms, faster than 25.94% of JavaScript online submissions for Permutations.
+Memory Usage: 41.5 MB, less than 67.56% of JavaScript online submissions for Permutations.
+ */
+var permute = function(nums) {
+    const result = [];
+    const N = nums.length;
+    const visited = new Array(N).fill(false);
+    dfs(0,[]);
+    function dfs(pos, curr){
+        if (curr.length == N){
+            result.push([...curr]);
+            return;
+        }
+        for(let i = 0; i < N; i++){
+            if (visited[i]) continue;
+            visited[i] = true;
+            dfs(i + 1, curr.concat(nums[i]));
+            visited[i] = false;
+        }
+    }
     return result;
 }
