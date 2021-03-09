@@ -108,3 +108,21 @@ var isValid = function(s) {
     }
     return stack.length == 0 ? true: false;;
 }
+
+function valid(s) {
+    const stack = [];
+    const charMap = new Map();
+    charMap.set(")", "(");
+    charMap.set("]", "[");
+    charMap.set("}", "{");
+    for (let char of s) {
+      if(charMap.has(char)) {
+        if (stack.length ==0 || stack.pop() != charMap.get(char)){
+          return false;
+        }
+      } else {
+         stack.push(char);
+      }
+    }
+    return stack.length == 0? true: false;
+}

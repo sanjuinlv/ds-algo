@@ -23,6 +23,8 @@ let printOrder = (order) => {
         console.log(order[i]);
     } 
 } 
+printOrder(order);
+
 */
 /**
  * We can get topological sort order of directed acyclic grap (DAG)

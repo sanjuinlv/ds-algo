@@ -1,4 +1,6 @@
 /* 
+Type: Medium
+
 Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? 
 Find all unique triplets in the array which gives the sum of zero.
 Notice that the solution set must not contain duplicate triplets.
@@ -23,7 +25,29 @@ Constraints:
  * @param {number[]} nums
  * @return {number[][]}
  */
-// Brrute force. 
+/* 
+Brute Force
+Time Complexity: O(N ^ 3)
+Space Complexity: O(1)
+This will produce duplicate results: [[-1,0,1],[-1,2,-1],[0,1,-1]]
+*/
+var threeSum = function(nums) {
+    const result  = []
+    const N = nums.length;
+    const target = 0;
+    for(let i = 0; i < N; i++){
+        for(let j = i + 1; j < N; j++){
+            for(let k = j + 1; k < N; k++){
+                if (nums[i] + nums[j] + nums[k] == target) {
+                    result.push([nums[i], nums[j], nums[k]]);
+                }
+            }
+        }
+    }
+    return result;
+}
+
+// Brrute force with Map
 // Lets assume the sum of triplet is K, so a+b+c = K
 // or a+b = K-c
 // Approach is to create sum of all possible pairs of numbers, i.e,, a+b, a+c, b+c and store in a Map
@@ -276,5 +300,27 @@ var threeSum = function(nums) {
         console.log(dups);
     }
     console.log(`final result: ${result}`);
+    return result;
+}
+
+/* 
+Brute Force:
+Time Complexity: O(N ^ 3)
+Space Complexity: O(1)
+This will produce duplicate results: [[-1,0,1],[-1,2,-1],[0,1,-1]]
+*/
+var threeSum = function(nums) {
+    const result  = []
+    const N = nums.length;
+    const target = 0;
+    for(let i = 0; i < N; i++){
+        for(let j = i + 1; j < N; j++){
+            for(let k = j + 1; k < N; k++){
+                if (nums[i] + nums[j] + nums[k] == target) {
+                    result.push([nums[i], nums[j], nums[k]]);
+                }
+            }
+        }
+    }
     return result;
 }

@@ -131,5 +131,3 @@ var findPeakElement = function(nums) {
     }
     return lo;
 };
-
-

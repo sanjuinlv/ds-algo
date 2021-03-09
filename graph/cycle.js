@@ -29,9 +29,9 @@ class Cycle {
             //if the vertex is not visited
             if (!this.marked[w]){
                 this.dfs(G, w, v);
+            /* If an adjacent is visited and not parent of current vertex, 
+                then there is a cycle */                
             } else if(w != parent){
-                // vertex 'w' already visited
-                // and it is not same as parent then there is cycle
                 console.log(`cycle at vertex ${w}`);
                 this.cycle = true;
             }

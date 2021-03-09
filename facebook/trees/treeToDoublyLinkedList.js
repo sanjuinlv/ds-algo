@@ -101,8 +101,8 @@ var treeToDoublyList = function(root) {
         if (last != null) {
             // link the previous node (last)
             // with the current one (node)            
-            node.left = last;
             last.right = node;
+            node.left = last;
         } else {
             //Keep the smallest node to close the DLL later
             first = node;

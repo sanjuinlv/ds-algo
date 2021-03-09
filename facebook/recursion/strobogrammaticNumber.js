@@ -3,10 +3,12 @@ A strobogrammatic number is a number that looks the same when rotated 180 degree
 Find all strobogrammatic numbers that are of length = n.
 
 Example
+n = 1
+["0", "1", "8"];
 Input:  n = 2
 Output: ["11","69","88","96"]
 ["101","111","181","609","619","689","808","818","888","906","916","986"]
-
+["1001","1111","1691","1881","1961","6009","6119","6699","6889","6969","8008","8118","8698","8888","8968","9006","9116","9696","9886","9966"]
 */
 /**
  * @param {number} n
@@ -108,4 +110,3 @@ var findStrobogrammatic = function(n) {
     };
     return helper(n, n);
 };
-

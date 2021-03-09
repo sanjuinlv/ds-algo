@@ -77,8 +77,8 @@ Runtime: 112 ms, faster than 69.93% of JavaScript online submissions for Subarra
 Memory Usage: 46 MB, less than 12.75% of JavaScript online submissions for Subarray Sum Equals K.
 */
 /* 
-The idea behind this approach is as follows: If the cumulative sum(repreesnted by sum[i]sum[i] for 
-sum upto i th index) upto two indices is the same, the sum of the elements lying in between those 
+The idea behind this approach is as follows: If the cumulative sum(represented by sum[i] for 
+sum upto ith index) upto two indices is the same, the sum of the elements lying in between those 
 indices is zero. Extending the same thought further, if the cumulative sum upto two indices, say i and j 
 is at a difference of k i.e. if sum[i] - sum[j] = ksum[i]−sum[j]=k, the sum of elements lying between 
 indices i and j is k.
