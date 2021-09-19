@@ -150,3 +150,24 @@ var moveZeroes = function(nums) {
        nums[i++] = 0;
    }
 };
+
+//9-Sep-2021
+/**
+ Runtime: 79 ms, faster than 75.03% of JavaScript online submissions for Move Zeroes.
+ Memory Usage: 40.5 MB, less than 42.56% of JavaScript online submissions for Move Zeroes.
+ */
+var moveZeroes = function(nums) {
+    const N = nums.length;
+    let i = 0, j=0;
+    while(j < N) {
+        if (nums[j] != 0) {
+            if (i != j) {
+                nums[i] = nums[j];//copy non zero value
+                nums[j] = 0; // set copied value as 0
+            } 
+            i++;
+        }
+        j++;
+    }
+    return nums;
+}

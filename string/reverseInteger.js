@@ -45,7 +45,7 @@ Runtime: 108 ms, faster than 21.73% of JavaScript online submissions for Reverse
 Memory Usage: 40.5 MB, less than 27.75% of JavaScript online submissions for Reverse Integer.
 */
 var reverse = function(x) {
-    //integre max and min value as restricted for environment
+    //integer max and min value as restricted for environment
     const MAX_VALUE = Math.pow(2, 31) - 1; //2147483647
     const MIN_VALUE = Math.pow(-2, 31); // -2147483648                                         
     let reversed = 0;
@@ -64,3 +64,27 @@ var reverse = function(x) {
     }    
     return reversed;
 };
+
+//solution by others
+/*
+If overflow exists, the new result will not equal previous one.
+No flags needed. No hard code like 0xf7777777 needed.
+Sorry for my bad english.
+
+public int reverse(int x)
+{
+    int result = 0;
+
+    while (x != 0)
+    {
+        int tail = x % 10;
+        int newResult = result * 10 + tail;
+        if ((newResult - tail) / 10 != result)
+        { return 0; }
+        result = newResult;
+        x = x / 10;
+    }
+
+    return result;
+}
+*/

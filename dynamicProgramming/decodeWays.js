@@ -278,5 +278,4 @@ var numDecodings = function(s) {
     }
     console.log(dp);
     return dp[N];
-}    
-
+}

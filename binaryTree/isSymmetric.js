@@ -31,6 +31,7 @@ But the following [1,2,2,null,3,null,3] is not:
 // [1,2,2,3,4,4,3]
 // [1,2,2,4,null,4,3]
 // [1,2,2,4,5,6,7]
+// [1,2,2,3,4,4,3,5,6,null,7,7,null,6,5]
 /* 
 //Solution reference
 Approach: recursive 
@@ -73,6 +74,45 @@ var isSymmetric = function(root) {
         queue.push(t2.right);
         queue.push(t1.right);
         queue.push(t2.left);
+    }
+    return true;
+}
+
+// 2nd try
+/*
+Recursive
+Runtime: 92 ms, faster than 59.76% of JavaScript online submissions for Symmetric Tree.
+Memory Usage: 40.6 MB, less than 29.44% of JavaScript online submissions for Symmetric Tree.
+ */
+var isSymmetric = function(root) {
+    const isMirror = (t1, t2) => {
+        if(t1 == null && t2 == null) return true;
+        if (t1 == null || t2 == null) return false;
+        if (t1.val != t2.val) return false;
+        return isMirror(t1.left, t2.right) && 
+            isMirror(t1.right, t2.left);
+    }   
+    return isMirror(root, root);
+}
+
+/* 
+Iterative
+[1,2,2,3,4,4,3,5,6,null,7,7,null,6,5]
+*/
+var isSymmetric = function(root) {
+    const Q = [];
+    Q.push(root);
+    Q.push(root);
+    while(Q.length) {
+        const t1 = Q.shift();
+        const t2 = Q.shift();
+        if (t1 == null && t2 == null) continue;
+        if (t1 == null || t2 == null) return false;
+        if (t1.val != t2.val) return false;
+        Q.push(t1.left);
+        Q.push(t2.right);       
+        Q.push(t1.right);
+        Q.push(t2.left);
     }
     return true;
 }

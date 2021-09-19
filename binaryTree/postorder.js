@@ -11,6 +11,9 @@ Output: []
 
 Input: root = [1]
 Output: [1]
+
+Input: root = [1,2,3,4,5,6,7]
+Output: [4,5,2,6,7,3,1]
 */
 
 /**
@@ -55,8 +58,8 @@ var postorderTraversal = function(root) {
     while(stack1.length != 0){
         root = stack1.pop();
         stack2.push(root.val);
-        if (root.right) stack1.push(root.right);
         if (root.left) stack1.push(root.left);
+        if (root.right) stack1.push(root.right);
     }
     while(stack2.length != 0){
         result.push(stack2.pop());

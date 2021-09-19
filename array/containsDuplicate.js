@@ -49,6 +49,7 @@ var containsDuplicate = function(nums) {
 Approach 3: Using sorting
 Time complexity; O(N Log N) (total sorting: N Log N + traversal: N)
 Space complexity: O(1) (considering sorting usage heap sort)
+Note: Here sorting will modify the array. If that is not allowed then we may copy it to another array.
 Runtime: 88 ms, faster than 72.35% of JavaScript online submissions for Contains Duplicate.
 Memory Usage: 42.9 MB, less than 75.95% of JavaScript online submissions for Contains Duplicate.
 */

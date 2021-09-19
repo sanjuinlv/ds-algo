@@ -84,7 +84,7 @@ var removeDuplicates = function(nums) {
  * @return {number}
  */
 var removeDuplicates = function(nums) {
-  let i=0; j = 0; 
+  let i = 0; j = 0; 
   const N = nums.length;
   while(j < N && i< N){
       //if ith and jth index items are same, move the j pointer

@@ -40,7 +40,8 @@ Output: 1
  * @return {number}
  */
 /* 
-Recursive Approach: 
+Recursive Approach: Bottom-up
+
 Runtime: 124 ms, faster than 5.37% of JavaScript online submissions for Maximum Depth of Binary Tree.
 Memory Usage: 41.5 MB, less than 56.15% of JavaScript online submissions for Maximum Depth of Binary Tree.
 */
@@ -49,6 +50,29 @@ var maxDepth = function(root) {
     let depth = 1 + Math.max(maxDepth(root.left), maxDepth(root.right)) 
     return depth;
 };
+
+/* 
+Recursive Approach: top-down
+
+Runtime: 92 ms, faster than 42.83% of JavaScript online submissions for Maximum Depth of Binary Tree.
+Memory Usage: 41.7 MB, less than 26.60% of JavaScript online submissions for Maximum Depth of Binary Tree.
+*/
+var maxDepth = function(root) {
+    if (root == null) return 0;
+    let answer = 0;
+    const helper = (node, depth) => {
+        if (node == null) return;
+        //reached leaf node
+        if (node.left == null && node.right == null){
+            answer = Math.max(answer, depth);
+        }
+        helper(node.left, depth + 1) ;
+        helper(node.right, depth + 1) ;
+    }
+    helper(root, 1);
+    return answer;
+};
+
 
 /* 
 Approach II: Iterative (level order traversal) 
@@ -68,7 +92,7 @@ var maxDepth = function(root) {
         //end of the level
         if (node == null) {
             depth++;
-            //mark end next level
+            //mark end of next level
             if (queue.length) queue.push(null);            
         } else {
             if (node.left) queue.push(node.left);

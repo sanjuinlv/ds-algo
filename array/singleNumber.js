@@ -65,7 +65,7 @@ var singleNumber = function(nums) {
 };
 
 /*
-Approach 1: without using extra space
+Approach 2: without using extra space
 i) sort the array (time complexity: O(N Log N), space: O(1) -heap sort)
 ii) loop through the items and compare current and next items, if
 they don't match then current item is not duplicate.
@@ -126,21 +126,22 @@ class Solution {
 
 /*
 Approach 4: Bit Manipulation
-Concept
+Time: O(N)
+Space: O(1)
 
+Concept:
 If we take XOR of zero and some bit, it will return that bit
 a ⊕ 0 = a
 If we take XOR of two same bits, it will return 0
 a ⊕ a = 0
 a ⊕ b ⊕ a = (a ⊕ a) ⊕ b = 0 ⊕ b = b
 So we can XOR all bits together to find the unique number.
-class Solution {
-  public int singleNumber(int[] nums) {
-    int a = 0;
-    for (int i : nums) {
-      a ^= i;
-    }
-    return a;
+*/
+
+var singleNumber = function(nums) {
+  let a = 0;
+  for (let i of nums){
+    a = a ^ i;
   }
+  return a;
 }
- */

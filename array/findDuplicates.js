@@ -30,3 +30,9 @@ var findDuplicates = function(nums) {
     }
     return duplicates;
 };
+
+method(a, b) {
+    if (a > b) return method(b, a);
+    // now you will always have a < b
+    // write you usual logic
+}
