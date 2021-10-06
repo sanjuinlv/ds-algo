@@ -49,6 +49,7 @@ replaceWords(["a", "aa", "aaa", "aaaa"], "a aa a aaaa aaa aaa aaa aaaaaa bbb bab
 Approach I: Prefix Hash
 Time Complexity: O(∑w_i^2) where w_i is the length of the i-th word. 
 We might check every prefix, the i-th of which is O(w_i^2) work.
+The O(w) for creating prefix string and that is done w times, which is word length.
 Space: O(N) where N is the length of our sentence; the space used by rootset.
 */
 var replaceWords = function (dictionary, sentence) {
@@ -71,7 +72,11 @@ var replaceWords = function (dictionary, sentence) {
     return resultStr;
 }
 /* 
-Approach: Trie
+Approach II: Trie
+Time Complexity: O(N), where N is the length of the sentence. 
+Every query of a word is in linear time.
+Space Complexity: O(N), the size of our trie.
+
 Runtime: 136 ms, faster than 59.22% of JavaScript online submissions for Replace Words.
 Memory Usage: 56.8 MB, less than 21.23% of JavaScript online submissions for Replace Words.
 */
@@ -111,8 +116,8 @@ var replaceWords = function (dictionary, sentence) {
     //found word node. Update the longest match.
     // if (node.isWord) length = d;
     if (node.isWord) return d;
-    //reached to the end of the query string length
-    if (d === query.length) return length;//TODO check if we can return d??
+    //reached to the end of the query string length (without any match)
+    if (d === query.length) return length;
     return this.dfs(node.children.get(query[d]), query, d + 1, length);
   }
 
