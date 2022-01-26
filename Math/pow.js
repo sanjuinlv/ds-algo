@@ -88,7 +88,7 @@ var myPow = function(x, n) {
         if (n % 2 == 1) result *= x;
         if (n == 1) break;
         x *= x;
-        n = Math.floor(n/2);
+        n = Math.floor(n/2); // n = n >> 1; reduce the number by half, i.e. divide by 2
     }
     return result;
 }

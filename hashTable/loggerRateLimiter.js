@@ -42,3 +42,75 @@ Logger.prototype.shouldPrintMessage = function (timestamp, message) {};
  * var obj = new Logger()
  * var param_1 = obj.shouldPrintMessage(timestamp,message)
  */
+
+/* 
+Approach 1: Hashtable
+Time complexity: O(1)
+Space complexity: O(M). where M is the size of all incoming messages. 
+Over the time, the hashtable would have an entry for each unique message that has appeared.
+
+1st Run:
+Runtime: 226 ms, faster than 13.65% of JavaScript online submissions for Logger Rate Limiter.
+Memory Usage: 48.4 MB, less than 33.08% of JavaScript online submissions for Logger Rate Limiter.
+2nd Run:
+Runtime: 254 ms, faster than 8.60% of JavaScript online submissions for Logger Rate Limiter.
+Memory Usage: 48 MB, less than 85.05% of JavaScript online submissions for Logger Rate Limiter.
+*/
+var Logger = function () {
+  this.msgMap = new Map();
+  this.shouldPrintMessage = function (timestamp, message) {
+    if (this.msgMap.has(message)) {
+      const allowedTimestamp = this.msgMap.get(message) || 0;
+      if (timestamp < allowedTimestamp) return false;
+      this.msgMap.set(message, timestamp + 10);
+    } else {
+      this.msgMap.set(message, timestamp + 10);
+    }
+    return true;
+  };
+};
+
+/*
+Approach 2: 
+Time complexity: O(N). where N is the size of the queue. In the worst case, 
+all the messages in the queue become obsolete. As a result, we need clean them up.
+Space complexity: O(N). where N is the size of the queue. We keep the incoming
+messages in both the queue and set. The upper bound of the required space would
+be 2N, if we have no duplicate at all.
+
+Runtime: 271 ms, faster than 7.66% of JavaScript online submissions for Logger Rate Limiter.
+Memory Usage: 50.1 MB, less than 12.34% of JavaScript online submissions for Logger Rate Limiter.
+*/
+var Logger = function () {
+  this.msgSet = new Set();
+  this.queue = [];
+
+  function Log(timestamp, message) {
+    this.timestamp = timestamp;
+    this.message = message;
+  }
+
+  this.shouldPrintMessage = function (timestamp, message) {
+    //clean up
+    while (this.queue.length > 0) {
+      const lastLog = this.queue[0];
+      //if the message has expired
+      if (timestamp - lastLog.timestamp >= 10) {
+        this.msgSet.delete(lastLog.message);
+        this.queue.shift();
+      } else {
+        break;
+      }
+    }
+
+    //check for message
+    if (!this.msgSet.has(message)) {
+      const log = new Log(timestamp, message);
+      this.queue.push(log);
+      this.msgSet.add(message);
+      return true;
+    } else {
+      return false;
+    }
+  };
+};

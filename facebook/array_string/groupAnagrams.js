@@ -18,25 +18,25 @@ Output: [["a"]]
  * @return {string[][]}
  */
 // strs = ["eat","tea","tan","ate","nat","bat"]
-var groupAnagrams = function(strs) {
-    const N = strs.length;
-    // Map of sorted string and possible anagram values 
-    const anagramMap = new Map();
-    for (let i = 0; i < N; i++) {
-        //sorted the entry
-        const word = strs[i];
-        const sortedWord = strs[i].split('').sort().join('');
-        console.log(`word: ${word}, sorted word: ${sortedWord}`);
-        if (anagramMap.has(sortedWord)) {
-            anagramMap.get(sortedWord).push(word);
-        } else {
-            anagramMap.set(sortedWord, [word]);
-        }
-        console.log(anagramMap);
+var groupAnagrams = function (strs) {
+  const N = strs.length;
+  // Map of sorted string and possible anagram values
+  const anagramMap = new Map();
+  for (let i = 0; i < N; i++) {
+    //sorted the entry
+    const word = strs[i];
+    const sortedWord = strs[i].split("").sort().join("");
+    console.log(`word: ${word}, sorted word: ${sortedWord}`);
+    if (anagramMap.has(sortedWord)) {
+      anagramMap.get(sortedWord).push(word);
+    } else {
+      anagramMap.set(sortedWord, [word]);
     }
-    console.log(`final Map`);
     console.log(anagramMap);
-    return Array.from(anagramMap.values());
+  }
+  console.log(`final Map`);
+  console.log(anagramMap);
+  return Array.from(anagramMap.values());
 };
 
 // for submission
@@ -46,16 +46,16 @@ var groupAnagrams = function(strs) {
 Runtime: 120 ms, faster than 89.74% of JavaScript online submissions for Group Anagrams.
 Memory Usage: 48.5 MB, less than 5.20% of JavaScript online submissions for Group Anagrams.
 */
-var groupAnagrams = function(strs) {
-    const N = strs.length;
-    const anagramMap = new Map();
-    for (let i = 0; i < N; i++) {
-        const sortedWord = strs[i].split('').sort().join('');
-        if (anagramMap.has(sortedWord)) {
-            anagramMap.get(sortedWord).push(strs[i]);
-        } else {
-            anagramMap.set(sortedWord, [strs[i]]);
-        }
+var groupAnagrams = function (strs) {
+  const N = strs.length;
+  const anagramMap = new Map();
+  for (let i = 0; i < N; i++) {
+    const sortedWord = strs[i].split("").sort().join("");
+    if (anagramMap.has(sortedWord)) {
+      anagramMap.get(sortedWord).push(strs[i]);
+    } else {
+      anagramMap.set(sortedWord, [strs[i]]);
     }
-    return Array.from(anagramMap.values());
+  }
+  return Array.from(anagramMap.values());
 };
