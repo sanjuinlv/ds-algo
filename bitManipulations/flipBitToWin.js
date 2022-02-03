@@ -82,3 +82,54 @@ function flipBitToWin(num) {
   }
   return maxBits;
 }
+
+/* From Nishant
+PASS: flipBitToWin(parseInt("10100000110", 2)) => 3
+PASS: flipBitToWin(parseInt("11011101111", 2)) => 8
+PASS: flipBitToWin(parseInt("10100001111", 2)) => 5
+PASS: flipBitToWin(parseInt("10100101111", 2)) => 6
+
+*/
+function flipBitToWin(num) {
+  let previousLength = 0;
+  let currentLength = 0;
+  let max = Number.MIN_VALUE;
+
+  while (num > 0) {
+    if ((num & 1) > 0) {
+      // Last bit is 1
+      currentLength++;
+    } else {
+      previousLength = num & (2 === 0) ? 0 : currentLength;
+      curremtLength = 0;
+    }
+    max = Math.max(max, previousLength + currentLength + 1);
+    num = num >> 1;
+  }
+  return max;
+}
+
+/*
+flipBitToWin(parseInt("10100000110", 2)) => 3 (PASS)
+flipBitToWin(parseInt("11011101111", 2)) => 8 (PASS)
+flipBitToWin(parseInt("10100001111", 2)) => 5 (PASS)
+flipBitToWin(parseInt("10100101111", 2)) => 6 (PASS)
+ */
+function flipBitToWin(num) {
+  let onesCount = 0;
+  let prevOnesCount = onesCount;
+  let maxOnes = Number.MIN_VALUE;
+  let c = num;
+  while (c != 0) {
+    if ((c & 1) > 0) {
+      onesCount++;
+      maxOnes = Math.max(maxOnes, prevOnesCount + onesCount);
+    } else {
+      prevOnesCount = onesCount + 1;
+      onesCount = 0;
+      maxOnes = Math.max(maxOnes, prevOnesCount);
+    }
+    c = c >> 1;
+  }
+  return maxOnes;
+}
