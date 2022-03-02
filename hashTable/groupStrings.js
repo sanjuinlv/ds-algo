@@ -29,5 +29,7 @@ strings[i] consists of lowercase English letters.
  */
 var groupStrings = function (strings) {};
 
-az -> za -> ab -> bc
-ba -> ab -> bc -> cd -> yz -> za 
+// wxyzabcd
+
+// az -> za -> ab -> bc
+// ba -> ab -> bc -> cd -> yz -> za

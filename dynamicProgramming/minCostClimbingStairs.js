@@ -22,19 +22,19 @@ cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
 // Bottom up Approach
 // Time: O(N)
 // Space: O(N)
-var minCostClimbingStairs = function(cost) {
-    const N = cost.length;
-    if (N < 2) return 0;
-    const dp = [];
-    dp[0] = cost[0];
-    dp[1] = cost[1];
-    for (let i = 2; i < N; i++) {
-        dp[i] = cost[i] + Math.min(dp[i - 2], dp[i - 1]);
-        console.log(`dp[${i}]: ${dp[i]}`);
-    }
-    console.log(`dp: ${dp}`);
-    return Math.min(dp[N], dp[N - 1]);
-}
+var minCostClimbingStairs = function (cost) {
+  const N = cost.length;
+  if (N < 2) return 0;
+  const dp = [];
+  dp[0] = cost[0];
+  dp[1] = cost[1];
+  for (let i = 2; i < N; i++) {
+    dp[i] = cost[i] + Math.min(dp[i - 2], dp[i - 1]);
+    console.log(`dp[${i}]: ${dp[i]}`);
+  }
+  console.log(`dp: ${dp}`);
+  return Math.min(dp[N], dp[N - 1]);
+};
 
 /*
 Dynamic Programming
@@ -44,17 +44,23 @@ Space Complexity: (1)
 Runtime: 84 ms, faster than 65.98% of JavaScript online submissions for Min Cost Climbing Stairs.
 Memory Usage: 39.4 MB, less than 10.54% of JavaScript online submissions for Min Cost Climbing Stairs.
 */
-var minCostClimbingStairs = function(cost) {
-    const N = cost.length;
-    if (N < 2) return 0;
-    const dp = [];
-    let stepiMinusOne = cost[0];
-    let stepiMinusTwo = cost[1];
-    let stepiCost = 0;
-    for (let i = 2; i < N; i++) {
-        stepiCost = cost[i] + Math.min(stepiMinusTwo, stepiMinusOne);
-        stepiMinusOne = stepiMinusTwo;
-        stepiMinusTwo = stepiCost;
-    }
-    return Math.min(stepiMinusTwo, stepiMinusOne);
-}
+var minCostClimbingStairs = function (cost) {
+  const N = cost.length;
+  if (N < 2) return 0;
+  const dp = [];
+  let stepiMinusOne = cost[0];
+  let stepiMinusTwo = cost[1];
+  let stepiCost = 0;
+  for (let i = 2; i < N; i++) {
+    stepiCost = cost[i] + Math.min(stepiMinusTwo, stepiMinusOne);
+    stepiMinusOne = stepiMinusTwo;
+    stepiMinusTwo = stepiCost;
+  }
+  return Math.min(stepiMinusTwo, stepiMinusOne);
+};
+
+/*
+Approach: Top-down (Recursion)
+*/
+
+var minCostClimbingStairs = function (cost) {};

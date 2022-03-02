@@ -31,7 +31,7 @@ Output: 1
  */
 /* 
 Using backtracking
-Issue with above approach is it doesn't terminate early for an invalid 
+Issue with this approach is it doesn't terminate early for an invalid 
 combination and also it considers the combination with complete entries
 */
 var countArrangement = function (n) {
@@ -71,31 +71,33 @@ var countArrangement = function (n) {
   return result;
 };
 
-/* 
+/*
 Approach: Backtracking
+Time complexity : O(k). k refers to the number of valid permutations.
+Space complexity : O(n). visited array of size n is used. The depth of 
+recursion tree will also go upto n. Here, n refers to the given integer n.
 
-*/
+Runtime: 254 ms, faster than 61.54% of JavaScript online submissions for Beautiful Arrangement.
+Memory Usage: 42.7 MB, less than 43.96% of JavaScript online submissions for Beautiful Arrangement.
+ */
 var countArrangement = function (N) {
-  const visited = new Array(N + 1).fill(false);
-  let count = 0;
   if (N == 0) return 0;
-
+  let count = 0;
+  const visited = new Array(N + 1).fill(false);
   const checkArrangement = (pos) => {
-    console.log(`pos: ${pos}`);
     if (pos > N) {
       count++;
       return;
     }
-    for (i = 1; i <= N; i++) {
-      console.log(`i: ${i}, pos:${pos}`);
-      if (!visited[i] && (pos % i == 0 || i % pos == 0)) {
+    for (let i = 1; i <= N; i++) {
+      if (visited[i]) continue;
+      if (i % pos === 0 || pos % i == 0) {
         visited[i] = true;
         checkArrangement(pos + 1);
         visited[i] = false;
       }
     }
   };
-
   checkArrangement(1);
   return count;
 };

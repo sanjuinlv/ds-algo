@@ -32,24 +32,22 @@ Approach I: Brute Force
 Time: O(N^2)
 Space: O(1)
 */
-var findMaximumXOR = function(nums) {
-    if (nums.length == 1) return nums[0];
-    let maxXOR = Number.MIN_VALUE;  
-    const N = nums.length;
-    for (let i = 0; i < N; i++){
-        for (let j = i + 1; j < N; j++){
-            maxXOR = Math.max(maxXOR, nums[i] ^ nums[j]); //XOR
-        }
+var findMaximumXOR = function (nums) {
+  if (nums.length == 1) return nums[0];
+  let maxXOR = Number.MIN_VALUE;
+  const N = nums.length;
+  for (let i = 0; i < N; i++) {
+    for (let j = i + 1; j < N; j++) {
+      maxXOR = Math.max(maxXOR, nums[i] ^ nums[j]); //XOR
     }
-    return maxXOR;
+  }
+  return maxXOR;
 };
 
 /* 
 Approach II: Brute Force
 */
-var findMaximumXOR = function(nums) {
+var findMaximumXOR = function (nums) {};
 
-}
-
-[3,10,5,25,2,8]
-25 = > 11001
+// [3,10,5,25,2,8]
+// 25 = > 11001
