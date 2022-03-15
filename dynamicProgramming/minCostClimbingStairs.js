@@ -59,8 +59,49 @@ var minCostClimbingStairs = function (cost) {
   return Math.min(stepiMinusTwo, stepiMinusOne);
 };
 
+// 3/03/2022
 /*
-Approach: Top-down (Recursion)
+Approach: Top-down (Recursion with memo)
+Time: O(N)
+Space: O(N) (Stack size)
+Runtime: 92 ms, faster than 61.29% of JavaScript online submissions for Min Cost Climbing Stairs.
+Memory Usage: 44.2 MB, less than 25.64% of JavaScript online submissions for Min Cost Climbing Stairs.
 */
+var minCostClimbingStairs = function (cost) {
+  const N = cost.length;
+  if (N == 1) return cost[0];
+  const memo = new Array(N).fill(-1);
+  //base case
+  memo[0] = cost[0];
+  memo[1] = cost[1];
+  const dp = (i) => {
+    //if cost is not calculated at index i then calculated it from previous values
+    if (memo[i] == -1) {
+      //concurrence relations
+      memo[i] = cost[i] + Math.min(dp(i - 2), dp(i - 1));
+    }
+    return memo[i];
+  };
+  return Math.min(dp(N - 1), dp(N - 2));
+};
 
-var minCostClimbingStairs = function (cost) {};
+/*
+Approach: Bottom up (Iterative)
+Time: O(N)
+Space: O(1)
+Runtime: 64 ms, faster than 95.91% of JavaScript online submissions for Min Cost Climbing Stairs.
+Memory Usage: 42.8 MB, less than 45.58% of JavaScript online submissions for Min Cost Climbing Stairs.
+*/
+var minCostClimbingStairs = function (cost) {
+  const N = cost.length;
+  if (N == 1) return cost[0];
+  //base case
+  first = cost[0];
+  second = cost[1];
+  for (let i = 2; i < N; i++) {
+    const third = cost[i] + Math.min(first, second);
+    first = second;
+    second = third;
+  }
+  return Math.min(first, second);
+};

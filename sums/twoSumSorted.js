@@ -23,22 +23,47 @@ Output: [1,2]
  * @param {number} target
  * @return {number[]}
  */
-var twoSum = function(numbers, target) {
-    let left = 0; right = numbers.length - 1;
-    let sum = 0;
-    while (left < right) {
-        sum = numbers[left] + numbers[right];
-        if (sum === target) {
-            return [left + 1, right + 1];
-        };
-        if (sum > target) right--;
-        else left++;
+/* 
+Time: O(n). The input array is traversed at most once. Thus the time complexity is O(n).
+Space: O(1). We only use additional space to store two indices and the sum, so the space complexity is O(1).
+*/
+var twoSum = function (numbers, target) {
+  let left = 0;
+  right = numbers.length - 1;
+  let sum = 0;
+  while (left < right) {
+    sum = numbers[left] + numbers[right];
+    if (sum === target) {
+      return [left + 1, right + 1];
     }
-    return [-1, -1];
+    if (sum > target) right--;
+    else left++;
+  }
+  return [-1, -1];
 };
-
 
 /*
 Runtime: 56 ms, faster than 76.04 % of JavaScript online submissions for Two Sum II - Input array is sorted.
 Memory Usage: 35.1 MB, less than 78.26 % of JavaScript online submissions for Two Sum II - Input array is sorted.
 */
+
+//14/03/2022
+/*
+Runtime: 60 ms, faster than 97.69% of JavaScript online submissions for Two Sum II - Input Array Is Sorted.
+Memory Usage: 43.4 MB, less than 14.08% of JavaScript online submissions for Two Sum II - Input Array Is Sorted. 
+*/
+var twoSum = function (numbers, target) {
+  let left = 0;
+  right = numbers.length - 1;
+  while (left < right) {
+    if (numbers[left] + numbers[right] === target) {
+      return [left + 1, right + 1];
+    }
+    if (numbers[left] + numbers[right] > target) {
+      right--;
+    } else {
+      left++;
+    }
+  }
+  return [-1, -1];
+};
