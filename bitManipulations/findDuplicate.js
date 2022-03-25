@@ -89,7 +89,7 @@ var findDuplicate = function (nums) {
     if (nums[curr] < 0) {
       return curr;
     }
-    nums[i] = nums[i] * -1;
+    nums[curr] = nums[curr] * -1;
   }
   return -1;
 };
