@@ -44,32 +44,32 @@ head = [1,2], n = 1 - PASS
 Runtime: 88 ms, faster than 47.15% of JavaScript online submissions for Remove Nth Node From End of List.
 Memory Usage: 40.1 MB, less than 77.85% of JavaScript online submissions for Remove Nth Node From End of List.
 */
-var removeNthFromEnd = function(head, n) {
-    let curr = head;
-    //find the length of the list
-    let L = 0;
-    while(curr != null){
-        curr = curr.next;
-        L++;
-    }
-    console.log(`L: ${L}`);
-    if (L == n) {
-        temp = head;
-        head = head.next;
-        temp = null;
-        return head;
-    }    
-    curr = head;
-    let p = 1;
-    while(p < L-n && curr != null) {
-        curr = curr.next;
-        p++;
-    }
-    console.log(`p: ${p}, curr: ${curr.val}`);
-    temp = curr.next;
-    curr.next = temp.next;
+var removeNthFromEnd = function (head, n) {
+  let curr = head;
+  //find the length of the list
+  let L = 0;
+  while (curr != null) {
+    curr = curr.next;
+    L++;
+  }
+  console.log(`L: ${L}`);
+  if (L == n) {
+    temp = head;
+    head = head.next;
     temp = null;
     return head;
+  }
+  curr = head;
+  let p = 1;
+  while (p < L - n && curr != null) {
+    curr = curr.next;
+    p++;
+  }
+  console.log(`p: ${p}, curr: ${curr.val}`);
+  temp = curr.next;
+  curr.next = temp.next;
+  temp = null;
+  return head;
 };
 
 /*
@@ -80,30 +80,30 @@ Space complexity: O(1)
 Runtime: 84 ms, faster than 69.03% of JavaScript online submissions for Remove Nth Node From End of List.
 Memory Usage: 40.3 MB, less than 45.29% of JavaScript online submissions for Remove Nth Node From End of List.
 */
-var removeNthFromEnd = function(head, n) {
-    const dummy = new ListNode(0);
-    dummy.next = head;
-    let length = 0;
-    let curr = head;
-    //step I: find the length of
-    while (curr != null){
-        curr = curr.next;
-        length++;
-    }
-    //step II: find the node to delete 
-    // L - n
-    curr = dummy;
-    length = length - n;
-    while (length > 0) {
-        curr = curr.next;
-        length--;
-    }
-    console.log(`curr node: ${curr.val}`);
-    temp = curr.mext;
-    curr.next = temp.next;
-    temp = null;
-    return dummy.next;
-}
+var removeNthFromEnd = function (head, n) {
+  const dummy = new ListNode(0);
+  dummy.next = head;
+  let length = 0;
+  let curr = head;
+  //step I: find the length of
+  while (curr != null) {
+    curr = curr.next;
+    length++;
+  }
+  //step II: find the node to delete
+  // L - n
+  curr = dummy;
+  length = length - n;
+  while (length > 0) {
+    curr = curr.next;
+    length--;
+  }
+  console.log(`curr node: ${curr.val}`);
+  temp = curr.next;
+  curr.next = temp.next;
+  temp = null;
+  return dummy.next;
+};
 
 /* 
 Approach II: One pass
@@ -119,25 +119,25 @@ last node. The second pointer will be pointing at the nth node counting from the
 Runtime: 80 ms, faster than 85.60% of JavaScript online submissions for Remove Nth Node From End of List.
 Memory Usage: 40.6 MB, less than 6.62% of JavaScript online submissions for Remove Nth Node From End of List.
 */
-var removeNthFromEnd = function(head, n) {
-    const dummy = new ListNode(0);
-    dummy.next = head;
-    let first = dummy;
-    let second = dummy;
-    //move the first pointer n steps
-    for (let i = 1; i <= n + 1; i++){
-        first = first.next;
-    }
-    console.log(`fisrt: ${first.val}`);
-    //now move both pointer until first reached end
-    //by then second will reach L-n from begining, which is nth position from end
-    while(first != null){
-        first = first.next;
-        second = second.next;
-    }
-    console.log(`second: ${second.val}`)
-    temp = second.next;
-    second.next = temp.next;
-    temp = null;
-    return dummy.next;
-}
+var removeNthFromEnd = function (head, n) {
+  const dummy = new ListNode(0);
+  dummy.next = head;
+  let first = dummy;
+  let second = dummy;
+  //move the first pointer n steps
+  for (let i = 1; i <= n + 1; i++) {
+    first = first.next;
+  }
+  console.log(`first: ${first.val}`);
+  //now move both pointer until first reached end
+  //by then second will reach L-n from begining, which is nth position from end
+  while (first != null) {
+    first = first.next;
+    second = second.next;
+  }
+  console.log(`second: ${second.val}`);
+  temp = second.next;
+  second.next = temp.next;
+  temp = null;
+  return dummy.next;
+};

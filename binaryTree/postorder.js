@@ -31,38 +31,73 @@ Output: [4,5,2,6,7,3,1]
 /* 
 Approach: Recursive
 */
-var postorderTraversal = function(root) {
-    const result = [];
-    const postOrder = (node) => {
-        if (node == null) return;
-        postOrder(node.left);
-        postOrder(node.right);
-        result.push(node.val)
-    }
-    postOrder(root);
-    return result;
+var postorderTraversal = function (root) {
+  const result = [];
+  const postOrder = (node) => {
+    if (node == null) return;
+    postOrder(node.left);
+    postOrder(node.right);
+    result.push(node.val);
+  };
+  postOrder(root);
+  return result;
 };
 
 /* 
-Approach: Recursive
+Approach: Recursive ( Two stacks)
 
 Runtime: 76 ms, faster than 80.80% of JavaScript online submissions for Binary Tree Postorder Traversal.
 Memory Usage: 39.1 MB, less than 13.93% of JavaScript online submissions for Binary Tree Postorder Traversal.
 */
-var postorderTraversal = function(root) {
-    const result = [];
-    if (root == null) return result;
-    const stack1 = [];
-    const stack2 = [];
-    stack1.push(root);
-    while(stack1.length != 0){
-        root = stack1.pop();
-        stack2.push(root.val);
-        if (root.left) stack1.push(root.left);
-        if (root.right) stack1.push(root.right);
+var postorderTraversal = function (root) {
+  const result = [];
+  if (root == null) return result;
+  const stack1 = [];
+  const stack2 = [];
+  stack1.push(root);
+  while (stack1.length != 0) {
+    root = stack1.pop();
+    stack2.push(root.val);
+    if (root.left) stack1.push(root.left);
+    if (root.right) stack1.push(root.right);
+  }
+  while (stack2.length != 0) {
+    result.push(stack2.pop());
+  }
+  return result;
+};
+
+//Other way with two Stacks
+var postorderTraversal = function (root) {
+  const result = [];
+  if (root == null) return result;
+  const stack = [];
+  stack.push(root);
+  while (stack.length > 0) {
+    root = stack.pop();
+    result.push(root.val);
+    if (root.left) stack.push(root.left);
+    if (root.right) stack.push(root.right);
+  }
+  return result.reverse();
+};
+
+// using queue
+var postorderTraversal = function (root) {
+  const result = [];
+  if (root == null) return result;
+  const queue = [];
+  queue.push(root);
+  queue.push("-");
+  while (stack.length > 0) {
+    root = stack.shift();
+    if (root === "-") {
+      result.push(root.val);
+      result.push("-");
+    } else {
+      if (root.left) stack.push(root.left);
+      if (root.right) stack.push(root.right);
     }
-    while(stack2.length != 0){
-        result.push(stack2.pop());
-    }
-    return result;
+  }
+  return result.reverse();
 };

@@ -28,31 +28,56 @@ Runtime: 104 ms
 Memory Usage: 46.7 MB
 Your runtime beats 92.65 % of javascript submissions.
 */
-var reorderList = function(head) {
-    if (!head) return;
-    // find middle of the list
-    let slow = head, fast = head;
-    while(fast!=null && fast.next != null){
-        slow =  slow.next;
-        fast = fast.next.next;
-    }
-    // reverse the second part of the list, from middle
-    let prev = null, curr = slow, temp;
-    while (curr != null){
-        temp = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = temp;
-    }
-    // merge the two list
-    let first = head, second = prev;
-    while (second.next != null){
-        temp = first.next;
-        first.next = second;
-        first = temp;
+var reorderList = function (head) {
+  if (!head) return;
+  // find middle of the list
+  let slow = head,
+    fast = head;
+  while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  // reverse the second part of the list, from middle
+  let prev = null,
+    curr = slow,
+    temp;
+  while (curr != null) {
+    temp = curr.next;
+    curr.next = prev;
+    prev = curr;
+    curr = temp;
+  }
+  // merge the two list
+  let first = head,
+    second = prev;
+  while (second.next != null) {
+    temp = first.next;
+    first.next = second;
+    first = temp;
 
-        temp = second.next;
-        second.next = first;
-        second = temp;
-    }
+    temp = second.next;
+    second.next = first;
+    second = temp;
+  }
+};
+
+//
+var reorderList = function (head) {
+  //1. find the middle of the list
+  let slow = head;
+  let fast = head;
+  while (fast != null && fast.next != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  console.log(slow);
+  //reverse the list from middle
+  let reversedHead = null;
+  while (slow != null) {
+    let tmp = slow;
+    slow = slow.next;
+    tmp.next = reversedHead;
+    reversedHead = tmp;
+  }
+  console.log(reversedHead);
 };

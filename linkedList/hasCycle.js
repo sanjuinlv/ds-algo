@@ -41,16 +41,15 @@ Space Complexity: O(1)
 Runtime: 92 ms, faster than 31.58% of JavaScript online submissions for Linked List Cycle.
 Memory Usage: 40.8 MB, less than 80.45 %% of JavaScript online submissions for Linked List Cycle.
 */
-var hasCycle = function(head) {
-    let slowPointer = head;
-    let fastPointer = head;
-    while(fastPointer != null && fastPointer.next != null){
-        slowPointer = slowPointer.next;
-        fastPointer = fastPointer.next.next;
-        if (slowPointer == fastPointer) {
-            return true
-        };
-        counter++;
+var hasCycle = function (head) {
+  let slowPointer = head;
+  let fastPointer = head;
+  while (fastPointer !== null && fastPointer.next !== null) {
+    slowPointer = slowPointer.next;
+    fastPointer = fastPointer.next.next;
+    if (slowPointer === fastPointer) {
+      return true;
     }
-    return false;
+  }
+  return false;
 };

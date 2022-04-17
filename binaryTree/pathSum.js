@@ -34,6 +34,67 @@ Constraints:
  * @param {number} targetSum
  * @return {boolean}
  */
- var hasPathSum = function(root, targetSum) {
-    
+//Works
+var hasPathSum = function (root, targetSum) {
+  if (root == null) return false;
+  const pathSum = (node, targetSum) => {
+    console.log(node);
+    if (node.left == null && node.right == null) {
+      if (targetSum == node.val) return true;
+      else return false;
+    }
+    if (node.left && node.right) {
+      return (
+        pathSum(node.left, targetSum - node.val) ||
+        pathSum(node.right, targetSum - node.val)
+      );
+    } else {
+      tmp = node.left ? node.left : node.right;
+      return pathSum(tmp, targetSum - node.val);
+    }
+  };
+  return pathSum(root, targetSum);
+};
+
+//cleaner code
+/* 
+Approach : Recursion (DFS)
+Runtime: 79 ms, faster than 76.26% of JavaScript online submissions for Path Sum.
+Memory Usage: 45.2 MB, less than 92.15% of JavaScript online submissions for Path Sum.
+
+Time: O(N)
+Space: O(LogN) for balance tree, O(N) for unbalanced tree
+*/
+var hasPathSum = function (root, targetSum) {
+  if (root == null) return false;
+  targetSum = targetSum - root.val;
+  if (root.left === null && root.right === null) {
+    return targetSum === 0;
+  }
+  return hasPathSum(root.left, targetSum) || hasPathSum(root.right, targetSum);
+};
+
+/* 
+Approach : Iterative (DFS)
+Runtime: 79 ms, faster than 76.26% of JavaScript online submissions for Path Sum.
+Memory Usage: 45.9 MB, less than 39.83% of JavaScript online submissions for Path Sum.
+
+Time: O(N)
+Space: O(LogN) for balance tree, O(N) for unbalanced tree
+*/
+var hasPathSum = function (root, targetSum) {
+  if (root == null) return false;
+  const stack = [];
+  stack.push([root, targetSum]);
+  while (stack.length) {
+    const item = stack.pop();
+    const node = item[0];
+    const sum = item[1] - node.val;
+    if (node.left === null && node.right === null && sum === 0) {
+      return true;
+    }
+    if (node.left) stack.push([node.left, sum]);
+    if (node.right) stack.push([node.right, sum]);
+  }
+  return false;
 };

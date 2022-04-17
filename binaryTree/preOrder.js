@@ -32,7 +32,7 @@ Space: O(N), recusrive stack
 Runtime: 64 ms, faster than 99.62% of JavaScript online submissions for Binary Tree Preorder Traversal.
 Memory Usage: 38.7 MB, less than 46.54% of JavaScript online submissions for Binary Tree Preorder Traversal.
  */
-var preorderTraversal = function(root) {
+var preorderTraversal = function (root) {
   const result = [];
   const preorder = (node) => {
     if (node == null) return;
@@ -40,56 +40,56 @@ var preorderTraversal = function(root) {
     preorder(node.left);
     preorder(node.right);
   };
-  preorder(root)
-  return result;  
+  preorder(root);
+  return result;
 };
 
 /*
-Approach: Iterative
+Approach: Iterative (DFS)
 Time: O(N), where N is number of nodes
 Space: O(N), stack size
  */
-var preorderTraversal = function(root) {
-    const result = [];
-    const stack = [];
-    while(true){
-        while(root != null){
-            result.push(root.val);
-            stack.push(root);
-            root = root.left;
-        }
-        if (stack.length == 0) break;
-        root = stack.pop();
-        root = root.right;
+var preorderTraversal = function (root) {
+  const result = [];
+  const stack = [];
+  while (true) {
+    while (root != null) {
+      result.push(root.val);
+      stack.push(root);
+      root = root.left;
     }
-    return result;  
-  };
+    if (stack.length == 0) break;
+    root = stack.pop();
+    root = root.right;
+  }
+  return result;
+};
 //Cleaner Iterative
-var preorderTraversal = function(root) {
-    const result = [];
-    if (root == null) return result;
-    const stack = [];
-    stack.push(root);
-    while(stack.length != 0){
-        root = stack.pop();
-        result.push(root.val);
-        if (root.right) stack.push(root.right);
-        if (root.left) stack.push(root.left);
-    }
-    return result;  
-};  
+var preorderTraversal = function (root) {
+  const result = [];
+  if (root == null) return result;
+  const stack = [];
+  stack.push(root);
+  while (stack.length != 0) {
+    root = stack.pop();
+    result.push(root.val);
+    if (root.right) stack.push(root.right);
+    if (root.left) stack.push(root.left);
+  }
+  return result;
+};
 
-//Using Queue
-var preorderTraversal = function(root) {
-    const result = [];
-    if (root == null) return result;
-    const queue = [];
-    queue.push(root);
-    while(queue.length != 0){
-        root = queue.shift();
-        result.push(root.val);
-        if (root.left) queue.push(root.left);
-        if (root.right) queue.push(root.right);
-    }
-    return result;  
-};  
+//Using Queue (BFS)
+var preorderTraversal = function (root) {
+  const result = [];
+  if (root == null) return result;
+  const queue = [];
+  queue.push(root);
+  while (queue.length != 0) {
+    root = queue.shift();
+    result.push(root.val);
+    if (root.left) queue.push(root.left);
+    if (root.right) queue.push(root.right);
+  }
+  return result;
+};
