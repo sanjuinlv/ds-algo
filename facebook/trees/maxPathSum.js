@@ -44,20 +44,20 @@ Your memory usage beats 67.83 % of javascript submissions.
 Runtime: 92 ms
 Memory Usage: 48.3 MB
  */
-var maxPathSum = function(root) {
-    //leet code expects min value as this (also required for null node case)
-    let maxSum = Math.pow(-2, 31);
-    const findMaxSum = (root) => {
-        if (root == null) return 0;
-        //using Math.max(findMax, 0) is tricky part
-        const leftSum = Math.max(findMaxSum(root.left),0);
-        const rightSum = Math.max(findMaxSum(root.right),0);
-        const pathSum = leftSum + rightSum + root.val;
-        maxSum = Math.max(pathSum, maxSum);
-        //for recusion
-        // return the max sum path of left + node or right + node 
-        return Math.max(leftSum, rightSum) + root.val;    
-    } 
-   findMaxSum(root);
-   return maxSum;
+var maxPathSum = function (root) {
+  //leet code expects min value as this (also required for null node case)
+  let maxSum = Math.pow(-2, 31);
+  const findMaxSum = (root) => {
+    if (root == null) return 0;
+    //using Math.max(findMax, 0) is tricky part
+    const leftSum = Math.max(findMaxSum(root.left), 0);
+    const rightSum = Math.max(findMaxSum(root.right), 0);
+    const pathSum = leftSum + rightSum + root.val;
+    maxSum = Math.max(pathSum, maxSum);
+    //for recursion
+    // return the max sum path of left + node or right + node
+    return Math.max(leftSum, rightSum) + root.val;
+  };
+  findMaxSum(root);
+  return maxSum;
 };

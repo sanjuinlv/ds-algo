@@ -109,12 +109,12 @@ var lowestCommonAncestor = function (root, p, q) {
 };
 
 var lowestCommonAncestor = function (root, p, q) {
-  if (node == null) return null;
+  if (root == null) return null;
   //if current node matched any of the p, q then current node is LCA
-  if (node === p || node == q) return node;
-  const leftLCA = lowestCommonAncestor(node.left, p, q);
-  const rightLCA = lowestCommonAncestor(node.left, p, q);
+  if (root === p || root == q) return root;
+  const leftLCA = lowestCommonAncestor(root.left, p, q);
+  const rightLCA = lowestCommonAncestor(root.left, p, q);
   //if both left and right is under this node then this is LCA
-  if (leftLCA && rightLCA) return node;
+  if (leftLCA && rightLCA) return root;
   return leftLCA ? leftLCA : rightLCA;
 };
