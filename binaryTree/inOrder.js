@@ -74,11 +74,12 @@ var inorderTraversal = function (root) {
 var inorderTraversal = function (root) {
   const result = [];
   const stack = [];
-  stack.push();
+  stack.push(root);
   while (stack.length != 0) {
     if (root.left) {
-        stack.push(root.left);
-        continue;
+      stack.push(root.left);
+      root = root.left;
+      continue;
     }
     root = stack.pop();
     result.push(root.val);

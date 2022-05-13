@@ -40,20 +40,20 @@ Your runtime beats 80.81 % of javascript submissions.
 Runtime: 88 ms
 Memory Usage: 41.8 MB
 */
-var diameterOfBinaryTree = function(root) {
-    let diameter = 0;
-    if (root == null) return diameter;
-    const findDiameter = (node) => {
-        if (node == null) return 0;
-        const leftDiameter = findDiameter(node.left);
-        const rightDiameter = findDiameter(node.right);
-        // current node path
-        const nodeDiameter = leftDiameter + rightDiameter;
-        // max of current path or existing diameter
-        diameter = Math.max(diameter, nodeDiameter);
-        //for recursive call
-        return Math.max(leftDiameter, rightDiameter);
-    }
-    findDiameter(root);
-    return diameter;
+var diameterOfBinaryTree = function (root) {
+  let diameter = 0;
+  if (root == null) return diameter;
+  const findDiameter = (node) => {
+    if (node == null) return 0;
+    const leftDiameter = findDiameter(node.left);
+    const rightDiameter = findDiameter(node.right);
+    // current node path
+    const nodeDiameter = leftDiameter + rightDiameter;
+    // max of current path or existing diameter
+    diameter = Math.max(diameter, nodeDiameter);
+    //for recursive call
+    return Math.max(leftDiameter, rightDiameter) + 1;
+  };
+  findDiameter(root);
+  return diameter;
 };

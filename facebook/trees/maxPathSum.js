@@ -61,3 +61,43 @@ var maxPathSum = function (root) {
   findMaxSum(root);
   return maxSum;
 };
+
+var maxPathSum = function (root) {
+  //leet code expects min value as this (also required for null node case)
+  let maxSum = Math.pow(-2, 31);
+  let path = "";
+  const findMaxSum = (node) => {
+    if (node == null) return [0, ""];
+    //using Math.max(findMax, 0) is tricky part
+    let [leftSum, leftPath] = findMaxSum(node.left);
+    let [rightSum, rightPath] = findMaxSum(node.right);
+    if (leftSum < 0) {
+      leftSum = 0;
+      leftPath = "";
+    }
+    if (rightSum < 0) {
+      rightSum = 0;
+      rightPath = "";
+    }
+    const pathSum = leftSum + rightSum + node.val;
+    if (pathSum > maxSum) {
+      path = `${leftPath}, ${node.val}, ${rightPath}`;
+      maxSum = pathSum;
+    }
+    // maxSum = Math.max(pathSum, maxSum);
+    //for recursion
+    // return the max sum path of left + node or right + node
+    if (leftSum > rightSum) {
+      return [leftSum + node.val, leftPath + "," + node.val];
+    } else {
+      return [rightSum + node.val, rightPath + "," + node.val];
+    }
+  };
+  findMaxSum(root);
+  console.log(`path: ${path}`);
+  return maxSum;
+};
+
+var lowestCommonAncestor = function (root, p, q) {
+  const LCA = (root, p, q) => {};
+};

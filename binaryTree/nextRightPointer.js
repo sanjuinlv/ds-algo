@@ -14,6 +14,18 @@ Populate each next pointer to point to its next right node. If there is no next 
 
 Initially, all next pointers are set to NULL.
 
+         1 
+       /   \
+      2     3
+     / \   / \
+    4   5 6   7
+
+         1 ->NULL
+       /   \
+      2 --->3--> NULL
+     / \   / \
+    4-->5->6->7-->NULL
+
 Example 1:
 Input: root = [1,2,3,4,5,6,7]
 Output: [1,#,2,3,#,4,5,6,7,#]
@@ -150,7 +162,7 @@ var connect = function (root) {
       // CONNECTION 1
       head.left.next = head.right;
       // CONNECTION 2
-      if (head.next && head.right) head.right.next = head.next.left;
+      if (head.next) head.right.next = head.next.left;
       // Progress along the list (nodes on the current level)
       head = head.next;
     }
