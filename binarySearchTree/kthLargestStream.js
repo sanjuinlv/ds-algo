@@ -67,3 +67,33 @@ KthLargest.prototype._size = function (node) {
  * var obj = new KthLargest(k, nums)
  * var param_1 = obj.add(val)
  */
+
+/* 
+Approach: Using Heap
+Runtime: 2438 ms, faster than 32.36% of JavaScript online submissions for Kth Largest Element in a Stream.
+Memory Usage: 59.9 MB, less than 30.13% of JavaScript online submissions for Kth Largest Element in a Stream.
+*/
+var KthLargest = function (k, nums) {
+  this.k = k;
+  this.heap = [];
+  for (let num of nums) {
+    this.heap.push(num);
+  }
+  //sort the data in reverse order to create min heap
+  this.heap.sort((a, b) => b - a);
+  while (this.heap.length > k) {
+    this.heap.pop();
+  }
+};
+
+/**
+ * @param {number} val
+ * @return {number}
+ */
+KthLargest.prototype.add = function (val) {
+  this.heap.push(val);
+  this.heap.sort((a, b) => b - a);
+  while (this.heap.length > this.k) this.heap.pop();
+  //return top of the element;
+  return this.heap[this.heap.length - 1];
+};

@@ -17,7 +17,7 @@ Your runtime beats 34.16 % of javascript submissions.
 Runtime: 104 ms
 Memory Usage: 48.2 MB
 */
-var lowestCommonAncestor = function(root, p, q) {
+var lowestCommonAncestor = function (root, p, q) {
   if (root == null) return null;
   const LCA = (node, p, q) => {
     if (node == null) return null;
@@ -29,6 +29,6 @@ var lowestCommonAncestor = function(root, p, q) {
     const rightLCA = LCA(node.right, p, q);
     if (leftLCA && rightLCA) return node;
     return leftLCA ? leftLCA : rightLCA;
-  }
-  return LCA(root, p.val, q.val)
+  };
+  return LCA(root, p.val, q.val);
 };

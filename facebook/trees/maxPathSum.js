@@ -97,7 +97,3 @@ var maxPathSum = function (root) {
   console.log(`path: ${path}`);
   return maxSum;
 };
-
-var lowestCommonAncestor = function (root, p, q) {
-  const LCA = (root, p, q) => {};
-};

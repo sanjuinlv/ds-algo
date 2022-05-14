@@ -108,6 +108,7 @@ var lowestCommonAncestor = function (root, p, q) {
   return LCA(root, p, q);
 };
 
+//without using inner helper method
 var lowestCommonAncestor = function (root, p, q) {
   if (root == null) return null;
   //if current node matched any of the p, q then current node is LCA
