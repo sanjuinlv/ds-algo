@@ -79,7 +79,7 @@ var KthLargest = function (k, nums) {
   for (let num of nums) {
     this.heap.push(num);
   }
-  //sort the data in reverse order to create min heap
+  //sort the data in reverse order to create Min heap
   this.heap.sort((a, b) => b - a);
   while (this.heap.length > k) {
     this.heap.pop();
@@ -94,6 +94,6 @@ KthLargest.prototype.add = function (val) {
   this.heap.push(val);
   this.heap.sort((a, b) => b - a);
   while (this.heap.length > this.k) this.heap.pop();
-  //return top of the element;
+  //return top of the heap (array)
   return this.heap[this.heap.length - 1];
 };

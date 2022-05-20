@@ -80,4 +80,16 @@ var reorderList = function (head) {
     reversedHead = tmp;
   }
   console.log(reversedHead);
+  //merge the lists
+  let first = head;
+  let second = reversedHead;
+  while (second.next != null) {
+    let tmp = first;
+    first = first.next;
+    tmp.next = second;
+
+    tmp = second;
+    second = second.next;
+    tmp.next = first;
+  }
 };

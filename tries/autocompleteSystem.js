@@ -46,90 +46,90 @@ autocompleteSystem.input("i")
  * @param {string[]} sentences
  * @param {number[]} times
  */
-var AutocompleteSystem = function(sentences, times) {
-    this.root = new Node();
+var AutocompleteSystem = function (sentences, times) {
+  this.root = new Node();
 
-    function Node() {
-        this.times = 0;
-        this.isWord = false;
-        this.children = new Map();
+  function Node() {
+    this.times = 0;
+    this.isWord = false;
+    this.children = new Map();
+  }
+
+  this.insert = function (key, times = 1) {
+    let curr = this.root;
+    for (const c of key) {
+      if (!curr.children.has(c)) {
+        curr.children.set(c, new Node());
+      }
+      curr = curr.children.get(c);
+    }
+    curr.times = curr.times + times;
+    curr.isWord = true;
+  };
+
+  this.getNode = function (key) {
+    let curr = this.root;
+    for (const c of key) {
+      if (!curr.children.has(c)) return null;
+      curr = curr.children.get(c);
+    }
+    return curr;
+  };
+
+  //DFS search to collect key, score?
+  this.collect = function (node, prefix, results) {
+    // console.log(`prefix: ${prefix}`);
+    if (node.isWord) {
+      // console.log(`prefix: ${prefix} is word`);
+      if (!results[node.times]) results[node.times] = [];
+      results[node.times].push(prefix); // e.g, {3: ["bat", "bad"]}
+      // console.log(`results: ${JSON.stringify(results, null, 2)}`);
+      results[node.times].sort(); //sort the strings for given times
+      // console.log(`results after local sorting: ${JSON.stringify(results, null, 2)}`);
     }
 
-    this.insert = function(key, times = 1) {
-        let curr = this.root;
-        for (const c of key){
-            if (!curr.children.has(c)) {
-                curr.children.set(c, new Node());
-            }
-            curr =  curr.children.get(c);
-        }        
-        curr.times = curr.times + times ;
-        curr.isWord = true;
+    //what do we need to return?
+    for (const c of node.children.keys()) {
+      //store the result
+      this.collect(node.children.get(c), prefix + c, results);
     }
+  };
 
-    this.getNode = function(key){
-        let curr = this.root;
-        for (const c of key){
-            if (!curr.children.has(c)) return null;
-            curr =  curr.children.get(c);
-        }
-        return curr;
+  /**
+   * @param {character} c
+   * @return {string[]}
+   */
+  this.input = function (c) {
+    console.log(`input: ${c}`);
+    //end of sentence
+    if (c === "#") {
+      //enter the so far entered word
+      this.insert(this.inputString, 1);
+      this.inputString = "";
+      return [];
     }
+    this.inputString += c;
+    // console.log(`inputString: ${this.inputString}`);
+    let node = this.getNode(this.inputString);
+    //no match found, return empty result
+    if (node == null) return [];
+    let results = {};
+    //perform DFS from this matched prefix node
+    this.collect(node, this.inputString, results);
+    // console.log(`results after dfs: ${JSON.stringify(results, null, 2)}`);
+    //sort and filter
+    //sort by descending order
+    const sortedKeys = [...Object.keys(results)].sort((a, b) => b - a);
+    // console.log(`sortedKeys: ${sortedKeys}`);
+    const sorted = [];
+    for (const key of sortedKeys) sorted.push(...results[key]);
+    return sorted.slice(0, 3);
+  };
 
-    //DFS search to collect key, score?
-    this.collect = function(node, prefix, results){
-        // console.log(`prefix: ${prefix}`);
-        if (node.isWord) {
-            // console.log(`prefix: ${prefix} is word`);
-            if (!results[node.times]) results[node.times] = [];
-            results[node.times].push(prefix);// e.g, {3: ["bat", "bad"]}
-            // console.log(`results: ${JSON.stringify(results, null, 2)}`);
-            results[node.times].sort();//sort the strings for given times 
-            // console.log(`results after local sorting: ${JSON.stringify(results, null, 2)}`);
-        }
-
-        //what do we need to return?
-        for (const c of node.children.keys()){
-            //store the result
-            this.collect(node.children.get(c), prefix + c, results);
-        }
-    }
-
-    /** 
-     * @param {character} c
-     * @return {string[]}
-     */    
-    this.input = function(c) {
-        console.log(`input: ${c}`);
-        //end of sentence
-        if (c === "#"){
-            //enter the so far entered word
-            this.insert(this.inputString, 1);
-            this.inputString = "";
-            return [];
-        }
-        this.inputString += c;
-        // console.log(`inputString: ${this.inputString}`);
-        let node = this.getNode(this.inputString);
-        //no match found, return empty result
-        if (node == null) return [];
-        let results = {};
-        //perform DFS from this matched prefix node
-        this.collect(node, this.inputString, results);
-        // console.log(`results after dfs: ${JSON.stringify(results, null, 2)}`);
-        //sort and filter
-        //sort by descending order
-        const sortedKeys = [...Object.keys(results)].sort((a,b) => b-a);
-        // console.log(`sortedKeys: ${sortedKeys}`);
-        const sorted = [];
-        for (const key of sortedKeys) sorted.push(...results[key]);
-        return sorted.slice(0, 3);
-    }
-
-    this.inputString = "";
-    for (let i = 0; i < sentences.length; i++){
-        this.insert(sentences[i], times[i]);
-    }
+  this.inputString = "";
+  for (let i = 0; i < sentences.length; i++) {
+    this.insert(sentences[i], times[i]);
+  }
 };
 
 // For submission
@@ -137,84 +137,83 @@ var AutocompleteSystem = function(sentences, times) {
 Your runtime beats 54.22 % of javascript submissions.
 Your memory usage beats 60.24 % of javascript submissions.
 */
-var AutocompleteSystem = function(sentences, times) {
-    this.root = new Node();
+var AutocompleteSystem = function (sentences, times) {
+  this.root = new Node();
 
-    function Node() {
-        this.times = 0;
-        this.isWord = false;
-        this.children = new Map();
+  function Node() {
+    this.times = 0;
+    this.isWord = false;
+    this.children = new Map();
+  }
+
+  this.insert = function (key, times = 1) {
+    let curr = this.root;
+    for (const c of key) {
+      if (!curr.children.has(c)) {
+        curr.children.set(c, new Node());
+      }
+      curr = curr.children.get(c);
+    }
+    curr.times = curr.times + times;
+    curr.isWord = true;
+  };
+
+  this.getNode = function (key) {
+    let curr = this.root;
+    for (const c of key) {
+      if (!curr.children.has(c)) return null;
+      curr = curr.children.get(c);
+    }
+    return curr;
+  };
+
+  //DFS search to collect key, score?
+  this.collect = function (node, prefix, results) {
+    if (node.isWord) {
+      if (!results[node.times]) results[node.times] = [];
+      results[node.times].push(prefix); // e.g, {3: ["bat", "bad"]}
+      results[node.times].sort(); //sort the strings for given times
     }
 
-    this.insert = function(key, times = 1) {
-        let curr = this.root;
-        for (const c of key){
-            if (!curr.children.has(c)) {
-                curr.children.set(c, new Node());
-            }
-            curr =  curr.children.get(c);
-        }        
-        curr.times = curr.times + times ;
-        curr.isWord = true;
+    for (const c of node.children.keys()) {
+      //store the result
+      this.collect(node.children.get(c), prefix + c, results);
     }
+  };
 
-    this.getNode = function(key){
-        let curr = this.root;
-        for (const c of key){
-            if (!curr.children.has(c)) return null;
-            curr =  curr.children.get(c);
-        }
-        return curr;
+  /**
+   * @param {character} c
+   * @return {string[]}
+   */
+  this.input = function (c) {
+    //end of sentence
+    if (c === "#") {
+      //insert the so far entered word
+      this.insert(this.inputString, 1);
+      this.inputString = "";
+      return [];
     }
+    this.inputString += c;
+    let node = this.getNode(this.inputString);
+    //no match found, return empty result
+    if (node == null) return [];
+    let results = {};
+    //perform DFS from this matched prefix node
+    this.collect(node, this.inputString, results);
+    //sort and filter
+    const sortedKeys = [...Object.keys(results)].sort((a, b) => b - a); //sort by descending order
+    const sorted = [];
+    for (const key of sortedKeys) sorted.push(...results[key]);
+    return sorted.slice(0, 3);
+  };
 
-    //DFS search to collect key, score?
-    this.collect = function(node, prefix, results){
-        if (node.isWord) {
-            if (!results[node.times]) results[node.times] = [];
-            results[node.times].push(prefix);// e.g, {3: ["bat", "bad"]}
-            results[node.times].sort();//sort the strings for given times 
-        }
-
-        //what do we need to return?
-        for (const c of node.children.keys()){
-            //store the result
-            this.collect(node.children.get(c), prefix + c, results);
-        }
-    }
-
-    /** 
-     * @param {character} c
-     * @return {string[]}
-     */    
-    this.input = function(c) {
-        //end of sentence
-        if (c === "#"){
-            //enter the so far entered word
-            this.insert(this.inputString, 1);
-            this.inputString = "";
-            return [];
-        }
-        this.inputString += c;
-        let node = this.getNode(this.inputString);
-        //no match found, return empty result
-        if (node == null) return [];
-        let results = {};
-        //perform DFS from this matched prefix node
-        this.collect(node, this.inputString, results);
-        //sort and filter
-        const sortedKeys = [...Object.keys(results)].sort((a,b) => b-a);//sort by descending order
-        const sorted = [];
-        for (const key of sortedKeys) sorted.push(...results[key]);
-        return sorted.slice(0, 3);
-    }
-
-    this.inputString = "";
-    for (let i = 0; i < sentences.length; i++){
-        this.insert(sentences[i], times[i]);
-    }
+  this.inputString = "";
+  for (let i = 0; i < sentences.length; i++) {
+    this.insert(sentences[i], times[i]);
+  }
 };
 
-/** 
+/**
  * Your AutocompleteSystem object will be instantiated and called as such:
  * var obj = new AutocompleteSystem(sentences, times)
  * var param_1 = obj.input(c)

@@ -168,7 +168,8 @@ Space complexity: O(N)
 
 Runtime: 92 ms, faster than 55.28% of JavaScript online submissions for Validate Binary Search Tree.
 Memory Usage: 43 MB, less than 27.93% of JavaScript online submissions for Validate Binary Search Tree.
-
+prev = 3
+node = 4 
 */
 var isValidBST = function (root) {
   let prev = null;

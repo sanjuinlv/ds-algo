@@ -1,4 +1,5 @@
 /* 
+https://leetcode.com/problems/kth-largest-element-in-an-array/solution/
 Find the kth largest element in an unsorted array. Note that it is the kth largest element
 in the sorted order, not the kth distinct element.
 
@@ -18,6 +19,35 @@ You may assume k is always valid, 1 ≤ k ≤ array's length.
  * @param {number} k
  * @return {number}
  */
+/* 
+Approach I: Sort:
+We can sort the array and return the kth element from the end. 
+That would be an algorithm of O(NlogN) time complexity and O(1) space complexity.
+*/
+
+/* 
+Approach II: Heap
+Time: O(N logK)
+Space: O(LogK)
+
+Runtime: 133 ms, faster than 31.96% of JavaScript online submissions for Kth Largest Element in an Array.
+Memory Usage: 46.8 MB, less than 13.41% of JavaScript online submissions for Kth Largest Element in an Array.
+*/
+var findKthLargest = function (nums, k) {
+  const minPQ = new MinPriorityQueue();
+  for (num of nums) {
+    if (minPQ.size() < k) {
+      minPQ.enqueue(num);
+    } else {
+      if (minPQ.front().element < num) {
+        minPQ.dequeue();
+        minPQ.enqueue(num);
+      }
+    }
+  }
+  return minPQ.front().element;
+};
+
 /* 
 A = [3,2,1,5,6,4], k=2  => 5  (Passed)
 A = [3,2,3,1,2,4,5,5,6] ,  k = 4  => 4  (Passed)

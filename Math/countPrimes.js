@@ -34,48 +34,48 @@ Time complexity: O(N^2)
 => 2,3,5,7,11,13,17,19
 */
 // return primeNumbers.every(n => num % n!= 0);
-var countPrimes = function(n) {
-    if (n <= 1) return 0;
-    let primeCount = 0;
-    const isPrimeNumber = (num) => {
-        let i = 2;
-        while(i < num) {
-            if (num % i == 0) return false;
-            i++;
-        }
-        return true;
+var countPrimes = function (n) {
+  if (n <= 1) return 0;
+  let primeCount = 0;
+  const isPrimeNumber = (num) => {
+    let i = 2;
+    while (i < num) {
+      if (num % i == 0) return false;
+      i++;
     }
-    for (let i = 2; i <= n; i++){
-        if (isPrimeNumber(i)) primeCount++;
-    }
-    return primeCount;
+    return true;
+  };
+  for (let i = 2; i <= n; i++) {
+    if (isPrimeNumber(i)) primeCount++;
+  }
+  return primeCount;
 };
 
 /* 
-Approach 2: Caching + no of comparision reduction.
+Approach 2: Caching + no of comparison reduction.
 Can we do better?
 As we know the number must not be divisible by any number > n / 2, we can immediately 
 cut the total iterations half by dividing only up to n / 2. Could we still do better?
 */
-var countPrimes = function(n) {
-    if (n <= 1) return 0;
-    const primes = new Set();
-    let primeCount = 0;
-    const isPrimeNumber = (num) => {
-        if (primes.has(num)) return true;
-        let i = 2;
-        const mid = Math.floor(num / 2);
-        while(i <= mid) {
-            if (num % i == 0) return false;
-            i++;
-        }
-        primes.add(num);
-        return true;
+var countPrimes = function (n) {
+  if (n <= 1) return 0;
+  const primes = new Set();
+  let primeCount = 0;
+  const isPrimeNumber = (num) => {
+    if (primes.has(num)) return true;
+    let i = 2;
+    const mid = Math.floor(num / 2);
+    while (i <= mid) {
+      if (num % i == 0) return false;
+      i++;
     }
-    for (let i = 2; i <= n; i++){
-        if (isPrimeNumber(i)) primeCount++;
-    }
-    return primeCount;
+    primes.add(num);
+    return true;
+  };
+  for (let i = 2; i <= n; i++) {
+    if (isPrimeNumber(i)) primeCount++;
+  }
+  return primeCount;
 };
 
 /* 
@@ -91,22 +91,22 @@ Therefore, we only need to consider factors up to √n because, if n is divisibl
 some number p, then n = p × q and since p ≤ q, we could derive that p ≤ √n. 
 Our total runtime has now improved to O(n^1.5), which is slightly better. Is there a faster approach?
 */
-var countPrimes = function(n) {
-    if (n <= 1) return 0;
-    let primeCount = 0;
-    const isPrimeNumber = (num) => {
-        // Loop's ending condition is i * i <= num instead of i <= sqrt(num)
-        // to avoid repeatedly calling an expensive function sqrt().
-        for (let i = 2; i * i <= num; i++){
-            if (num % i == 0) return false;
-        }
-        return true;
+var countPrimes = function (n) {
+  if (n <= 1) return 0;
+  let primeCount = 0;
+  const isPrimeNumber = (num) => {
+    // Loop's ending condition is i * i <= num instead of i <= sqrt(num)
+    // to avoid repeatedly calling an expensive function sqrt().
+    for (let i = 2; i * i <= num; i++) {
+      if (num % i == 0) return false;
     }
-    for (let i = 2; i <= n; i++){
-        if (isPrimeNumber(i)) primeCount++;
-    }
-    return primeCount;
-}
+    return true;
+  };
+  for (let i = 2; i <= n; i++) {
+    if (isPrimeNumber(i)) primeCount++;
+  }
+  return primeCount;
+};
 /* 
 Using Sieve of Eratosthenes implementation
 
@@ -115,20 +115,20 @@ Memory Usage: 51.7 MB
 Your runtime beats 49.51 % of javascript submissions.
 Your memory usage beats 56.86 % of javascript submissions.
 */
-var countPrimes = function(n) {
-    //mark all number upto n as prime
-    const isPrimes = new Array(n).fill(true);
-    for (let i = 2; i * i < n; i++){
-        if (!isPrimes[i]) continue;
-        //start marking the multiple of i as non prime
-        // multiple of 2 => 4, 6, 8, 10, 12, 14....
-        for (j = i * i; j < n; j += i){
-            isPrimes[j] = false;
-        }
+var countPrimes = function (n) {
+  //mark all number upto n as prime
+  const isPrimes = new Array(n).fill(true);
+  for (let i = 2; i * i < n; i++) {
+    if (!isPrimes[i]) continue;
+    //start marking the multiple of i as non prime
+    // multiple of 2 => 4, 6, 8, 10, 12, 14....
+    for (j = i * i; j < n; j += i) {
+      isPrimes[j] = false;
     }
-    let count = 0;
-    for (let i = 2; i < n; i++){
-        if (isPrimes[i]) count++;
-    }
-    return count;
-}
+  }
+  let count = 0;
+  for (let i = 2; i < n; i++) {
+    if (isPrimes[i]) count++;
+  }
+  return count;
+};
