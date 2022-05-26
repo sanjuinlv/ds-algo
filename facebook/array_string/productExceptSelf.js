@@ -20,33 +20,6 @@ for the purpose of space complexity analysis.)
  * @param {number[]} nums
  * @return {number[]}
  */
-// nums = [1,2,3,4]
-var productExceptSelf = function (nums) {
-  const N = nums.length;
-  const result = [];
-  // array to contains product
-  //contains product of left side numbers
-  const A = [N];
-  //contains product of right side numbers
-  const B = [N];
-  A[0] = 1;
-  for (let i = 1; i < N; i++) {
-    A[i] = A[i - 1] * nums[i - 1];
-  }
-  console.log(`A; ${A}`);
-  B[N - 1] = 1;
-  for (let i = N - 2; i >= 0; i--) {
-    B[i] = B[i + 1] * nums[i + 1];
-  }
-  console.log(`B; ${B}`);
-  for (let i = 0; i < N; i++) {
-    result[i] = A[i] * B[i];
-  }
-  console.log(`result; ${result}`);
-  return result;
-};
-
-// For submission
 /* 
 Time complexity: O(N) ( O(N+N+N) => O(3N) => O(N))
 Space complexity: O(N) ( O(2N)=> O(N), excluding result array)

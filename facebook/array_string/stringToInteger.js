@@ -49,39 +49,39 @@ Therefore INT_MIN (−2^31) is returned.
 // followed by as many numerical digits as possible, and interprets them as a numerical value
 // the additional characters after those that form the integral number, which are
 // ignored and have no effect on the behavior of this function.
-// If the numerical value is out of the range of representable values, INT_MAX (2^31 − 1) or 
+// If the numerical value is out of the range of representable values, INT_MAX (2^31 − 1) or
 // INT_MIN (−2^31) is returned.
 // str = "42" - PASS
 // str = "   -42"  - PASS
 // str = "4193 with words" - PASS
 // str = "words and 987"  - PASS
-// str = "-91283472332", output= -2147483648  
-var myAtoi = function(s) {
-    const N = s.length;
-    const digits = [];
-    for (let i = 0; i < N; i++) {
-        const char = s.charAt(i);
-        console.log(`char: ${char}`);
-        // ignore the whitespaces until any digit is found
-        if (!digits.length && char === ' ') continue;
-        //add '-' or '-' if its first entry
-        if (!digits.length && (char == "-" || char == "+")) {
-            digits.push(char);
-            continue;
-        }
-        if (!isNaN(char)) {
-            digits.push(char);
-            console.log(`digits: ${digits}`);
-        } else {
-            break;
-        }
-        console.log(`digits: ${digits}`);
+// str = "-91283472332", output= -2147483648
+var myAtoi = function (s) {
+  const N = s.length;
+  const digits = [];
+  for (let i = 0; i < N; i++) {
+    const char = s.charAt(i);
+    console.log(`char: ${char}`);
+    // ignore the whitespaces until any digit is found
+    if (!digits.length && char === " ") continue;
+    //add '-' or '-' if its first entry
+    if (!digits.length && (char == "-" || char == "+")) {
+      digits.push(char);
+      continue;
     }
-    console.log(`final digits: ${digits}`);
-    const number = Number(digits.join(""));
-    if (number > Number.MAX_VALUE) return Number.MAX_VALUE;
-    if (number < Number.MIN_VALUE) return Number.MIN_VALUE;
-    return number;
+    if (!isNaN(char)) {
+      digits.push(char);
+      console.log(`digits: ${digits}`);
+    } else {
+      break;
+    }
+    console.log(`digits: ${digits}`);
+  }
+  console.log(`final digits: ${digits}`);
+  const number = Number(digits.join(""));
+  if (number > Number.MAX_VALUE) return Number.MAX_VALUE;
+  if (number < Number.MIN_VALUE) return Number.MIN_VALUE;
+  return number;
 };
 
 // From solutions
@@ -96,120 +96,227 @@ Case 2). If result > INT_MAX/10, we are sure that adding next number would resul
 // str = "   -42"  - PASS
 // str = "4193 with words" - PASS
 // str = "words and 987"  - PASS
-// str = "-91283472332", output= -2147483648  
+// str = "-91283472332", output= -2147483648
 //2147483647
 //2147483646
 //"21474836460"
 //"2147483648"
-var myAtoi = function(s) {
-    //JS MAX_INT and MIN_INT are different so create const equivalent of 2^31-1 & -2^31
-    const MAX_INT = Math.pow(2, 31) - 1;
-    const MIN_INT = Math.pow(-2, 31);
-    const N = s.length;
-    let sign = 1;
-    let result = 0;
-    let i = 0;
-    //Discard whitespaces in the beginning
-    while (i < N && s.charAt(i) == ' ') {
-        i++;
+var myAtoi = function (s) {
+  //JS MAX_INT and MIN_INT are different so create const equivalent of 2^31-1 & -2^31
+  const MAX_INT = Math.pow(2, 31) - 1;
+  const MIN_INT = Math.pow(-2, 31);
+  const N = s.length;
+  let sign = 1;
+  let result = 0;
+  let i = 0;
+  //Discard whitespaces in the beginning
+  while (i < N && s.charAt(i) == " ") {
+    i++;
+  }
+  // Check if optional sign is exists
+  if (i < N && (s.charAt(i) == "-" || s.charAt(i) == "+")) {
+    sign = s.charAt(i) === "+" ? 1 : -1;
+    i++;
+  }
+  console.log(`i: ${i}`);
+  // Build the result and check for overflow/underflow condition
+  while (i < N && s.charAt(i) >= "0" && s.charAt(i) <= "9") {
+    // const digit = Number(s.charAt(i));
+    console.log(`result as input: ${result}`);
+    console.log(`char at ${i}: ${s.charAt(i)}`);
+    //handle overflow and underflow
+    if (
+      result > Math.floor(MAX_INT / 10) ||
+      (result == Math.floor(MAX_INT / 10) && s.charAt(i) - "0" > MAX_INT % 10)
+    ) {
+      console.log("overflow");
+      return sign == 1 ? MAX_INT : MIN_INT;
     }
-    // Check if optional sign is exists
-    if (i < N && (s.charAt(i) == "-" || s.charAt(i) == "+")) {
-        sign = s.charAt(i) === "+" ? 1 : -1;
-        i++;
-    }
-    console.log(`i: ${i}`);
-    // Build the result and check for overflow/underflow condition
-    while (i < N && s.charAt(i) >= '0' && s.charAt(i) <= '9') {
-        // const digit = Number(s.charAt(i));
-        console.log(`result as input: ${result}`);
-        console.log(`char at ${i}: ${s.charAt(i)}`);
-        //handle overflow and underflow
-        if (result > Math.floor(MAX_INT / 10) ||
-            (result == Math.floor(MAX_INT / 10) && s.charAt(i) - '0' > MAX_INT % 10)) {
-            console.log('overflow');
-            return (sign == 1) ? MAX_INT : MIN_INT;
-        }
-        result = result * 10 + Number(s.charAt(i) - '0');
-        // console.log(`updated result: ${result}`);
-        i++;
-    }
-    return result * sign;
-}
-
+    result = result * 10 + Number(s.charAt(i) - "0");
+    // console.log(`updated result: ${result}`);
+    i++;
+  }
+  return result * sign;
+};
 
 //for submission
 /*
 Runtime: 96 ms, faster than 80.65% of JavaScript online submissions for String to Integer (atoi).
 Memory Usage: 40.5 MB, less than 5.04% of JavaScript online submissions for String to Integer (atoi).
 */
-var myAtoi = function(s) {
-    //JS MAX_INT and MIN_INT are different so create const equivalent of 2^31-1 & -2^31
-    const MAX_INT = Math.pow(2, 31) - 1;
-    const MIN_INT = Math.pow(-2, 31);
-    const N = s.length;
-    let sign = 1;
-    let result = 0;
-    let i = 0;
-    // 1. handle empty string
-    if (!s.length) return 0;
-    // 2. remove space
-    while (i < N && s.charAt(i) == ' ') {
-        i++;
+var myAtoi = function (s) {
+  //JS MAX_INT and MIN_INT are different so create const equivalent of 2^31-1 & -2^31
+  const MAX_INT = Math.pow(2, 31) - 1;
+  const MIN_INT = Math.pow(-2, 31);
+  const N = s.length;
+  let sign = 1;
+  let result = 0;
+  let i = 0;
+  // 1. handle empty string
+  if (!s.length) return 0;
+  // 2. remove space
+  while (i < N && s.charAt(i) == " ") {
+    i++;
+  }
+  // Handle sign
+  if (i < N && (s.charAt(i) == "-" || s.charAt(i) == "+")) {
+    sign = s.charAt(i) === "+" ? 1 : -1;
+    i++;
+  }
+  //convert number and avoid overflow
+  while (i < N && s.charAt(i) >= "0" && s.charAt(i) <= "9") {
+    if (
+      result > Math.floor(MAX_INT / 10) ||
+      (result == Math.floor(MAX_INT / 10) && s.charAt(i) - "0" > MAX_INT % 10)
+    ) {
+      return sign == 1 ? MAX_INT : MIN_INT;
     }
-    // Handle sign
-    if (i < N && (s.charAt(i) == "-" || s.charAt(i) == "+")) {
-        sign = s.charAt(i) === "+" ? 1 : -1;
-        i++;
-    }
-    //convert number and avoid overflow
-    while (i < N && s.charAt(i) >= '0' && s.charAt(i) <= '9') {
-        if (result > Math.floor(MAX_INT / 10) ||
-            (result == Math.floor(MAX_INT / 10) && s.charAt(i) - '0' > MAX_INT % 10)) {
-            return (sign == 1) ? MAX_INT : MIN_INT;
-        }
-        result = result * 10 + Number(s.charAt(i) - '0');
-        i++;
-    }
-    return result * sign;
-}
+    result = result * 10 + Number(s.charAt(i) - "0");
+    i++;
+  }
+  return result * sign;
+};
 
 //2nd try
 /* 
 Runtime: 104 ms, faster than 54.84% of JavaScript online submissions for String to Integer (atoi).
 Memory Usage: 41 MB, less than 45.32% of JavaScript online submissions for String to Integer (atoi).
 */
-var myAtoi = function(s) {
-    //JS MAX_INT and MIN_INT are different so create const equivalent of 2^31-1 & -2^31
-    const MAX_INT = Math.pow(2, 31) - 1;
-    const MIN_INT = Math.pow(-2, 31);
-    const N = s.length;
-    let sign = 1;
-    let result = 0;
-    let i = 0;
-    // 1. handle empty string
-    if (!s.length) return 0;
-    // 2. remove space
-    while (i < N && s[i] == ' ') {
-        i++;
+var myAtoi = function (s) {
+  //JS MAX_INT and MIN_INT are different so create const equivalent of 2^31-1 & -2^31
+  const MAX_INT = Math.pow(2, 31) - 1;
+  const MIN_INT = Math.pow(-2, 31);
+  const N = s.length;
+  let sign = 1;
+  let result = 0;
+  let i = 0;
+  // 1. handle empty string
+  if (!s.length) return 0;
+  // 2. remove space
+  while (i < N && s[i] == " ") {
+    i++;
+  }
+  // Handle sign
+  if (i < N && (s[i] == "-" || s[i] == "+")) {
+    sign = s[i] === "+" ? 1 : -1;
+    i++;
+  }
+  //convert number and avoid overflow
+  while (i < N) {
+    const digit = s.codePointAt(i) - "0".codePointAt(0);
+    if (digit < 0 || digit > 9) break;
+    if (
+      result > Math.floor(MAX_INT / 10) ||
+      (result == Math.floor(MAX_INT / 10) && digit > MAX_INT % 10)
+    ) {
+      return sign == 1 ? MAX_INT : MIN_INT;
     }
-    // Handle sign
-    if (i < N && ( s[i] == "-" ||  s[i] == "+")) {
-        sign =  s[i] === "+" ? 1 : -1;
-        i++;
+    //+ used before digit to ensure that operation is treated is numeric
+    // addition instead of concatenation
+    result = result * 10 + digit;
+    i++;
+  }
+  return result * sign;
+};
+
+/* 
+Approach II: Deterministic Finite Automaton (DFA)
+Time: O(N)
+Space: O(1)
+Runtime: 106 ms, faster than 47.57% of JavaScript online submissions for String to Integer (atoi).
+Memory Usage: 44.4 MB, less than 66.96% of JavaScript online submissions for String to Integer (atoi).
+*/
+class StateMachine {
+  State;
+  constructor() {
+    this.State = { q0: 1, q1: 1, q2: 2, q3: 3 };
+    this.currentState = this.State.q0;
+    this.result = 0;
+    this.sign = 1;
+    this.MAX_INT = Math.pow(2, 31) - 1;
+    this.MIN_INT = Math.pow(-2, 31);
+  }
+
+  toStateQ1(ch) {
+    this.currentState = this.State.q1;
+    this.sign = ch === "+" ? 1 : -1;
+  }
+
+  toStateQ2(digit) {
+    this.currentState = this.State.q2;
+    this.appendDigit(digit);
+  }
+
+  toStateQd() {
+    this.currentState = this.State.qd;
+  }
+
+  // Append digit to result, if out of range return clamped value.
+  appendDigit(digit) {
+    if (
+      this.result > Math.floor(this.MAX_INT / 10) ||
+      (this.result === Math.floor(this.MAX_INT / 10) &&
+        digit > this.MAX_INT % 10)
+    ) {
+      this.result = this.sign === 1 ? this.MAX_INT : this.MIN_INT;
+      this.sign = 1;
+      // When the 32-bit int range is exceeded, a dead state is reached.
+      this.toStateQd();
+    } else {
+      this.result = this.result * 10 + digit;
     }
-    //convert number and avoid overflow
-    while (i < N) {
-        const digit = s.codePointAt(i) - '0'.codePointAt(0);
-        if (digit < 0 || digit > 9) break;
-        if (result > Math.floor(MAX_INT / 10) ||
-            (result == Math.floor(MAX_INT / 10) &&  digit > MAX_INT % 10)) {
-            return (sign == 1) ? MAX_INT : MIN_INT;
-        }
-        //+ used before digit to ensure that operation is treated is numeric 
-        // addition instead of concatenation
-        result = result * 10 +  digit;
-        i++;
+  }
+
+  transition(char) {
+    console.log(`char: ${char}, state: ${this.currentState}`);
+    if (this.currentState === this.State.q0) {
+      if (char == " ") {
+        return;
+      } else if (char === "+" || char === "-") {
+        // Current character is a sign.
+        this.toStateQ1(char);
+      } else if (this.isDigit(char)) {
+        // Current character is a digit.
+        this.toStateQ2(char - "0");
+      } else {
+        // Current character is not a space/sign/digit.
+        // Reached a dead state.
+        this.toStateQd();
+      }
+    } else if (
+      this.currentState === this.State.q1 ||
+      this.currentState === this.State.q2
+    ) {
+      if (this.isDigit(char)) {
+        // Current character is a digit.
+        this.toStateQ2(char - "0");
+      } else {
+        // Current character is not a digit.
+        // Reached a dead state.
+        this.toStateQd();
+      }
     }
-    return result * sign;
+  }
+
+  isDigit(char) {
+    return char >= "0" && char <= "9";
+  }
+
+  getState() {
+    return this.currentState;
+  }
+
+  getInteger() {
+    return this.result * this.sign;
+  }
 }
+
+var myAtoi = function (s) {
+  let Q = new StateMachine();
+  console.log(Q.State);
+  for (let i = 0; i < s.length && Q.getState() != Q.State.qd; i++) {
+    Q.transition(s[i]);
+  }
+
+  return Q.getInteger();
+};

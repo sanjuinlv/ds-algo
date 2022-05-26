@@ -50,61 +50,95 @@ It is guaranteed that s is a valid roman numeral in the range [1, 3999].
  * @param {string} s
  * @return {number}
  */
-s = "LVIII"
-s = "MCMXCIV"
+s = "LVIII";
+s = "MCMXCIV";
 //to test on leet code
-s = "LVIIIII"
-var romanToInt = function(s) {
-    const N = s.length;
-    //define the symobls mapping
-    const symbolMap = new Map();
-    symbolMap.set("I", 1);
-    symbolMap.set("V", 5);
-    symbolMap.set("X", 10);
-    symbolMap.set("L", 50);
-    symbolMap.set("C", 100);
-    symbolMap.set("D", 500);
-    symbolMap.set("M", 1000);
-    let sum = 0;
-    let i = 0;
-    while (i < N) {
-        console.log(`char at i=${i}: ${s.charAt(i)} and at i+1=${i + 1}: ${s.charAt(i + 1)} `)
-        if (i == N - 1 || symbolMap.get(s.charAt(i)) >= symbolMap.get(s.charAt(i + 1))) {
-            console.log(`value for char: ${s.charAt(i)}: ${symbolMap.get(s.charAt(i))}`)
-            sum += symbolMap.get(s.charAt(i));
-            i++;
-        } else {
-            sum += symbolMap.get(s.charAt(i + 1)) - symbolMap.get(s.charAt(i));
-            i = i + 2;
-        }
-        console.log(`sum: ${sum}`);
+s = "LVIIIII";
+var romanToInt = function (s) {
+  const N = s.length;
+  //define the symobls mapping
+  const symbolMap = new Map();
+  symbolMap.set("I", 1);
+  symbolMap.set("V", 5);
+  symbolMap.set("X", 10);
+  symbolMap.set("L", 50);
+  symbolMap.set("C", 100);
+  symbolMap.set("D", 500);
+  symbolMap.set("M", 1000);
+  let sum = 0;
+  let i = 0;
+  while (i < N) {
+    console.log(
+      `char at i=${i}: ${s.charAt(i)} and at i+1=${i + 1}: ${s.charAt(i + 1)} `
+    );
+    if (
+      i == N - 1 ||
+      symbolMap.get(s.charAt(i)) >= symbolMap.get(s.charAt(i + 1))
+    ) {
+      console.log(
+        `value for char: ${s.charAt(i)}: ${symbolMap.get(s.charAt(i))}`
+      );
+      sum += symbolMap.get(s.charAt(i));
+      i++;
+    } else {
+      sum += symbolMap.get(s.charAt(i + 1)) - symbolMap.get(s.charAt(i));
+      i = i + 2;
     }
-    console.log(`final sum: ${sum}`);
-    return sum;
+    console.log(`sum: ${sum}`);
+  }
+  console.log(`final sum: ${sum}`);
+  return sum;
 };
 
 // for submission
 // Your runtime beats 47.64 % of javascript submissions.
-var romanToInt = function(s) {
-    const N = s.length;
-    const symbolMap = new Map();
-    symbolMap.set("I", 1);
-    symbolMap.set("V", 5);
-    symbolMap.set("X", 10);
-    symbolMap.set("L", 50);
-    symbolMap.set("C", 100);
-    symbolMap.set("D", 500);
-    symbolMap.set("M", 1000);
-    let sum = 0;
-    let i = 0;
-    while (i < N) {
-        if (i == N - 1 || symbolMap.get(s.charAt(i)) >= symbolMap.get(s.charAt(i + 1))) {
-            sum += symbolMap.get(s.charAt(i));
-            i++;
-        } else {
-            sum += symbolMap.get(s.charAt(i + 1)) - symbolMap.get(s.charAt(i));
-            i = i + 2;
-        }
+var romanToInt = function (s) {
+  const N = s.length;
+  const symbolMap = new Map();
+  symbolMap.set("I", 1);
+  symbolMap.set("V", 5);
+  symbolMap.set("X", 10);
+  symbolMap.set("L", 50);
+  symbolMap.set("C", 100);
+  symbolMap.set("D", 500);
+  symbolMap.set("M", 1000);
+  let sum = 0;
+  let i = 0;
+  while (i < N) {
+    if (
+      i == N - 1 ||
+      symbolMap.get(s.charAt(i)) >= symbolMap.get(s.charAt(i + 1))
+    ) {
+      sum += symbolMap.get(s.charAt(i));
+      i++;
+    } else {
+      sum += symbolMap.get(s.charAt(i + 1)) - symbolMap.get(s.charAt(i));
+      i = i + 2;
     }
-    return sum;
+  }
+  return sum;
+};
+
+//re-try: 22-05-2022
+
+/*
+Runtime: 179 ms, faster than 54.17% of JavaScript online submissions for Roman to Integer.
+Memory Usage: 46.8 MB, less than 82.20% of JavaScript online submissions for Roman to Integer.
+*/
+var romanToInt = function (s) {
+  const romanMap = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+  const N = s.length;
+  let intVal = 0;
+  let i = 0;
+  while (i < N) {
+    const val = romanMap[s[i]];
+    if (i === N - 1 || val >= romanMap[s[i + 1]]) {
+      intVal += val;
+      i++;
+    } else {
+      intVal += romanMap[s[i + 1]] - val;
+      i += 2;
+    }
+  }
+  return intVal;
 };

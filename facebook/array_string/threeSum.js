@@ -47,47 +47,6 @@ var threeSum = function (nums) {
   return result;
 };
 
-// Brrute force with Map
-// Lets assume the sum of triplet is K, so a+b+c = K
-// or a+b = K-c
-// Approach is to create sum of all possible pairs of numbers, i.e,, a+b, a+c, b+c and store in a Map
-// then look in the map if there exist any entry in map with value =K-nums[i]
-// The above solution gives duplicate entries for input: [-1,0,1,2,-1,-4]
-/*
-0: [-1, 2, -1]
-1: [0, 1, -1]
-2: [1, 0, -1]
-3: [2, 2, -4]
-4: [-1, 2, -1]
-*/
-var threeSum = function (nums) {
-  const K = 0;
-  const N = nums.length;
-  const sumMap = new Map();
-  result = [];
-  for (let i = 0; i < N; i++) {
-    for (let j = i + 1; j < N; j++) {
-      const pairSum = nums[i] + nums[j];
-      // the same pairSum can override another one
-      // this problem can be resolved by storing value in linked list for same key
-      sumMap.set(pairSum, [nums[i], nums[j]]);
-    }
-  }
-  console.log(sumMap);
-  for (let i = 0; i < N; i++) {
-    const lookupValue = K - nums[i];
-    console.log(`lookup value: ${lookupValue}`);
-    if (sumMap.has(lookupValue)) {
-      const match = [nums[i], ...sumMap.get(lookupValue)];
-      // console.log(`match: ${match}, match length: ${match.length}`);
-      console.log(`updated match: ${match}`);
-      result.push(match);
-    }
-  }
-  console.log(`result: ${result}`);
-  return result;
-};
-
 // With hint
 // generates duplicate
 /*
@@ -132,59 +91,14 @@ var threeSum = function (nums) {
 };
 
 // Solution reference
-// Approach I: Two pointers
 /* 
-Time complexity: O(N^2) 
-Sorting Array: O(NLogN) 
-twoSum is O(N) and we call it N times so its O(N^2)
-total complexity: O(NlogN+ N^2) = O(N^2)
-Space complexity: O(logN) to O(N) based on sorting algorithm 
-*/
-// We can take twoSumSort approach and using two pointer
-// nums = [-1,0,1,2,-1,-4]
-var threeSum = function (nums) {
-  const N = nums.length;
-  //sort the array (NLogN)
-  nums = nums.sort((a, b) => a - b);
-  console.log(`nums: ${nums}`);
-  const result = [];
-  for (let pivot = 0; pivot < N; pivot++) {
-    let left = pivot + 1;
-    let right = N - 1;
-    if (pivot > 0 && nums[pivot] == nums[pivot - 1]) continue;
-    const target = -1 * nums[pivot];
-    console.log(`pivot: ${pivot}, pivot value: ${nums[pivot]} `);
-    while (left < right) {
-      console.log(
-        `left: ${left}, value: ${nums[left]}, rigth: ${right}, value: ${nums[right]}`
-      );
-      const sum = nums[left] + nums[right];
-      console.log(`sum: ${sum}`);
-      // 3 sum found
-      if (sum == target) {
-        console.log(`match found`);
-        console.log(`pivot: ${pivot}, left: ${left}, right: ${right}`);
-        result.push([-target, nums[left], nums[right]]);
-        console.log(`result: ${result}`);
-        // move the pivot pointer and reset left and right pointer
-        left++;
-        right--;
-      } else if (sum > target) {
-        right--;
-      } else {
-        left++;
-      }
-    }
-  }
-  console.log(`final result: ${result}`);
-  return result;
-};
+Approach I: Two pointers
 
-/* for submission (cleaner code)
 Time complexity: O(N^2) 
 Sorting Array: O(NLogN) 
 twoSum is O(N) and we call it N times so its O(N^2)
 total complexity: O(NlogN+ N^2) = O(N^2)
+
 Space complexity: O(logN) to O(N) based on sorting algorithm 
 
 Runtime: 136 ms, faster than 96.49% of JavaScript online submissions for 3Sum.
@@ -285,7 +199,7 @@ var threeSum = function (nums) {
     if (dups.has(nums[i])) continue;
     dups.add(nums[i]);
     for (let j = i + 1; j < nums.length; j++) {
-      // a + b + c = k (=0) => a + b = k - c = 0 - c = -c;
+      // a + b + c = 0 => a + b = - c;
       // we are getting c from index i (nums[i]). So we need to solve the two sum for a+b and target as -c
       // so a = -c - b, i.e, a = -nums[i] - nums[j];
       console.log(`i: ${i}, j: ${j}`);
@@ -341,23 +255,23 @@ Memory Usage: 59.8 MB, less than 19.28% of JavaScript online submissions for 3Su
 var threeSum = function (nums) {
   const result = [];
   const N = nums.length;
-  const target = 0;
-  nums.sort();
-  const solveTwoSum = (i, target) => {
+  const solveTwoSum = (i) => {
+    const target = -nums[i];
     const seen = new Set();
     for (let j = i + 1; j < N; j++) {
       const compliment = target - nums[j];
       if (seen.has(compliment)) {
-        result.push([-target, compliment, nums[j]]);
+        result.push([nums[i], compliment, nums[j]]);
         // Increment the pointer while the next value is the same as before to avoid duplicates in the result.
         while (j + 1 < nums.length && nums[j] == nums[j + 1]) j++;
       }
       seen.add(nums[j]);
     }
   };
+  nums.sort();
   for (let i = 0; i <= N - 3; i++) {
-    if (nums[i] == nums[i - 1]) continue;
-    solveTwoSum(i, -nums[i]);
+    if (i > 0 && nums[i] == nums[i - 1]) continue;
+    solveTwoSum(i);
   }
   return result;
 };
