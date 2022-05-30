@@ -57,3 +57,30 @@ var minMeetingRooms = function (intervals) {
   }
   return usedRoom;
 };
+
+/*
+Approach: Heap
+Time: O(NLogN)
+Space: O(N)
+
+Runtime: 111 ms, faster than 42.37% of JavaScript online submissions for Meeting Rooms II.
+Memory Usage: 46.4 MB, less than 22.26% of JavaScript online submissions for Meeting Rooms II.
+
+ */
+var minMeetingRooms = function (intervals) {
+  const N = intervals.length;
+  intervals.sort((a, b) => a[0] - b[0]);
+  const minPQ = new MinPriorityQueue();
+  //add the first meeting end time
+  minPQ.enqueue(intervals[0][1]);
+  for (let i = 1; i < N; i++) {
+    // If the room due to free up the earliest is free, assign that room to this meeting.
+    if (intervals[i][0] >= minPQ.front().element) {
+      minPQ.dequeue();
+    }
+    // If a new room is to be assigned, then also we add to the heap,
+    // If an old room is allocated, then also we have to add to the heap with updated end time.
+    minPQ.enqueue(intervals[i][1]);
+  }
+  return minPQ.size();
+};

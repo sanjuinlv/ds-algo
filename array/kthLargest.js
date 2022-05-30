@@ -26,7 +26,7 @@ That would be an algorithm of O(NlogN) time complexity and O(1) space complexity
 */
 
 /* 
-Approach II: Heap
+Approach I: Heap
 Time: O(N logK)
 Space: O(LogK)
 
@@ -48,89 +48,28 @@ var findKthLargest = function (nums, k) {
   return minPQ.front().element;
 };
 
-/* 
-A = [3,2,1,5,6,4], k=2  => 5  (Passed)
-A = [3,2,3,1,2,4,5,5,6] ,  k = 4  => 4  (Passed)
-*/
-var findKthLargest = function (nums, k) {
-  // helper function
-  const LESS = (A, i, j) => {
-    return A[i] < A[j];
-  };
-
-  const SWAP = (a, i, j) => {
-    [a[i], a[j]] = [a[j], a[i]];
-  };
-
-  const partition = (A, lo, hi) => {
-    console.log(`partition:: lo: ${lo}, hi: ${hi}`);
-    let i = lo,
-      j = hi + 1;
-    while (i < j) {
-      while (LESS(A, ++i, lo)) {
-        if (i === hi) break;
-      }
-      while (LESS(A, lo, --j)) {
-        console.log(`j: ${j}`);
-        if (j === lo) break;
-      }
-      console.log(`i: ${i}, j: ${j}`);
-      if (i >= j) break;
-      SWAP(A, i, j);
-    }
-    SWAP(A, lo, j);
-    console.log(`array after partition: ${A}`);
-    return j;
-  };
-  // Implementation code
-  const N = nums.length;
-  const kSmallest = N - k;
-  if (k > N) return;
-
-  const quickSelect = (A, lo, hi) => {
-    console.log(`quickselect:: lo: ${lo}, hi: ${hi}`);
-    if (lo > hi) return;
-    // only one element
-    if (lo == hi) return A[lo];
-    const p = partition(A, lo, hi);
-    console.log(`pivot: ${p}`);
-    // the pivot is on (N - k)th smallest position
-    if (p === kSmallest) {
-      return A[p];
-    } else if (p < kSmallest) {
-      // go to the right side
-      return quickSelect(A, p + 1, hi);
-    } else {
-      // go to the left side
-      return quickSelect(A, lo, p - 1);
-    }
-  };
-  return quickSelect(nums, 0, N - 1);
-};
-
-// For submission
 /*
+Approach II: Quick Select
+
 Time complexity : O(N) in the average case, (N^2) in the worst case.
 Space complexity : O(1).
 
-Runtime: 184 ms, faster than 8.53% of JavaScript online submissions for Kth Largest Element in an Array.
-Memory Usage: 41.1 MB, less than 6.83% of JavaScript online submissions for Kth Largest Element in an Array.
+Runtime: 109 ms, faster than 48.45% of JavaScript online submissions for Kth Largest Element in an Array.
+Memory Usage: 43.8 MB, less than 58.22% of JavaScript online submissions for Kth Largest Element in an Array.
 */
 var findKthLargest = function (nums, k) {
-  const LESS = (A, i, j) => {
-    return A[i] < A[j];
-  };
   const SWAP = (a, i, j) => {
     [a[i], a[j]] = [a[j], a[i]];
   };
   const partition = (A, lo, hi) => {
     let i = lo,
       j = hi + 1;
+    const pivot = A[lo];
     while (i < j) {
-      while (LESS(A, ++i, lo)) {
+      while (A[++i] < pivot) {
         if (i === hi) break;
       }
-      while (LESS(A, lo, --j)) {
+      while (A[--j] > pivot) {
         if (j === lo) break;
       }
       if (i >= j) break;
@@ -141,6 +80,8 @@ var findKthLargest = function (nums, k) {
   };
 
   const N = nums.length;
+  //kth largest element is the same as N - kth smallest element, hence one could implement kth smallest
+  // algorithm for this problem
   const kSmallest = N - k;
   if (k > N) return;
 
@@ -163,4 +104,48 @@ var findKthLargest = function (nums, k) {
   return quickSelect(nums, 0, N - 1);
 };
 
-// Using heap
+var findKthLargest = function (nums, k) {
+  const SWAP = (a, i, j) => {
+    [a[i], a[j]] = [a[j], a[i]];
+  };
+  const partition = (A, lo, hi) => {
+    let i = lo;
+    let j = hi + 1;
+    const pivot = A[lo];
+    while (i < j) {
+      //find the number larger than pivot from left
+      while (A[++i] < pivot) if (i === hi) break;
+      //find the number smaller than pivot from right
+      while (A[--j] > pivot) if (j === lo) break;
+      if (i >= j) break;
+      //swap element at i and j
+      SWAP(A, i, j);
+    }
+    SWAP(A, lo, j);
+    return j;
+  };
+
+  const N = nums.length;
+  //kth largest element is the same as N - kth smallest element, hence one could implement kth smallest
+  // algorithm for this problem
+  const kSmallest = N - k;
+  if (k > N) return;
+
+  const quickSelect = (A, lo, hi) => {
+    if (lo > hi) return -1;
+    if (lo == hi) return A[lo];
+    //create partition
+    const p = partition(A, lo, hi);
+    // the pivot is on (N - k)th smallest position
+    if (p == kSmallest) {
+      return A[p];
+    } else if (p < kSmallest) {
+      // go to the right side
+      return quickSelect(A, p + 1, hi);
+    } else {
+      // go to the left side
+      return quickSelect(A, lo, p - 1);
+    }
+  };
+  return quickSelect(nums, 0, N - 1);
+};
