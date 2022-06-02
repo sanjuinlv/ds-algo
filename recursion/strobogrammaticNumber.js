@@ -21,29 +21,29 @@ Expected: ["1001","1111","1691","1881","1961","6009","6119","6699","6889","6969"
 
 So this solution has extra 00 added for some cases
  */
-var findStrobogrammatic = function(n) {
-    if (n == 0) return [""];
-    //the map of mirror of numbers
-    const mirror = {"1": "1", "6": "9", "9": "6", "8": "8"};
-    let result = [];
-    const helper = (n) => {
-        console.log(`n: ${n}`);
-        if (n <= 0) return [""];
-        if (n == 1) return ["0", "1", "8"];
-        const result = [];
-        const prev = helper(n - 2);
-        console.log(`prev: ${prev}`);
-        for (const digit in mirror){
-            for (const item of prev){
-                result.push(`${digit}${item}${mirror[digit]}`);
-            }
-        }
-        console.log(`result: ${result}`);
-        return result;
-    };
-    result = helper(n);
-    console.log(`final result: ${result}`);
+var findStrobogrammatic = function (n) {
+  if (n == 0) return [""];
+  //the map of mirror of numbers
+  const mirror = { 1: "1", 6: "9", 9: "6", 8: "8" };
+  let result = [];
+  const helper = (n) => {
+    console.log(`n: ${n}`);
+    if (n <= 0) return [""];
+    if (n == 1) return ["0", "1", "8"];
+    const result = [];
+    const prev = helper(n - 2);
+    console.log(`prev: ${prev}`);
+    for (const digit in mirror) {
+      for (const item of prev) {
+        result.push(`${digit}${item}${mirror[digit]}`);
+      }
+    }
+    console.log(`result: ${result}`);
     return result;
+  };
+  result = helper(n);
+  console.log(`final result: ${result}`);
+  return result;
 };
 
 /* 
@@ -59,26 +59,26 @@ Expected:  ["100001","101101","106901","108801","109601","110011","111111","1169
 Your runtime beats 39.78 % of javascript submissions.
 Your memory usage beats 34.41 % of javascript submissions.
 */
-var findStrobogrammatic = function(n) {
-    if (n < 0) n = - n + 1;
-    //the map of mirror of numbers
-    const mirror = {"1": "1", "6": "9", "9": "6", "8": "8"};
-    const helper = (n, m) => {
-        if (n <= 0) return [""];
-        if (n == 1) return ["0", "1", "8"];
-        const result = [];
-        const prev = helper(n - 2, m);
-        for (const item of prev){
-            if (n != m) {
-                result.push(`0${item}0`);
-            }
-            for (const digit in mirror){
-                result.push(`${digit}${item}${mirror[digit]}`);
-            }
-        }
-        return result;
-    };
-    return helper(n, n);
+var findStrobogrammatic = function (n) {
+  if (n < 0) n = -n + 1;
+  //the map of mirror of numbers
+  const mirror = { 1: "1", 6: "9", 9: "6", 8: "8" };
+  const helper = (n, m) => {
+    if (n <= 0) return [""];
+    if (n == 1) return ["0", "1", "8"];
+    const result = [];
+    const prev = helper(n - 2, m);
+    for (const item of prev) {
+      if (n != m) {
+        result.push(`0${item}0`);
+      }
+      for (const digit in mirror) {
+        result.push(`${digit}${item}${mirror[digit]}`);
+      }
+    }
+    return result;
+  };
+  return helper(n, n);
 };
 
 /* 
@@ -89,24 +89,24 @@ Memory Usage: 51.6 MB
 Your runtime beats 59.14 % of javascript submissions.
 Your memory usage beats 37.63 % of javascript submissions.
 */
-var findStrobogrammatic = function(n) {
-    if (n < 0) n = - n + 1;
-    const helper = (n, m) => {
-        if (n <= 0) return [""];
-        if (n == 1) return ["0", "1", "8"];
-        const result = [];
-        const prev = helper(n - 2, m);
-        for (const item of prev){
-            //add zeros only at non root level
-            if (n != m) {
-                result.push("0"+item+"0");
-            }
-            result.push("1"+item+"1");
-            result.push("6"+item+"9");
-            result.push("9"+item+"6");
-            result.push("8"+item+"8");
-        }
-        return result;
-    };
-    return helper(n, n);
+var findStrobogrammatic = function (n) {
+  if (n < 0) n = -n + 1;
+  const helper = (n, m) => {
+    if (n <= 0) return [""];
+    if (n == 1) return ["0", "1", "8"];
+    const result = [];
+    const prev = helper(n - 2, m);
+    for (const item of prev) {
+      //add zeros only at non root level
+      if (n != m) {
+        result.push("0" + item + "0");
+      }
+      result.push("1" + item + "1");
+      result.push("6" + item + "9");
+      result.push("9" + item + "6");
+      result.push("8" + item + "8");
+    }
+    return result;
+  };
+  return helper(n, n);
 };
