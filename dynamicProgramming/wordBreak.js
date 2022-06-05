@@ -168,7 +168,7 @@ var wordBreak = function (s, wordDict) {
 
 /* 
 Approach 2: Recursion with memoization
-Time Complexity: O(N^3): N(for recusion) X N(for for loop) X N (for substring)
+Time Complexity: O(N^3): N(for recursion) X N(for for loop) X N (for substring)
 Space Complexity: O(N). The depth of the recursion tree can go upto n.
 
 Runtime: 84 ms, faster than 78.49% of JavaScript online submissions for Word Break.

@@ -99,6 +99,12 @@ var coinChange = function (coins, amount) {
 
 /*
 Approach: Dynamic Programming
+Time: O(S*n), where S is the amount, n is denomination count. In the worst case the recursive 
+tree of the algorithm has height of S and the algorithm solves only S subproblems because it 
+caches precalculated solutions in a table. Each subproblem is computed with nn iterations, 
+one by coin denomination. Therefore there is O(S*n) time complexity
+Space: O(S), where SS is the amount to change We use extra space for the memoization table
+
 Runtime: 112 ms, faster than 90.10% of JavaScript online submissions for Coin Change.
 Memory Usage: 45.9 MB, less than 86.25% of JavaScript online submissions for Coin Change.
  */

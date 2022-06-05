@@ -110,13 +110,13 @@ Memory Usage: 41.5 MB, less than 94.44% of JavaScript online submissions for Com
 */
 var compareVersion = function (version1, version2) {
   const nums1 = version1.split(".");
-  const nums2 = version1.split(".");
+  const nums2 = version2.split(".");
   const m = nums1.length;
   const n = nums2.length;
   let int1, int2;
   for (let i = 0; i < Math.max(m, n); i++) {
     int1 = i < m ? parseInt(nums1[i]) : 0;
-    int1 = i < n ? parseInt(nums2[i]) : 0;
+    int2 = i < n ? parseInt(nums2[i]) : 0;
     if (int1 != int2) {
       return int1 > int2 ? 1 : -1;
     }

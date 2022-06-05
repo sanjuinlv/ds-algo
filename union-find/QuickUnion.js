@@ -1,26 +1,31 @@
 /* 
+Time Complexity:
+Initialization: O(N)
+Find: O(N) (worst case)
+Union: O(N) 
+Connected: O(N)
+
+Space: O(N) to store the array of size N
+
 Quick Union is too slow
-Time complexity:
-Initialize  Union    Find
-  N           N       N
 
 Quick Union cons:
 - Trees can get tall
 - Find too expensive (could be N array access)
 
 */
-class QuickFindUF {
+class QuickUnion {
   constructor(N) {
-    this.id = new Array(N);
+    this.root = new Array(N);
     this.N = N;
     for (let i = 0; i < N; i++) {
-      this.id[i] = i;
+      this.root[i] = i;
     }
   }
 
-  root(i) {
-    while (i != this.id[i]) i = this.id[i];
-    return i;
+  root(p) {
+    while (p != this.root[p]) p = this.root[p];
+    return p;
   }
 
   connected(p, q) {
@@ -31,6 +36,6 @@ class QuickFindUF {
     const pRoot = this.root(p);
     const qRoot = this.root(q);
     //change root of p to point root of q (depth of p and q array accesses)
-    this.id[pRoot] = qRoot;
+    if (pRoot !== qRoot) this.root[pRoot] = qRoot;
   }
 }

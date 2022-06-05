@@ -1,42 +1,76 @@
 /* 
-Quick Union is too slow
-Time complexity:
-Initialize  Union    Find
-  N           N       N
 
-Quick Union cons:
-- Trees can get tall
-- Find too expensive (could be N array access)
+Time Complexity:
+Initialization: O(N)
+Find: O(log N) 
+Union: O(Log N) 
+Connected: O(log N)
 
 */
-class QuickFindUF {
+class WeightedUF {
   constructor(N) {
-    this.id = new Array(N);
+    this.root = new Array(N);
     this.sz = new Array(N).fill(1);
     this.N = N;
     for (let i = 0; i < N; i++) {
-      this.id[i] = i;
+      this.root[i] = i;
     }
   }
 
-  root(i) {
-    while (i != this.id[i]) i = this.id[i];
+  find(i) {
+    while (i != this.root[i]) i = this.root[i];
     return i;
   }
 
   connected(p, q) {
-    return this.root(p) === this.root(q);
+    return this.find(p) === this.find(q);
   }
 
   union(p, q) {
-    const i = this.root(p);
-    const j = this.root(q);
-    if (this.sz[i] < this.sz[j]) {
-      this.id[i] = j;
-      this.sz[j] += this.sz[i];
+    const pRoot = this.find(p);
+    const qRoot = this.find(q);
+    if (pRoot == qRoot) return;
+    // make smaller root point to larger one
+    if (this.sz[pRoot] < this.sz[qRoot]) {
+      this.root[pRoot] = qRoot;
+      this.sz[qRoot] += this.sz[pRoot];
     } else {
-      this.id[j] = i;
-      this.sz[i] += this.sz[j];
+      this.root[qRoot] = pRoot;
+      this.sz[pRoot] += this.sz[qRoot];
+    }
+  }
+}
+
+class WeightedPathCompressionUF {
+  constructor(N) {
+    this.root = new Array(N);
+    this.sz = new Array(N).fill(1);
+    this.N = N;
+    for (let i = 0; i < N; i++) {
+      this.root[i] = i;
+    }
+  }
+
+  find(p) {
+    if (p == this.root[p]) return p;
+    return (this.root[p] = this.find(this.root[p]));
+  }
+
+  connected(p, q) {
+    return this.find(p) === this.find(q);
+  }
+
+  union(p, q) {
+    const pRoot = this.find(p);
+    const qRoot = this.find(q);
+    if (pRoot == qRoot) return;
+    // make smaller root point to larger one
+    if (this.sz[pRoot] < this.sz[qRoot]) {
+      this.root[pRoot] = qRoot;
+      this.sz[qRoot] += this.sz[pRoot];
+    } else {
+      this.root[qRoot] = pRoot;
+      this.sz[pRoot] += this.sz[qRoot];
     }
   }
 }

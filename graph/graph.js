@@ -29,93 +29,91 @@ for (let v = 0; v < g.vertices(); v++){
 
  */
 class Graph {
-    constructor(V){
-        //number of vertices
-        this.V = V;
-        //number of edges
-        this.E = 0;
-        //adjaceny list
-        this.adj = [];
-        this.initializeGraph(V);
-    }
+  constructor(V) {
+    //number of vertices
+    this.V = V;
+    //number of edges
+    this.E = 0;
+    //adjaceny list
+    this.adj = new Array(V);
+    this.initializeGraph(V);
+  }
 
-    initializeGraph(V){
-        //create array of lists
-        this.adj = new Array(V);
-        //initialize all lists to empty
-        for (let v = 0; v < V; v++){
-            this.adj[v] = new Bag();
-        }
+  initializeGraph(V) {
+    //initialize all lists to empty
+    for (let v = 0; v < V; v++) {
+      this.adj[v] = new Bag();
     }
+  }
 
-    vertices() {
-        return this.V;
-    }
+  vertices() {
+    return this.V;
+  }
 
-    edges(){
-        return this.E;
-    }
+  edges() {
+    return this.E;
+  }
 
-    addEdge(v, w){
-        this.adj[v].add(w);
-        this.adj[w].add(v);
-        this.E++;
-    }
+  addEdge(v, w) {
+    this.adj[v].add(w);
+    this.adj[w].add(v);
+    this.E++;
+  }
 
-    adjacent(v){
-        return this.adj[v];
-    }
+  adjacent(v) {
+    return this.adj[v];
+  }
 
-    degree(v){
-        return this.adjacent[v].size();
-    }
+  degree(v) {
+    return this.adjacent[v].size();
+  }
 
-    toString() {
-        let s = `${this.V} vertices, ${this.E} edges \n`;
-        for (let v = 0; v < this.V; v++){
-            s += `${v}: `;
-            for (let w of this.adjacent(v)){
-                s += `${w} `;
-            }
-            s += `\n`;
-        }
-        return s;
+  toString() {
+    let s = `${this.V} vertices, ${this.E} edges \n`;
+    for (let v = 0; v < this.V; v++) {
+      s += `${v}: `;
+      for (let w of this.adjacent(v)) {
+        s += `${w} `;
+      }
+      s += `\n`;
     }
+    return s;
+  }
 }
 
 // Class declaration is good for testing
 // Firefox doesn't allow re-declaration of same class (in case we fix some bug and run it again)
 
 function Graph(V) {
-    //number of vertices
-    this.V = V;
-    //number of edges
-    this.E = 0;
-    //adjaceny list
-    this.adj = [V];
-    for (let v = 0; v < V; v++){
-        this.adj[v] = new Bag();
-    }
+  //number of vertices
+  this.V = V;
+  //number of edges
+  this.E = 0;
+  //adjaceny list
+  this.adj = [V];
+  for (let v = 0; v < V; v++) {
+    this.adj[v] = new Bag();
+  }
 
-    this.test = function() {
-        console.log(`intitalized`)
-    }
+  this.test = function () {
+    console.log(`intitalized`);
+  };
 
-    this.vertices = function() {
-        return this.V;
-    }
+  this.vertices = function () {
+    return this.V;
+  };
 
-    this.edges = function() {
-        return this.E;
-    }
+  this.edges = function () {
+    return this.E;
+  };
 
-    this.addEdge = function(v, w) {
-        this.adj[v].add(w);
-        this.adj[w].add(v);
-        this.E++;
-    }
+  this.addEdge = function (v, w) {
+    this.adj[v].add(w);
+    this.adj[w].add(v);
+    this.E++;
+  };
 
-    this.adjacent = function(v) {
-        return this.adj[v];
-    }
+  this.adjacent = function (v) {
+    return this.adj[v];
+  };
 }

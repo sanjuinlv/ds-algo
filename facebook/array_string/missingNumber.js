@@ -90,3 +90,40 @@ var missingNumber = function (nums) {
   }
   return sum;
 };
+
+/* 
+Approach IV: Bitwise
+Runtime: 99 ms, faster than 51.13% of JavaScript online submissions for Missing Number.
+Memory Usage: 44.3 MB, less than 70.17% of JavaScript online submissions for Missing Number.
+*/
+var missingNumber = function (nums) {
+  const N = nums.length;
+  let indexSum = N;
+  let valueSum = 0;
+  for (let i = 0; i < nums.length; i++) {
+    valueSum = valueSum ^ nums[i];
+    indexSum = indexSum ^ i;
+  }
+  return indexSum ^ valueSum;
+};
+
+/*
+[3,0,1]
+val = 3;
+sum = 0;
+
+i=0
+sum = 0 ^ 3;
+val = 3 ^ 0;
+
+i=1
+sum = 0 ^ 3 ^ 0;
+val = 3 ^ 0 ^ 1;
+
+i=2
+sum = 0 ^ 3 ^ 0 ^ 1;
+val = 3 ^ 0 ^ 1 ^ 2;
+
+0 ^ 3 ^ 0 ^ 1 ^ 3 ^ 0 ^ 1 ^ 2;
+0 ^ 2 => 2
+*/
