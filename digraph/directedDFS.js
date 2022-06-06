@@ -1,3 +1,9 @@
+/**
+ *  Determine single-source or multiple-source reachability in a digraph
+ *  using depth first search.
+ *  Runs in O(E + V) time.
+ */
+
 /*
 Test code for this class
 g = new Digraph(13)
@@ -37,29 +43,63 @@ reachableVertices = () => {
 reachableVertices();
 Output: 0 1 2 3 4 5 
  */
-class DirctedDFS{
-    constructor(G, s){
-        this.marked = new Array(G.vertices());
-        //number of vertices reachable from 's'
-        this.count = 0;
-        this.dfs(G, s);
-    } 
+class DirctedDFS {
+  /**
+   * Computes the vertices in digraph {@code G} that are
+   * reachable from the source vertex {@code s}.
+   * @param {*} G
+   * @param {*} s
+   */
+  constructor(G, s) {
+    // marked[v] = true if v is reachable from source(s)
+    this.marked = new Array(G.vertices()).fill(false);
+    // number of vertices reachable from source(s)
+    this.count = 0;
+    this.dfs(G, s);
+  }
 
-    dfs(G, v) {
-        this.count++;
-        this.marked[v] = true;
-        for (let w of G.adjacent(v)) {
-            if (!this.marked[w]){
-                this.dfs(G, w);
-            }
-        }
+  /**
+   * Computes the vertices in digraph {@code G} that are
+   * connected to any of the source vertices {@code sources}.
+   * @param {*} G
+   * @param {*} s
+   */
+  constructor2(G, sources) {
+    // marked[v] = true if v is reachable from source(s)
+    this.marked = new Array(G.vertices());
+    // number of vertices reachable from source(s)
+    this.count = 0;
+    for (let s of sources) {
+      if (!this.marked[s]) this.dfs(G, s);
     }
+  }
 
-    isMarked(v){
-        return this.marked[v];
+  dfs(G, v) {
+    this.count++;
+    this.marked[v] = true;
+    for (let w of G.adjacent(v)) {
+      if (!this.marked[w]) {
+        this.dfs(G, w);
+      }
     }
+  }
 
-    count() {
-        return this.count;
-    }
+  /**
+   * Is there a directed path from the source vertex (or any
+   * of the source vertices) and vertex {@code v}?
+   * @param {*} v
+   * @returns
+   */
+  isMarked(v) {
+    return this.marked[v];
+  }
+
+  /**
+   * Returns the number of vertices reachable from the source vertex
+   * (or source vertices).
+   * @returns
+   */
+  count() {
+    return this.count;
+  }
 }

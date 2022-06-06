@@ -31,59 +31,59 @@ for (let v = 0; v < g.vertices(); v++){
 }
  */
 class Digraph {
-    constructor(V) {
-        //number of vertices
-        this.V = V;
-        //number of edges
-        this.E = 0;
-        //adjacency list
-        this.adj = new Array(V);        
-        this._initializeGraph(V);
-    }
-    
-    //private method
-    _initializeGraph(V){
-        for (let v = 0; v < V; v++){
-            this.adj[v] = new Bag();
-        }
-    }
+  constructor(V) {
+    //number of vertices
+    this.V = V;
+    //number of edges
+    this.E = 0;
+    //adjacency list
+    this.adj = new Array(V);
+    this.initializeGraph(V);
+  }
 
-    addEdge(v, w){
-        this.adj[v].add(w);
-        this.E++;
+  //private method
+  initializeGraph(V) {
+    for (let v = 0; v < V; v++) {
+      this.adj[v] = [];
     }
+  }
 
-    adjacent(v) {
-        return this.adj[v];
-    }
+  addEdge(v, w) {
+    this.adj[v].push(w);
+    this.E++;
+  }
 
-    vertices(){
-        return this.V;
-    }
+  adjacent(v) {
+    return this.adj[v];
+  }
 
-    edges() {
-        return this.E;
-    }
+  vertices() {
+    return this.V;
+  }
 
-    reverse() {
-        const R = new Digraph(this.V);
-        for (let v = 0; v < this.V; v++){
-            for (let w of this.adjacent(v)){
-                R.addEdge(w, v);
-            }
-        }
-        return R;
-    }
+  edges() {
+    return this.E;
+  }
 
-    toString() {
-        let s = `${this.V} vertices, ${this.E} edges \n`;
-        for (let v = 0; v < this.V; v++){
-            s += `${v}: `;
-            for (let w of this.adjacent(v)){
-                s += `${w} `;
-            }
-            s += `\n`;
-        }
-        return s;
+  reverse() {
+    const R = new Digraph(this.V);
+    for (let v = 0; v < this.V; v++) {
+      for (let w of this.adjacent(v)) {
+        R.addEdge(w, v);
+      }
     }
+    return R;
+  }
+
+  toString() {
+    let s = `${this.V} vertices, ${this.E} edges \n`;
+    for (let v = 0; v < this.V; v++) {
+      s += `${v}: `;
+      for (let w of this.adjacent(v)) {
+        s += `${w} `;
+      }
+      s += `\n`;
+    }
+    return s;
+  }
 }
