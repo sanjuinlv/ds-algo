@@ -30,25 +30,25 @@ printOrder(order);
  * We can get topological sort order of directed acyclic grap (DAG)
  */
 class DepthFirstOrder {
-    constructor(G){
-        this.marked = new Array(G.vertices()).fill(false);
-        this.reversePost = [];
-        for (let v = 0; v < G.vertices(); v++){
-            if (!this.marked[v])this.dfs(G, v);
-        }
+  constructor(G) {
+    this.marked = new Array(G.vertices()).fill(false);
+    this.reversePost = [];
+    for (let v = 0; v < G.vertices(); v++) {
+      if (!this.marked[v]) this.dfs(G, v);
     }
+  }
 
-    dfs(G, v) {
-        this.marked[v] = true;
-        for (let w of G.adjacent(v)){
-            if (!this.marked[w]){
-                this.dfs(G, w);
-            }
-        }
-        this.reversePost.push(v);
+  dfs(G, v) {
+    this.marked[v] = true;
+    for (let w of G.adjacent(v)) {
+      if (!this.marked[w]) {
+        this.dfs(G, w);
+      }
     }
+    this.reversePost.push(v);
+  }
 
-    getReversePost() {
-        return this.reversePost;
-    }
+  getReversePost() {
+    return this.reversePost;
+  }
 }

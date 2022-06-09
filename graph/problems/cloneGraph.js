@@ -53,92 +53,54 @@ Output: [[2],[1]]
  * @param {Node} node
  * @return {Node}
  */
-/* 
-Approach 1: BFS
-*/
-var cloneGraph = function(node) {
-    if (node == null) return node;
-    const marked = [];
-    const copy = new Node(node.val); 
-    const queue = [];
-    queue.push([node, copy]);
-    marked[node.val - 1] = true;
-    while(queue.length > 0) {
-        const [v, copy] = queue.shift();
-        console.log(`v: ${v.val}, copy: that ${copy.val}`);
-        //get current node position
-        for(let w of v.neighbors){
-            console.log(`w: ${w.val}`);
-            const wCopy = new Node(w.val);
-            console.log(`adding ${w.val} as neighbor of ${v.val}`);
-            copy.neighbors.push(wCopy);
-            if (!marked[w.val - 1]){
-                console.log(`adding ${w.val} to queue`);
-                queue.push([w, wCopy]);
-                marked[w.val - 1] = true;
-            }
-        }
-        console.log(queue);
-    }
-    console.log(copy);
-    return copy;
-};
 
 /* 
-Approach 1: BFS
-(Using Map for nodes)
-Time complexity: O(V + E), wheer V is no. of vertices and E is no. of Edges
+Approach 1: BFS (Using Map for nodes)
+Time complexity: O(V + E), where V is no. of vertices and E is no. of Edges
 Space Complexity: O(V) (and also space occupied by Queue O(W), where W is width of Graph)
 
 Runtime: 76 ms, faster than 95.92% of JavaScript online submissions for Clone Graph.
 Memory Usage: 40.4 MB, less than 30.57% of JavaScript online submissions for Clone Graph.
 */
-var cloneGraph = function(node) { 
-    if (node == null) return node;
-    const visited = new Map();
-    const queue = [];
-    queue.push(node);
-    visited.set(node, new Node(node.val));
-    while(queue.length){
-        const v = queue.shift();
-        for(let w of v.neighbors) {
-            if (!visited.has(w)){
-                queue.push(w);
-                visited.set(w, new Node(w.val));
-            }
-            visited.get(v).neighbors.push(visited.get(w));
-        }
+var cloneGraph = function (node) {
+  if (node == null) return node;
+  const visited = new Map();
+  const queue = [];
+  queue.push(node);
+  visited.set(node, new Node(node.val));
+  while (queue.length) {
+    const v = queue.shift();
+    for (let w of v.neighbors) {
+      if (!visited.has(w)) {
+        queue.push(w);
+        visited.set(w, new Node(w.val));
+      }
+      visited.get(v).neighbors.push(visited.get(w));
     }
-    return visited.get(node);
-}
+  }
+  return visited.get(node);
+};
 
 /* 
-Approach 2: DFS
-(Using Map for nodes)
-Time complexity: O(V + E), wheer V is no. of vertices and E is no. of Edges
-
-Runtime: 84 ms, faster than 67.52% of JavaScript online submissions for Clone Graph.
-Memory Usage: 40.5 MB, less than 30.57% of JavaScript online submissions for Clone Graph.
-
-Runtime: 88 ms, faster than 37.32% of JavaScript online submissions for Clone Graph.
-Memory Usage: 39.9 MB, less than 96.56% of JavaScript online submissions for Clone Graph.
+Approach 2: DFS (Using Map for nodes)
+Time complexity: O(V + E), where V is no. of vertices and E is no. of Edges
+Space: O(V), space required by visited map and recursion stack
 
 Runtime: 80 ms, faster than 84.97% of JavaScript online submissions for Clone Graph.
 Memory Usage: 40.1 MB, less than 71.85% of JavaScript online submissions for Clone Graph.
 */
-var cloneGraph = function(node) { 
-    if (node == null) return node;
-    const visited = new Map();
-    const dfs = (v) => {
-        visited.set(v, new Node(v.val));
-        for (let w of v.neighbors){
-            if (!visited.has(w)){
-                dfs(w);
-            }
-            visited.get(v).neighbors.push(visited.get(w));
-        }
-
-    };
-    dfs(node);
-    return visited.get(node);
-}
+var cloneGraph = function (node) {
+  if (node == null) return node;
+  const visited = new Map();
+  const dfs = (v) => {
+    visited.set(v, new Node(v.val));
+    for (let w of v.neighbors) {
+      if (!visited.has(w)) {
+        dfs(w);
+      }
+      visited.get(v).neighbors.push(visited.get(w));
+    }
+  };
+  dfs(node);
+  return visited.get(node);
+};

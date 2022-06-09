@@ -172,6 +172,36 @@ var validPath = function (n, edges, source, destination) {
   return dfsPath.hasPathTo(destination);
 };
 
+//BFS short code
+/* 
+Runtime: 789 ms
+Memory Usage: 157 MB
+Your runtime beats 46.08 % of javascript submissions.
+Your memory usage beats 54.47 % of javascript submissions.
+*/
+var validPath = function (n, edges, source, destination) {
+  //create adjacency list
+  const adjacency = [...new Array(n)].map((x) => []);
+  for (const edge of edges) {
+    adjacency[edge[0]].push(edge[1]);
+  }
+  const visited = new Array(n).fill(false);
+  const Q = [];
+  Q.push(source);
+  visited[source] = true;
+  while (Q.length) {
+    const v = Q.shift();
+    if (v == destination) return true;
+    for (let w of adjacency[v]) {
+      if (!visited[w]) {
+        Q.push(w);
+        visited[w] = true;
+      }
+    }
+  }
+  return false;
+};
+
 /* 
 Approach II: UF (with Rank)
 Runtime: 255 ms

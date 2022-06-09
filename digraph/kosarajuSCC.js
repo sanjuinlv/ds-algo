@@ -38,55 +38,55 @@ kosarajuSCC.toString()
  * Phase II: Run DFS on graph, considering the vertices in order given by first DFS.
  */
 class KosarajuSCC {
-    constructor(G) {
-        //reached vertices
-        this.marked = new Array(G.vertices()).fill(false);
-        // component identifier
-        this.scc = new Array(G.vertices());
-        //number of strong component
-        this.count = 0;
-        // reverse postorder on reversed graph
-        const order = new DepthFirstOrder(G.reverse()).getReversePost();
-        for(let v = order.length - 1; v >= 0; v--){
-            if (!this.marked[order[v]]) {
-                this.dfs(G, order[v]);
-                this.count++;
-            }
+  constructor(G) {
+    //reached vertices
+    this.marked = new Array(G.vertices()).fill(false);
+    // component identifier
+    this.scc = new Array(G.vertices());
+    //number of strong component
+    this.count = 0;
+    // reverse postorder on reversed graph
+    const order = new DepthFirstOrder(G.reverse()).getReversePost();
+    for (let v = order.length - 1; v >= 0; v--) {
+      if (!this.marked[order[v]]) {
+        this.dfs(G, order[v]);
+        this.count++;
+      }
+    }
+  }
+
+  dfs(G, v) {
+    this.marked[v] = true;
+    this.scc[v] = this.count;
+    for (let w of G.adjacent(v)) {
+      if (!this.marked[w]) {
+        this.dfs(G, w);
+      }
+    }
+  }
+
+  stronglyConnected(v, w) {
+    return this.scc[v] == this.scc[w];
+  }
+
+  id(v) {
+    return this.scc[v];
+  }
+
+  getCount() {
+    return this.count;
+  }
+
+  toString() {
+    console.log(`${this.count} components`);
+    for (let i = 0; i < this.count; i++) {
+      let connectedComponent = "";
+      for (let v = 0; v < this.scc.length; v++) {
+        if (i == this.scc[v]) {
+          connectedComponent += `${v} `;
         }
+      }
+      console.log(`${connectedComponent}`);
     }
-
-    dfs(G, v){
-        this.marked[v] = true;
-        this.scc[v] = this.count;
-        for (let w of G.adjacent(v)){
-            if (!this.marked[w]){
-                this.dfs(G, w);
-            }
-        }
-    }
-
-    stronglyConnected(v, w) {
-        return this.scc[v] == this.scc[w];
-    }
-
-    id(v) {
-        return this.scc[v];
-    }
-
-    getCount() {
-        return this.count;
-    }
-
-    toString() {
-        console.log(`${this.count} components`);
-        for (let i = 0; i < this.count; i++){
-            let connectedComponent = "";
-            for (let v = 0; v < this.scc.length; v++){
-                if (i == this.scc[v]) {
-                    connectedComponent += `${v} `;
-                }
-            }
-            console.log(`${connectedComponent}`);
-        }
-    }
+  }
 }
