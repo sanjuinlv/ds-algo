@@ -46,35 +46,35 @@ Fails for
 
 This is due to cycle in the input. So we need to handle the cycle
 */
- var findOrder = function(numCourses, prerequisites) {
-    const visited = new Array(numCourses).fill(false);
-    const adj = new Array(numCourses).fill([]);
-    //create adjaceny list
-    for(let req of prerequisites){
-        console.log(`req: ${req}`);
-        if (adj[req[0]].length) {
-            adj[req[0]].push(req[1]);
-        } else {
-            adj[req[0]] = [req[1]];
-        }     
+var findOrder = function (numCourses, prerequisites) {
+  const visited = new Array(numCourses).fill(false);
+  const adj = new Array(numCourses).fill([]);
+  //create adjaceny list
+  for (let req of prerequisites) {
+    console.log(`req: ${req}`);
+    if (adj[req[0]].length) {
+      adj[req[0]].push(req[1]);
+    } else {
+      adj[req[0]] = [req[1]];
     }
-    console.log(adj);
-    const dfs = (v) => {
-        console.log(`v: ${v}`);
-        visited[v] = true;
-        for (let w of adj[v]){
-            if (!visited[w]){
-                dfs(w);
-            }
-        }
-        //done with node v. add it to post order
-        postOrder.push(v);
+  }
+  console.log(adj);
+  const dfs = (v) => {
+    console.log(`v: ${v}`);
+    visited[v] = true;
+    for (let w of adj[v]) {
+      if (!visited[w]) {
+        dfs(w);
+      }
     }
+    //done with node v. add it to post order
+    postOrder.push(v);
+  };
 
-    const postOrder = [];
-    for(let v = 0; v < numCourses; v++){
-        if (!visited[v]) dfs(v);        
-    }
-    console.log(postOrder);
-    return postOrder;
+  const postOrder = [];
+  for (let v = 0; v < numCourses; v++) {
+    if (!visited[v]) dfs(v);
+  }
+  console.log(postOrder);
+  return postOrder;
 };

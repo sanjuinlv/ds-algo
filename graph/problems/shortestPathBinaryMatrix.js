@@ -59,8 +59,6 @@ var shortestPathBinaryMatrix = function (grid) {
   //the top-left and bottom-right cell should be 0
   if (grid[0][0] !== 0 || grid[rows - 1][cols - 1] !== 0) return -1;
   const Q = [];
-  //   const path = [];
-  //   let shortestPath = Infinity;
   const visited = [...Array(rows)].map((x) => Array(cols).fill(false));
   Q.push([0, 0, 1]);
   visited[0][0] = true;
@@ -129,7 +127,81 @@ var shortestPathBinaryMatrix = function (grid) {
 };
 
 /* 
-BSF: with cleaner code
+BSF, with cleaner code
+Runtime: 185 ms, faster than 53.36% of JavaScript online submissions for Shortest Path in Binary Matrix.
+Memory Usage: 60.4 MB, less than 21.18% of JavaScript online submissions for Shortest Path in Binary Matrix.
+*/
+var shortestPathBinaryMatrix = function (grid) {
+  const rows = grid.length;
+  const cols = rows;
+  //the top-left and bottom-right cell should be 0
+  if (grid[0][0] !== 0 || grid[rows - 1][cols - 1] !== 0) return -1;
+  const directions = [
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
+    [0, -1],
+    [0, 1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+  ];
+
+  const getNeighbors = (row, col) => {
+    const neighbors = [];
+    for (let direction of directions) {
+      const newRow = row + direction[0];
+      const newCol = col + direction[1];
+      if (
+        newRow < 0 ||
+        newCol < 0 ||
+        newRow >= rows ||
+        newCol >= cols ||
+        grid[newRow][newCol] !== 0
+      ) {
+        continue;
+      }
+      neighbors.push([newRow, newCol]);
+    }
+    return neighbors;
+  };
+
+  const Q = [];
+  const visited = [...Array(rows)].map((x) => Array(cols).fill(false));
+  Q.push([0, 0, 1]);
+  visited[0][0] = true;
+  while (Q.length) {
+    const [row, col, distance] = Q.shift();
+    //reached bottom-right
+    if (row == rows - 1 && col == cols - 1) return distance;
+    //explore all neighboring cells
+    for (let neighbor of getNeighbors(row, col)) {
+      if (!visited[neighbor[0]][neighbor[1]]) {
+        visited[neighbor[0]][neighbor[1]] = true;
+        Q.push([neighbor[0], neighbor[1], distance + 1]);
+      }
+    }
+  }
+  return -1;
+};
+
+/* 
+BSF: With, overwriting input 
+Time: O(N)
+Let N be the number of cells in the grid.
+Each cell was guaranteed to be enqueued at most once. This is because a condition for a cell
+to be enqueued was that it had a zero in the grid, and when enqueuing, we also permanently 
+changed the cell's grid value to be non-zero.
+The outer loop ran as long as there were still cells in the queue, dequeuing one each time.
+Therefore, it ran at most N times, giving a time complexity of O(N).
+The inner loop iterated over the unvisited neighbors of the cell that was dequeued by the outer loop.
+There were at most 8 neighbors. Identifying the unvisited neighbors is an O(1) operation because
+we treat the 8 as a constant.
+Therefore, we have a time complexity of O(N).
+
+Space: O(N): The only additional space we used was the queue. We determined above that at most,
+we enqueued N cells. Therefore, an upper bound on the worst-case space complexity is O(N).
+
 Runtime: 195 ms, faster than 49.06% of JavaScript online submissions for Shortest Path in Binary Matrix.
 Memory Usage: 48.7 MB, less than 92.92% of JavaScript online submissions for Shortest Path in Binary Matrix.
 */
@@ -173,7 +245,6 @@ var shortestPathBinaryMatrix = function (grid) {
   grid[0][0] = 1;
   while (Q.length) {
     const [row, col] = Q.shift();
-    console.log(`row: ${row}, columns: ${col}`);
     const distance = grid[row][col];
     //reached to bottom-right
     if (row === rows - 1 && col === cols - 1) {
