@@ -33,15 +33,20 @@ Runtime: 76 ms, faster than 82.01% of JavaScript online submissions for Plus One
 Memory Usage: 38.5 MB, less than 65.24% of JavaScript online submissions for Plus One.
 digits = [9,9,9,9] - PASS
 */
-var plusOne = function(digits) {
+var plusOne = function (digits) {
   let carryOver = 1;
   for (let i = digits.length - 1; i >= 0; i--) {
     let digitSum = digits[i] + carryOver;
     carryOver = parseInt(digitSum / 10);
-    console.log(`digitSum: ${digitSum}, carry Over: ${carryOver}, digitval: ${digitSum % 10}`)
+    console.log(
+      `digitSum: ${digitSum}, carry Over: ${carryOver}, digitval: ${
+        digitSum % 10
+      }`
+    );
     digits[i] = digitSum % 10;
+    //TODO: break when carryover is 0
   }
-  if (carryOver > 0 ){
+  if (carryOver > 0) {
     digits = [carryOver, ...digits];
   }
   return digits;

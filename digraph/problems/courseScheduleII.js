@@ -46,35 +46,103 @@ Fails for
 
 This is due to cycle in the input. So we need to handle the cycle
 */
-var findOrder = function (numCourses, prerequisites) {
-  const visited = new Array(numCourses).fill(false);
-  const adj = new Array(numCourses).fill([]);
-  //create adjaceny list
-  for (let req of prerequisites) {
-    console.log(`req: ${req}`);
-    if (adj[req[0]].length) {
-      adj[req[0]].push(req[1]);
-    } else {
-      adj[req[0]] = [req[1]];
-    }
-  }
-  console.log(adj);
-  const dfs = (v) => {
-    console.log(`v: ${v}`);
-    visited[v] = true;
-    for (let w of adj[v]) {
-      if (!visited[w]) {
-        dfs(w);
-      }
-    }
-    //done with node v. add it to post order
-    postOrder.push(v);
-  };
 
-  const postOrder = [];
-  for (let v = 0; v < numCourses; v++) {
-    if (!visited[v]) dfs(v);
+/*
+Approach: DFS
+Time: O(V+E)
+Space: O(V+E)
+
+Runtime: 128 ms, faster than 43.57% of JavaScript online submissions for Course Schedule II.
+Memory Usage: 48.4 MB, less than 37.32% of JavaScript online submissions for Course Schedule II.
+ */
+var findOrder = function (numCourses, prerequisites) {
+  //1. create adjacency list
+  const adjacency = [...Array(numCourses)].map(() => new Array());
+  for (let prerequisite of prerequisites) {
+    adjacency[prerequisite[1]].push(prerequisite[0]);
   }
-  console.log(postOrder);
-  return postOrder;
+  const hasCycle = (adj) => {
+    const marked = new Array(adj.length).fill(false);
+    const onStack = new Array(adj.length).fill(false);
+    const dfs = (v, adj) => {
+      marked[v] = true;
+      onStack[v] = true;
+      for (let w of adj[v]) {
+        if (!marked[w] && dfs(w, adj)) {
+          return true;
+        } else if (onStack[w]) {
+          return true;
+        }
+      }
+      onStack[v] = false;
+      return false;
+    };
+    //check for cycle
+    for (let i = 0; i < adj.length; i++) {
+      if (!marked[i] && dfs(i, adj)) return true;
+    }
+    return false;
+  };
+  //2. check if the graph is DGA, i.e, it has cycle
+  if (hasCycle(adjacency)) return [];
+  //3. create reverse post order
+  const reversePostOrder = (adj) => {
+    const marked = new Array(adj.length).fill(false);
+    const reversePost = [];
+    const dfs = (v, adj) => {
+      marked[v] = true;
+      for (let w of adj[v]) {
+        if (!marked[w]) dfs(w, adj);
+      }
+      reversePost.push(v);
+    };
+
+    for (let i = 0; i < adj.length; i++) {
+      if (!marked[i]) dfs(i, adj);
+    }
+    return reversePost;
+  };
+  return reversePostOrder(adjacency).reverse();
+};
+
+/* 
+Approach : DFS (Cycle detection and post order creation in same loop)
+Time: O(V+E)
+Space: O(V+E)
+Runtime: 104 ms, faster than 66.79% of JavaScript online submissions for Course Schedule II.
+Memory Usage: 47.8 MB, less than 47.38% of JavaScript online submissions for Course Schedule II.
+*/
+var findOrder = function (numCourses, prerequisites) {
+  //1. create adjacency list
+  const adjacency = [...Array(numCourses)].map(() => new Array());
+  for (let prerequisite of prerequisites) {
+    adjacency[prerequisite[1]].push(prerequisite[0]);
+  }
+  //2. create reverse post order
+  const reversePostOrder = (adj) => {
+    const marked = new Array(adj.length).fill(false);
+    const onStack = new Array(adj.length).fill(false);
+    const reversePost = [];
+
+    const dfs = (v, adj) => {
+      marked[v] = true;
+      onStack[v] = true;
+      for (let w of adj[v]) {
+        if (!marked[w] && dfs(w, adj)) {
+          return true;
+        } else if (onStack[w]) {
+          return true;
+        }
+      }
+      reversePost.push(v);
+      onStack[v] = false;
+      return false;
+    };
+
+    for (let i = 0; i < adj.length; i++) {
+      if (!marked[i] && dfs(i, adj)) return [];
+    }
+    return reversePost;
+  };
+  return reversePostOrder(adjacency).reverse();
 };

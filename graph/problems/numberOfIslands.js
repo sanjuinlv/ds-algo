@@ -51,32 +51,38 @@ Memory Usage: 39.3 MB, less than 90.80% of JavaScript online submissions for Num
 [["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]] - PASS
 [["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]] - PASS
 */
-var numIslands = function(grid) {
-    let count = 0;
-    if (grid == null || grid.length == 0) return;
-    const rows = grid.length;
-    const columns = grid[0].length;
-    const dfs = (row, col) => {
-        if (row < 0 || col < 0 || row >= rows || col >= columns || grid[row][col] == '0') {
-            return;
-        }
-        //mark this grid cell as visited by marking it '0'
-        grid[row][col] = '0';
-        //perform DFS for all adjoining cells
-        dfs(row, col + 1);
-        dfs(row, col - 1);        
-        dfs(row + 1, col);
-        dfs(row - 1, col);
-    }  
-    for (let i = 0; i < rows; i++){
-        for (let j = 0; j < columns; j++){
-            if (grid[i][j] == '1') {
-                count++;
-                dfs(i, j);
-            }
-        }
+var numIslands = function (grid) {
+  let count = 0;
+  if (grid == null || grid.length == 0) return;
+  const rows = grid.length;
+  const columns = grid[0].length;
+  const dfs = (row, col) => {
+    if (
+      row < 0 ||
+      col < 0 ||
+      row >= rows ||
+      col >= columns ||
+      grid[row][col] == "0"
+    ) {
+      return;
     }
-    return count;
+    //mark this grid cell as visited by marking it '0'
+    grid[row][col] = "0";
+    //perform DFS for all adjoining cells
+    dfs(row, col + 1);
+    dfs(row, col - 1);
+    dfs(row + 1, col);
+    dfs(row - 1, col);
+  };
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      if (grid[i][j] == "1") {
+        count++;
+        dfs(i, j);
+      }
+    }
+  }
+  return count;
 };
 
 /*
@@ -89,30 +95,74 @@ Runtime: 96 ms, faster than 32.44% of JavaScript online submissions for Number o
 Memory Usage: 41.5 MB, less than 35.19% of JavaScript online submissions for Number of Islands.
 */
 var numIslands = function (grid) {
-    let count = 0;
-    if (grid == null || grid.length == 0) return;
-    const rows = grid.length;
-    const columns = grid[0].length;
-    const queue = [];
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < columns; j++) {
-        if (grid[i][j] == "1") {
-          count++;
-          queue.push([i, j]);
-          while (queue.length) {
-            let [row, col] = queue.shift();
-            if (!(row < 0 || col < 0 || row >= rows || col >= columns
-                 || grid[row][col] == "0")) {
-              // mark this one visited
-              grid[row][col] = "0";
-              if (col + 1 < columns && grid[row][col + 1] == "1") queue.push([row, col + 1]);
-              if (col - 1 >=0 && grid[row][col - 1] == "1") queue.push([row, col - 1]);
-              if (row + 1 < rows && grid[row + 1][col] == "1") queue.push([row + 1, col]);
-              if (row - 1 >= 0 && grid[row - 1][col] == "1") queue.push([row - 1, col]);
-            }
+  let count = 0;
+  if (grid == null || grid.length == 0) return;
+  const rows = grid.length;
+  const columns = grid[0].length;
+  const queue = [];
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      if (grid[i][j] == "1") {
+        count++;
+        queue.push([i, j]);
+        while (queue.length) {
+          let [row, col] = queue.shift();
+          if (
+            !(
+              row < 0 ||
+              col < 0 ||
+              row >= rows ||
+              col >= columns ||
+              grid[row][col] == "0"
+            )
+          ) {
+            // mark this one visited
+            grid[row][col] = "0";
+            if (col + 1 < columns && grid[row][col + 1] == "1")
+              queue.push([row, col + 1]);
+            if (col - 1 >= 0 && grid[row][col - 1] == "1")
+              queue.push([row, col - 1]);
+            if (row + 1 < rows && grid[row + 1][col] == "1")
+              queue.push([row + 1, col]);
+            if (row - 1 >= 0 && grid[row - 1][col] == "1")
+              queue.push([row - 1, col]);
           }
         }
       }
     }
-    return count;
+  }
+  return count;
+};
+
+//12/Jun/2022
+//Updated BFS code
+var numIslands = function (grid) {
+  let count = 0;
+  if (grid == null || grid.length == 0) return;
+  const rows = grid.length;
+  const columns = grid[0].length;
+  const queue = [];
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      if (grid[i][j] == "1") {
+        count++;
+        queue.push([i, j]);
+        while (queue.length) {
+          let [row, col] = queue.shift();
+          if (grid[row][col] === "0") continue;
+          // mark this one visited
+          grid[row][col] = "0";
+          if (col + 1 < columns && grid[row][col + 1] == "1")
+            queue.push([row, col + 1]);
+          if (col - 1 >= 0 && grid[row][col - 1] == "1")
+            queue.push([row, col - 1]);
+          if (row + 1 < rows && grid[row + 1][col] == "1")
+            queue.push([row + 1, col]);
+          if (row - 1 >= 0 && grid[row - 1][col] == "1")
+            queue.push([row - 1, col]);
+        }
+      }
+    }
+  }
+  return count;
 };

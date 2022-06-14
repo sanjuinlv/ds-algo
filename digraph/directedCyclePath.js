@@ -31,33 +31,48 @@ class DirectedCycle {
   constructor(G) {
     this.marked = new Array(G.vertices()).fill(false);
     this.onStack = new Array(G.vertices()).fill(false);
-    this.G = G;
-  }
-
-  hasCycle() {
-    for (let v = 0; v < this.G.vertices(); v++) {
-      if (!this.marked[v] && this.dfs(this.G, v)) {
-        return true;
-      }
+    this.edgeTo = new Array(G.vertices());
+    this.cycle = [];
+    for (let v = 0; v < G.vertices(); v++) {
+      if (!this.marked[v]) this.dfs(G, v);
     }
-    return false;
   }
 
-  //perform DFS
   dfs(G, v) {
     this.marked[v] = true;
     this.onStack[v] = true;
     for (let w of G.adjacent(v)) {
-      if (!this.marked[w] && this.dfs(G, w)) {
-        return true;
+      if (this.hasCycle()) return;
+      if (!this.marked[w]) {
+        this.edgeTo[w] = v;
+        this.dfs(G, w);
       } else if (this.onStack[w]) {
         //if dfs on 'w' is not yet completed and encountered
         // again it means there is cycle
-        return true;
+        this.cycle = [];
+        for (let x = v; x != w; x = this.edgeTo[x]) {
+          this.cycle.push(x);
+        }
+        this.cycle.push(w);
+        this.cycle.push(v);
       }
     }
     //mark it false once done the dfs
     this.onStack[v] = false;
-    return false;
+  }
+
+  /**
+   * Does G have a directed cycle?
+   */
+  hasCycle() {
+    return this.cycle.length > 0;
+  }
+
+  /**
+   * vertices on a cycle (if exist)
+   * @returns iterable of vertices
+   */
+  getCycle() {
+    return this.cycle;
   }
 }
