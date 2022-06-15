@@ -78,12 +78,12 @@ class PathCompressionRankUF {
     const qRoot = this.find(q);
     if (pRoot == qRoot) return;
     if (this.rank[pRoot] > this.rank[qRoot]) {
-      this.find[qRoot] = pRoot;
+      this.root[qRoot] = pRoot;
     } else if (this.rank[pRoot] < this.rank[qRoot]) {
-      this.find[pRoot] = qRoot;
+      this.root[pRoot] = qRoot;
     } else {
       //height of both tree is same
-      this.find[qRoot] = pRoot;
+      this.root[qRoot] = pRoot;
       //increase the height by one of pRoot
       this.rank[pRoot] += 1;
     }

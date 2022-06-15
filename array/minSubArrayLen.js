@@ -39,7 +39,7 @@ Memory Usage: 41.9 MB, less than 95.43% of JavaScript online submissions for Min
 */
 var minSubArrayLen = function (target, nums) {
   let left = 0;
-  minLength = Infinity;
+  let minLength = Infinity;
   let sum = 0;
   for (let right = 0; right < nums.length; right++) {
     sum += nums[right];

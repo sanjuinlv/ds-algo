@@ -1,16 +1,16 @@
 class EdgeWeightedGraph {
   constructor(V) {
-    //number of vertices  
+    //number of vertices
     this.V = V;
     // number of edges
     this.E = 0;
     //Bag of Edges
     this.adj = new Array(V);
-    this._initializeGraph(V);
+    this.initializeGraph(V);
   }
 
   //private method
-  _initializeGraph(V) {
+  initializeGraph(V) {
     for (let v = 0; v < V; v++) {
       this.adj[v] = new Bag();
     }
@@ -68,12 +68,12 @@ class EdgeWeightedGraph {
    */
   toString() {
     let s = `${this.V} vertices, ${this.E} edges \n`;
-    for (let v = 0; v < this.V; v++){
-        s += `${v}: `;
-        for (let e of this.adjacent(v)){
-            s += `${e.toString()} `;
-        }
-        s += `\n`;
+    for (let v = 0; v < this.V; v++) {
+      s += `${v}: `;
+      for (let e of this.adjacent(v)) {
+        s += `${e.toString()} `;
+      }
+      s += `\n`;
     }
     return s;
   }
