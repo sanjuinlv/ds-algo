@@ -26,4 +26,32 @@ Output: -1
  * @param {number} k
  * @return {number}
  */
-var networkDelayTime = function (times, n, k) {};
+class DirectedEdge {
+  constructor(v, w, weight) {
+    this.v = v;
+    this.w = w;
+    this.edgeWeight = weight;
+  }
+  from() {
+    return this.v;
+  }
+  to() {
+    return this.w;
+  }
+  weight() {
+    return this.edgeWeight;
+  }
+}
+
+var networkDelayTime = function (times, n, k) {
+  this.edgeTo = new Array(n);
+  this.distTo = new Array(n).fill(Infinity);
+  this.adjacency = [...Array(n)].map(() => []);
+  //1.create adjacency list
+  for (let i = 0; i < times.length; i++) {
+    this.adjacency[times[i][0]].push(
+      new DirectedEdge(times[0], times[1], times[2])
+    );
+  }
+  //2. add source 'k' to PQ with distance 0
+};

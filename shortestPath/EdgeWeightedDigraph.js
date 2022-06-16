@@ -13,6 +13,10 @@ class EdgeWeightedDigraph {
     this.adj = [...Array(V)].map(() => []);
   }
 
+  /**
+   *
+   * @param {DirectedEdge} e
+   */
   addEdge(e) {
     const v = e.from();
     this.adj[v].push(e);
