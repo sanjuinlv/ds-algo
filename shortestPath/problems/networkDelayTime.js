@@ -26,6 +26,9 @@ Output: -1
  * @param {number} k
  * @return {number}
  */
+/* 
+Approach: Dijkstra Algorithm
+*/
 class DirectedEdge {
   constructor(v, w, weight) {
     this.v = v;
@@ -44,14 +47,49 @@ class DirectedEdge {
 }
 
 var networkDelayTime = function (times, n, k) {
-  this.edgeTo = new Array(n);
-  this.distTo = new Array(n).fill(Infinity);
-  this.adjacency = [...Array(n)].map(() => []);
-  //1.create adjacency list
-  for (let i = 0; i < times.length; i++) {
-    this.adjacency[times[i][0]].push(
-      new DirectedEdge(times[0], times[1], times[2])
-    );
+  const edgeTo = new Array(n + 1);
+  const distTo = new Array(n + 1).fill(Infinity);
+  const adjacency = [...Array(n + 1)].map(() => []);
+  for (const time of times) {
+    adjacency[time[0]].push(new DirectedEdge(time[0], time[1], time[2]));
   }
   //2. add source 'k' to PQ with distance 0
+  const pq = new MinPriorityQueue({
+    compare: (a, b) => {
+      return a.dist - b.dist;
+    },
+  });
+  distTo[k] = 0;
+
+  const compute = (pq, k) => {
+    pq.enqueue({ node: k, dist: 0 });
+    while (pq.size() > 0) {
+      const entry = pq.dequeue();
+      // console.log(`entry: ${JSON.stringify(entry)}`);
+      const v = entry.node;
+      for (let e of adjacency[v]) {
+        relax(e);
+      }
+    }
+  };
+
+  const relax = (e) => {
+    const v = e.from();
+    const w = e.to();
+    if (distTo[w] > distTo[v] + e.weight()) {
+      distTo[w] = distTo[v] + e.weight();
+      edgeTo[w] = e;
+      //update PQ
+      //there is no way to decrease key so try enqueue
+      pq.enqueue({ node: w, dist: distTo[w] });
+    }
+  };
+
+  compute(pq, k);
+  //find the max distance
+  let maxDistance = -Infinity;
+  for (let i = 1; i <= n; i++) {
+    maxDistance = Math.max(maxDistance, distTo[i]);
+  }
+  return maxDistance === Infinity ? -1 : maxDistance;
 };

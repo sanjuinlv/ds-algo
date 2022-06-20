@@ -75,7 +75,13 @@ var coinChange = function (coins, amount) {
 };
 
 /* 
-Approach: Recursion with Memoization
+Approach: Dynamic Programming (Top Down, Recursion with memoization) 
+Time: O(S*n), where S is the amount, n is denomination count. In the worst case the recursive 
+tree of the algorithm has height of S and the algorithm solves only S subproblems because it 
+caches precalculated solutions in a table. Each subproblem is computed with nn iterations, 
+one by coin denomination. Therefore there is O(S*n) time complexity
+Space: O(S), where SS is the amount to change We use extra space for the memoization table
+
 */
 var coinChange = function (coins, amount) {
   const memo = new Array(coins.length).fill(null);
@@ -98,7 +104,7 @@ var coinChange = function (coins, amount) {
 };
 
 /*
-Approach: Dynamic Programming
+Approach: Dynamic Programming ( Bottom up)
 Time: O(S*n), where S is the amount, n is denomination count. In the worst case the recursive 
 tree of the algorithm has height of S and the algorithm solves only S subproblems because it 
 caches precalculated solutions in a table. Each subproblem is computed with nn iterations, 

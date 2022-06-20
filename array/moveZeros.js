@@ -17,25 +17,26 @@ nums = [0,0,0,0]     => PASSED
 */
 // Time complexity: O(N)
 // Space: O(N)
-var moveZeroes = function(nums) {
-    let j = 0, N = nums.length;
-    for (let i = 0; i < N; i++) {
-        //if its non zero then copy to last insert point (j), 
-        //if both are not same (case of no zeros found)
-        if (nums[i] !== 0) {
-            if (i !== j) {
-                nums[j++] = nums[i];
-            } else {
-                j++;
-            }
-        }
+var moveZeroes = function (nums) {
+  let j = 0,
+    N = nums.length;
+  for (let i = 0; i < N; i++) {
+    //if its non zero then copy to last insert point (j),
+    //if both are not same (case of no zeros found)
+    if (nums[i] !== 0) {
+      if (i !== j) {
+        nums[j++] = nums[i];
+      } else {
+        j++;
+      }
     }
-    console.log(`j: ${j}`);
-    //copy zeros from j until end of the array.
-    while (j < N) {
-        nums[j++] = 0;
-    }
-    console.log(`final array: ${nums}`);
+  }
+  console.log(`j: ${j}`);
+  //copy zeros from j until end of the array.
+  while (j < N) {
+    nums[j++] = 0;
+  }
+  console.log(`final array: ${nums}`);
 };
 
 // for submission
@@ -45,21 +46,23 @@ Memory Usage: 38.6 MB
 Your runtime beats 82.25 % of javascript submissions.
 Your memory usage beats 38.61 % of javascript submissions.
 */
-var moveZeroes = function(nums) {
-    let j = 0, N = nums.length, i = 0;
-    while (i < N) {
-        if (nums[i] !== 0) {
-            if (i === j) {
-                j++;
-            } else {
-                nums[j++] = nums[i];
-            }
-        }
-        i++;
+var moveZeroes = function (nums) {
+  let j = 0,
+    N = nums.length,
+    i = 0;
+  while (i < N) {
+    if (nums[i] !== 0) {
+      if (i === j) {
+        j++;
+      } else {
+        nums[j++] = nums[i];
+      }
     }
-    while (j < N) {
-        nums[j++] = 0;
-    }
+    i++;
+  }
+  while (j < N) {
+    nums[j++] = 0;
+  }
 };
 
 // Using pointer with swap approach
@@ -77,17 +80,18 @@ or a 0, which lies at a index greater than 'cur' index.
 We fill the current position by 0 right away,so that unlike the previous solution, 
 we don't need to come back here in next iteration.
 */
-var moveZeroes = function(nums) {
-    let slowPointer = 0, N = nums.length;
-    for (let currentPointer = 0; currentPointer < N; currentPointer++) {
-        if (nums[currentPointer] != 0) {
-            //swap elements
-            let temp = nums[slowPointer];
-            nums[slowPointer++] = nums[currentPointer];
-            nums[currentPointer] = temp;
-        }
+var moveZeroes = function (nums) {
+  let slowPointer = 0,
+    N = nums.length;
+  for (let currentPointer = 0; currentPointer < N; currentPointer++) {
+    if (nums[currentPointer] != 0) {
+      //swap elements
+      let temp = nums[slowPointer];
+      nums[slowPointer++] = nums[currentPointer];
+      nums[currentPointer] = temp;
     }
-}
+  }
+};
 
 //2nd try
 /**
@@ -103,25 +107,29 @@ Memory Usage: 40.2 MB
 Your runtime beats 80.37 % of javascript submissions.
 Your memory usage beats 64.94 % of javascript submissions.
  */
-var moveZeroes = function(nums) {
-    let N = nums.length;
-    let i = 0, j=0, zeroCount = 0;
-    while(j < N && i < N) {
-      if (nums[j] == 0){
-          zeroCount += 1; 
-          j++
-      } else { //copy j value to i
-         if (i != j) nums[i] = nums[j];
-         i++; j++;
-      }
+var moveZeroes = function (nums) {
+  let N = nums.length;
+  let i = 0,
+    j = 0,
+    zeroCount = 0;
+  while (j < N && i < N) {
+    if (nums[j] == 0) {
+      zeroCount += 1;
+      j++;
+    } else {
+      //copy j value to i
+      if (i != j) nums[i] = nums[j];
+      i++;
+      j++;
     }
-    //fill the zeros 
-    if (zeroCount > 0){
-        for(let i = N - zeroCount; i < N; i++){
-            nums[i] = 0;
-        }
+  }
+  //fill the zeros
+  if (zeroCount > 0) {
+    for (let i = N - zeroCount; i < N; i++) {
+      nums[i] = 0;
     }
- };
+  }
+};
 
 /* 
 without using zeroCount variable
@@ -131,24 +139,24 @@ Your runtime beats 92.10 % of javascript submissions.
 Your memory usage beats 48.50 % of javascript submissions.
 */
 
-var moveZeroes = function(nums) {
-   let N = nums.length;
-   //slow pointer
-   let i = 0;
-   //fast pointer
-   let j = 0;
-   while(j < N) {
+var moveZeroes = function (nums) {
+  let N = nums.length;
+  //slow pointer
+  let i = 0;
+  //fast pointer
+  let j = 0;
+  while (j < N) {
     if (nums[j] != 0) {
-        //copy item at index j to index i
-        if (i != j) nums[i] = nums[j];
-        i++; 
+      //copy item at index j to index i
+      if (i != j) nums[i] = nums[j];
+      i++;
     }
     j++;
-   }
-   //fill the zeros 
-   while (i < N) {
-       nums[i++] = 0;
-   }
+  }
+  //fill the zeros
+  while (i < N) {
+    nums[i++] = 0;
+  }
 };
 
 //9-Sep-2021
@@ -156,18 +164,38 @@ var moveZeroes = function(nums) {
  Runtime: 79 ms, faster than 75.03% of JavaScript online submissions for Move Zeroes.
  Memory Usage: 40.5 MB, less than 42.56% of JavaScript online submissions for Move Zeroes.
  */
-var moveZeroes = function(nums) {
-    const N = nums.length;
-    let i = 0, j=0;
-    while(j < N) {
-        if (nums[j] != 0) {
-            if (i != j) {
-                nums[i] = nums[j];//copy non zero value
-                nums[j] = 0; // set copied value as 0
-            } 
-            i++;
-        }
-        j++;
+var moveZeroes = function (nums) {
+  const N = nums.length;
+  let i = 0,
+    j = 0;
+  while (j < N) {
+    if (nums[j] != 0) {
+      if (i != j) {
+        nums[i] = nums[j]; //copy non zero value
+        nums[j] = 0; // set copied value as 0
+      }
+      i++;
     }
-    return nums;
-}
+    j++;
+  }
+  return nums;
+};
+
+/* 
+18/Jun/2022
+Optimal swap solution
+Runtime: 98 ms, faster than 88.43% of JavaScript online submissions for Move Zeroes.
+Memory Usage: 46.6 MB, less than 59.65% of JavaScript online submissions for Move Zeroes.
+*/
+var moveZeroes = function (nums) {
+  let i = 0;
+  //find first index of zero
+  while (i < nums.length && nums[i] !== 0) i++;
+  for (let j = i; j < nums.length; j++) {
+    //swap non-zero with zero
+    if (nums[j] !== 0) {
+      nums[i++] = nums[j];
+      nums[j] = 0;
+    }
+  }
+};
