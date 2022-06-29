@@ -26,8 +26,36 @@ var nearestGreaterToRight = function (nums) {
   }
   return result.reverse();
 };
-//nextGreaterElement([1,3,4,2]) => [3,4,-1,-1]
-var nextGreaterElement = function (nums) {
+//II: Without using the reverse of the array
+var nearestGreaterToRight = function (nums) {
+  const stack = [];
+  const N = nums.length;
+  const result = new Array(N);
+  const top = (arr) => arr[arr.length - 1];
+  for (let i = N - 1; i >= 0; i--) {
+    //stack is empty
+    if (stack.length === 0) {
+      result[i] = -1;
+      //the top of stack is greater than the current num so add it to result
+    } else if (stack.length !== 0 && top(stack) > nums[i]) {
+      // result.push(top(stack));
+      result[i] = top(stack);
+    } else if (stack.length !== 0 && top(stack) <= nums[i]) {
+      //pop from stack until stack is empty or we find greater num than num[i]
+      while (stack.length > 0 && top(stack) <= nums[i]) stack.pop();
+      //nothing left in stack. Store -1 in result
+      if (stack.length === 0) result[i] = -1;
+      else result[i] = top(stack);
+    }
+    //always add this element to stack to be used for comparing with other number
+    stack.push(nums[i]);
+  }
+  return result;
+};
+
+//nearestGreaterToRight([1,3,4,2]) => [3,4,-1,-1]
+//III
+var nearestGreaterToRight = function (nums) {
   const stack = [];
   const result = new Array(nums.length);
   const map = new Map();
