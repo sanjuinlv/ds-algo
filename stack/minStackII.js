@@ -7,36 +7,35 @@ Runtime: 112 ms, faster than 95.67% of JavaScript online submissions for Min Sta
 Memory Usage: 45.2 MB, less than 88.94% of JavaScript online submissions for Min Stack.
 */
 class MinStack {
-    constructor() {
-      this._stack = [];
-      this._minStack = [];
-    }
-  
-    //internal method
-    _last(arr){
-        return arr[arr.length - 1]
-    }
+  constructor() {
+    this._stack = [];
+    this._minStack = [];
+  }
 
-    push(x) {
-      this._stack.push(x);    
-      if (this._minStack.length === 0 || x <= this._last(this._minStack)){
-        this._minStack.push(x);
-      }
-    }
-  
-    pop() {
-      if (this.top(this._stack) === this.getMin()) {
-          this._minStack.pop();
-      }
-      this._stack.pop();  
-    }
-  
-    top() {
-        return this._last(this._stack);
-    }
-  
-    getMin() {
-      return this._last(this._minStack);
+  push(x) {
+    this._stack.push(x);
+    if (this._minStack.length === 0 || x <= this._last(this._minStack)) {
+      this._minStack.push(x);
     }
   }
-  
+
+  pop() {
+    if (this.top(this._stack) === this.getMin()) {
+      this._minStack.pop();
+    }
+    this._stack.pop();
+  }
+
+  top() {
+    return this._last(this._stack);
+  }
+
+  getMin() {
+    return this._last(this._minStack);
+  }
+
+  //internal method
+  _last(arr) {
+    return arr[arr.length - 1];
+  }
+}

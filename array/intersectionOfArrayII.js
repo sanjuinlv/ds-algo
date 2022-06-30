@@ -37,18 +37,18 @@ nums1 = [4,9,5], nums2 = [9,4,9,8,4] - PASS
 nums1 = [1,2], nums2 = [1,1]  - FAILS
     Output: [1,1], Expected: [1]
  */
-var intersect = function(nums1, nums2) {
+var intersect = function (nums1, nums2) {
   if (nums2.length > nums1.length) {
     return intersect(nums2, nums1);
   }
   const set = new Set();
   const intersection = [];
-  for (let i = 0; i < nums1.length; i++){
-      set.add(nums1[i]);
+  for (let i = 0; i < nums1.length; i++) {
+    set.add(nums1[i]);
   }
-  for (let i = 0; i < nums2.length; i++){
-    if (set.has(nums2[i])){
-        intersection.push(nums2[i]);
+  for (let i = 0; i < nums2.length; i++) {
+    if (set.has(nums2[i])) {
+      intersection.push(nums2[i]);
     }
   }
   return intersection;
@@ -65,47 +65,51 @@ Space complexity: O(min(n,m)), for map
 Runtime: 80 ms, faster than 80.75% of JavaScript online submissions for Intersection of Two Arrays II.
 Memory Usage: 41 MB, less than 17.95% of JavaScript online submissions for Intersection of Two Arrays II.
 */
-var intersect = function(nums1, nums2) {
-  // if nums1 is larger than nums2 then swap the array, 
+var intersect = function (nums1, nums2) {
+  // if nums1 is larger than nums2 then swap the array,
   // this will save us space when one input is very large
   if (nums1.length > nums2.length) {
     return intersect(nums2, nums1);
   }
   const map = new Map();
   const intersection = [];
-  for (let i = 0; i < nums1.length; i++){
-      map.set(nums1[i], (map.get(nums1[i]) || 0) + 1 );
+  for (let i = 0; i < nums1.length; i++) {
+    map.set(nums1[i], (map.get(nums1[i]) || 0) + 1);
   }
-  for (let i = 0; i < nums2.length; i++){
-    if (map.has(nums2[i])){
-        if (map.get(nums2[i]) > 0) {
-          //we can also use the nums1 array to store the value and return the range, to save the space
-          intersection.push(nums2[i]);
-          map.set(nums2[i], (map.get(nums2[i]) - 1 ));          
-        }
+  for (let i = 0; i < nums2.length; i++) {
+    if (map.has(nums2[i])) {
+      if (map.get(nums2[i]) > 0) {
+        //we can also use the nums1 array to store the value and return the range, to save the space
+        intersection.push(nums2[i]);
+        map.set(nums2[i], map.get(nums2[i]) - 1);
+      }
     }
   }
   return intersection;
 };
 
-//without using aurxilary array
-var intersect = function(nums1, nums2) {
-  // if nums1 is larger than nums2 then swap the array, 
+/* 
+Approach: HashMap (without using aurxilary array)
+Runtime: 119 ms, faster than 19.37% of JavaScript online submissions for Intersection of Two Arrays II.
+Memory Usage: 43.7 MB, less than 49.74% of JavaScript online submissions for Intersection of Two Arrays II.
+*/
+var intersect = function (nums1, nums2) {
+  // if nums1 is larger than nums2 then swap the array,
   // this will save us space when one input is very large
   if (nums1.length > nums2.length) {
     return intersect(nums2, nums1);
   }
   const map = new Map();
   let k = 0;
-  for (let i = 0; i < nums1.length; i++){
-      map.set(nums1[i], (map.get(nums1[i]) || 0) + 1 );
+  for (let i = 0; i < nums1.length; i++) {
+    map.set(nums1[i], (map.get(nums1[i]) || 0) + 1);
   }
-  for (let i = 0; i < nums2.length; i++){
-    if (map.has(nums2[i])){
-        if (map.get(nums2[i]) > 0) {
-          nums1[k++] = nums2[i];
-          map.set(nums2[i], (map.get(nums2[i]) - 1 ));          
-        }
+  for (let i = 0; i < nums2.length; i++) {
+    if (map.has(nums2[i])) {
+      if (map.get(nums2[i]) > 0) {
+        nums1[k++] = nums2[i];
+        map.set(nums2[i], map.get(nums2[i]) - 1);
+      }
     }
   }
   return nums1.slice(0, k);
@@ -123,19 +127,21 @@ output:   [0,4,5,6,7,34,38,44,45,57,61,77,79,85,88,89,92]
 Runtime: 80 ms, faster than 80.75% of JavaScript online submissions for Intersection of Two Arrays II.
 Memory Usage: 39.2 MB, less than 71.43% of JavaScript online submissions for Intersection of Two Arrays II.
 */
-var intersect = function(nums1, nums2) {
-  nums1= nums1.sort((a,b) => a - b);
-  nums2 = nums2.sort((a,b) => a - b);
-  let i = 0, j = 0, k = 0;
-  while(i < nums1.length && j < nums2.length){
+var intersect = function (nums1, nums2) {
+  nums1 = nums1.sort((a, b) => a - b);
+  nums2 = nums2.sort((a, b) => a - b);
+  let i = 0,
+    j = 0,
+    k = 0;
+  while (i < nums1.length && j < nums2.length) {
     if (nums1[i] == nums2[j]) {
-      nums1[k++] = nums1[i]; 
+      nums1[k++] = nums1[i];
       i++, j++;
-    } else if (nums1[i] < nums2[j]){
+    } else if (nums1[i] < nums2[j]) {
       i++;
     } else {
       j++;
     }
   }
   return nums1.slice(0, k);
-}
+};

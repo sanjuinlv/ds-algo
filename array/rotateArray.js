@@ -37,22 +37,22 @@ Contraint
 Runtime: 88 ms, faster than 79.35% of JavaScript online submissions for Rotate Array.
 Memory Usage: 41.1 MB, less than 6.77% of JavaScript online submissions for Rotate Array.
 */
-var rotate = function(nums, k) {
+var rotate = function (nums, k) {
   const N = nums.length;
   if (k > N) k = k % N;
   let temp = [];
   //copy item from from end which will move to front after rotation
-  for (let i = N-k; i < N; i++) {
+  for (let i = N - k; i < N; i++) {
     temp.push(nums[i]);
   }
   //copy front items which will move i+k steps
   console.log(temp);
-  for (let i=0; i < N-k; i++){
-      temp.push(nums[i]);
+  for (let i = 0; i < N - k; i++) {
+    temp.push(nums[i]);
   }
   console.log(temp);
-  for(let i = 0; i < N; i++){
-      nums[i] = temp[i];
+  for (let i = 0; i < N; i++) {
+    nums[i] = temp[i];
   }
 };
 
@@ -65,26 +65,24 @@ var rotate = function(nums, k) {
  * Step 1: [5,4,3,2,1]
  * Step 2: [4,5,3,2,1]
  * Step 2: [4,5,1,2,3]
- * @param nums 
- * @param k 
- */  
+ * @param nums
+ * @param k
+ */
 /*
 Runtime: 88 ms, faster than 79.35% of JavaScript online submissions for Rotate Array.
 Memory Usage: 39.4 MB, less than 90.90% of JavaScript online submissions for Rotate Array.
  */
-var rotate = function(nums, k) {
-    const N = nums.length;
-    if (k > N) k = k % N;
-    const reverse = (arr, start, end) => {
-        while(start < end) {
-            let temp = arr[start];
-            arr[start] = arr[end];
-            arr[end] = temp;
-            start++;
-            end--;
-        }
+var rotate = function (nums, k) {
+  const N = nums.length;
+  if (k > N) k = k % N;
+  const reverse = (arr, start, end) => {
+    while (start < end) {
+      let temp = arr[start];
+      arr[start++] = arr[end];
+      arr[end--] = temp;
     }
-    reverse(nums, 0, N-1);
-    reverse(nums, 0, k-1);
-    reverse(nums, k, N-1);
+  };
+  reverse(nums, 0, N - 1);
+  reverse(nums, 0, k - 1);
+  reverse(nums, k, N - 1);
 };

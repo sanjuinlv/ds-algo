@@ -67,7 +67,7 @@ var postorderTraversal = function (root) {
   return result;
 };
 
-//Other way with two Stacks
+//Other way with single Stacks
 var postorderTraversal = function (root) {
   const result = [];
   if (root == null) return result;

@@ -103,7 +103,6 @@ var removeElement = function (nums, val) {
     if (nums[i] == val) continue;
     //cop element only when i & k are different
     if (i !== k) {
-      console.log(`copying ${i}`);
       nums[k++] = nums[i];
     } else {
       k++;

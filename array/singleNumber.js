@@ -39,29 +39,29 @@ Memory Usage: 43.2 MB
 Your runtime beats 73.74 % of javascript submissions.
 Your memory usage beats 44.41 % of javascript submissions.
  */
-var singleNumber = function(nums) {
-    const countMap = new Map();
-    //create number and its count map 
-    for (let i = 0; i< nums.length; i++){
-        countMap.set(nums[i], (countMap.get(nums[i]) || 0) + 1);
-    }
-    //look up for number having count only 1
-    for (let i = 0; i < nums.length; i++){
-        if (countMap.get(nums[i]) == 1) return nums[i];
-    }
+var singleNumber = function (nums) {
+  const countMap = new Map();
+  //create number and its count map
+  for (let i = 0; i < nums.length; i++) {
+    countMap.set(nums[i], (countMap.get(nums[i]) || 0) + 1);
+  }
+  //look up for number having count only 1
+  for (let i = 0; i < nums.length; i++) {
+    if (countMap.get(nums[i]) == 1) return nums[i];
+  }
 };
 //variant of above
-var singleNumber = function(nums) {
-    const set = new Set();
-    //create number and its count map 
-    for (let i = 0; i< nums.length; i++){
-        if (set.has(nums[i])){
-            set.delete(nums[i]);
-        } else {
-            set.add(nums[i])
-        }
+var singleNumber = function (nums) {
+  const set = new Set();
+  //create number and its count map
+  for (let i = 0; i < nums.length; i++) {
+    if (set.has(nums[i])) {
+      set.delete(nums[i]);
+    } else {
+      set.add(nums[i]);
     }
-    return Array.from(set)[0];
+  }
+  return Array.from(set)[0];
 };
 
 /*
@@ -82,18 +82,18 @@ Memory Usage: 41.7 MB
 Your runtime beats 39.97 % of javascript submissions.
 Your memory usage beats 60.84 % of javascript submissions.
  */
-var singleNumber = function(nums) {
-    const N = nums.length;
-    if (N == 1) return nums[0];
-    nums = nums.sort();
-    for (let i = 0; i < N; i = i + 2){
-        //reached at the end, without finding single num
-        if (i == N -1) return nums[i];
-        if (nums[i] != nums[i + 1]) return nums[i];
-    }   
+var singleNumber = function (nums) {
+  const N = nums.length;
+  if (N == 1) return nums[0];
+  nums = nums.sort();
+  for (let i = 0; i < N; i = i + 2) {
+    //reached at the end, without finding single num
+    if (i == N - 1) return nums[i];
+    if (nums[i] != nums[i + 1]) return nums[i];
+  }
 };
 
-// 
+//
 /* 
 Approach 3: using Math
 Concept:  2 ∗ (a+b+c) − (a+a+b+b+c) = c
@@ -101,28 +101,42 @@ i) We can add up all entries representing sumOfNums = (a+a+b+b+c)
 ii) if element is not present in Set add it to set and then keep adding num 
 to create unique sum of numbers to represet: setSum = (a+b+c)
 return 2 * setSum - sumOfNums
-Time complexity O(NN)
+Time complexity O(N)
 Space complexity: O(N)
 
-
-Java code from solution:
-class Solution {
-  public int singleNumber(int[] nums) {
-    int sumOfSet = 0, sumOfNums = 0;
-    Set<Integer> set = new HashSet();
-
-    for (int num : nums) {
-      if (!set.contains(num)) {
-        set.add(num);
-        sumOfSet += num;
-      }
-      sumOfNums += num;
-    }
-    return 2 * sumOfSet - sumOfNums;
-  }
-}
+Runtime: 131 ms, faster than 30.76% of JavaScript online submissions for Single Number.
+Memory Usage: 46.1 MB, less than 47.19% of JavaScript online submissions for Single Number.
 */
+var singleNumber = function (nums) {
+  const set = new Set();
+  let sumOfNums = 0;
+  let sumOfSet = 0;
+  for (let num of nums) {
+    if (!set.has(num)) {
+      set.add(num);
+      sumOfSet += num;
+    }
+    sumOfNums += num;
+  }
+  return 2 * sumOfSet - sumOfNums;
+};
 
+// Java code from solution:
+// class Solution {
+//   public int singleNumber(int[] nums) {
+//     int sumOfSet = 0, sumOfNums = 0;
+//     Set<Integer> set = new HashSet();
+
+//     for (int num : nums) {
+//       if (!set.contains(num)) {
+//         set.add(num);
+//         sumOfSet += num;
+//       }
+//       sumOfNums += num;
+//     }
+//     return 2 * sumOfSet - sumOfNums;
+//   }
+// }
 
 /*
 Approach 4: Bit Manipulation
@@ -136,12 +150,15 @@ If we take XOR of two same bits, it will return 0
 a ⊕ a = 0
 a ⊕ b ⊕ a = (a ⊕ a) ⊕ b = 0 ⊕ b = b
 So we can XOR all bits together to find the unique number.
+
+Runtime: 110 ms, faster than 49.56% of JavaScript online submissions for Single Number.
+Memory Usage: 44.9 MB, less than 61.88% of JavaScript online submissions for Single Number.
 */
 
-var singleNumber = function(nums) {
+var singleNumber = function (nums) {
   let a = 0;
-  for (let i of nums){
+  for (let i of nums) {
     a = a ^ i;
   }
   return a;
-}
+};

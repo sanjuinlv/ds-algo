@@ -53,26 +53,26 @@ Space Complexity: O(N)
 Runtime: 84 ms, faster than 66.06% of JavaScript online submissions for Binary Tree Level Order Traversal.
 Memory Usage: 40.3 MB, less than 36.50% of JavaScript online submissions for Binary Tree Level Order Traversal.
  */
-var levelOrder = function(root) {
-    if (root == null) return [];
-    result = [];
-    let level = 0;
-    const queue = [];
-    queue.push(root);
-    queue.push(null);
-    while (queue.length) {
-        const node = queue.shift();
-        if (node == null) {
-            level++;
-            if (queue.length) queue.push(null);
-        } else {
-            if (!result[level]) result[level] = [];
-            result[level].push(node.val);
-            if (node.left) queue.push(node.left);
-            if (node.right) queue.push(node.right);
-        }
+var levelOrder = function (root) {
+  if (root == null) return [];
+  result = [];
+  let level = 0;
+  const queue = [];
+  queue.push(root);
+  queue.push(null);
+  while (queue.length) {
+    const node = queue.shift();
+    if (node == null) {
+      level++;
+      if (queue.length) queue.push(null);
+    } else {
+      if (!result[level]) result[level] = [];
+      result[level].push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
-    return result;
+  }
+  return result;
 };
 
 /* 
@@ -81,19 +81,19 @@ DFS: Recursive
 Runtime: 80 ms, faster than 85.22% of JavaScript online submissions for Binary Tree Level Order Traversal.
 Memory Usage: 40.3 MB, less than 25.09% of JavaScript online submissions for Binary Tree Level Order Traversal.
 */
-var levelOrder = function(root) {
-    if (root == null) return [];
-    result = [];
-    const helper = (node, level) => {
-        if (node == null) return;
-        if (!result[level]) result[level] = [];
-        result[level].push(node.val);
-        helper(node.left, level + 1);
-        helper(node.right, level + 1);
-    }
-    helper(root, 0);
-    return result;
-}
+var levelOrder = function (root) {
+  if (root == null) return [];
+  result = [];
+  const helper = (node, level) => {
+    if (node == null) return;
+    if (!result[level]) result[level] = [];
+    result[level].push(node.val);
+    helper(node.left, level + 1);
+    helper(node.right, level + 1);
+  };
+  helper(root, 0);
+  return result;
+};
 
 // 2nd try (10-Mar-2021)
 /* 
@@ -101,34 +101,34 @@ Iterative
 Runtime: 76 ms, faster than 95.96% of JavaScript online submissions for Binary Tree Level Order Traversal.
 Memory Usage: 40 MB, less than 74.38% of JavaScript online submissions for Binary Tree Level Order Traversal.
 */
-var levelOrder = function(root) {
+var levelOrder = function (root) {
   if (root == null) return [];
   const result = [];
   let temp = [];
   const Q = [];
   Q.push(root);
-  Q.push(null); // level identifier 
-  while(Q.length != 0){
+  Q.push(null); // level identifier
+  while (Q.length != 0) {
     root = Q.shift();
     if (root == null) {
       result.push([...temp]); // copy of temp
       temp = [];
       if (Q.length > 0) Q.push(null);
     } else {
-      temp.push(root.val);        
+      temp.push(root.val);
       if (root.left) Q.push(root.left);
-      if (root.right) Q.push(root.right);  
+      if (root.right) Q.push(root.right);
     }
   }
   return result;
-}  
+};
 
 /* 
 Recursive
 Runtime: 88 ms, faster than 43.07% of JavaScript online submissions for Binary Tree Level Order Traversal.
 Memory Usage: 39.9 MB, less than 94.14% of JavaScript online submissions for Binary Tree Level Order Traversal.
 */
-var levelOrder = function(root) {
+var levelOrder = function (root) {
   if (root == null) return [];
   let result = [];
   const helper = (node, level) => {
@@ -137,12 +137,12 @@ var levelOrder = function(root) {
     result[level].push(node.val);
     helper(node.left, level + 1);
     helper(node.right, level + 1);
-  }
+  };
   helper(root, 0);
-  return result;  
-}    
+  return result;
+};
 
-//From Ninshant
+//From Nishant
 var levelOrder = function (root) {
   var out = [[root.val]];
   var queue = [root];
@@ -153,7 +153,7 @@ var levelOrder = function (root) {
       var node = queue.shift();
       if (node) console.log(`node val: ${node.val}`);
       if (node.left) tmpQ.push(node.left);
-      if (node.right) tmpQ.push(node.right);      
+      if (node.right) tmpQ.push(node.right);
     }
     //This check is important, otherwise it will add blank array
     if (tmpQ.length > 0) {
@@ -163,4 +163,4 @@ var levelOrder = function (root) {
     }
   }
   return out;
-};        
+};

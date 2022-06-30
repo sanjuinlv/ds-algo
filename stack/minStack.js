@@ -11,29 +11,29 @@ class MinStack {
     this._stack = [];
   }
 
-  //internal method
-  _last(){
-      return this._stack[this._stack.length - 1]
-  }
-
   push(x) {
-    if(this._stack.length == 0) {
-        this._stack.push([x,x]);    
+    if (this._stack.length == 0) {
+      this._stack.push([x, x]);
     } else {
-        const currentMin = this._last()[1];
-        this._stack.push([x, Math.min(currentMin, x)]);
-    }    
+      const currentMin = this._last()[1];
+      this._stack.push([x, Math.min(currentMin, x)]);
+    }
   }
 
   pop() {
-    this._stack.pop();  
+    this._stack.pop();
   }
 
   top() {
-      return this._last()[0];
+    return this._last()[0];
   }
 
   getMin() {
     return this._last()[1];
+  }
+
+  //internal method
+  _last() {
+    return this._stack[this._stack.length - 1];
   }
 }

@@ -34,13 +34,13 @@ Memory Usage: 38.7 MB, less than 46.54% of JavaScript online submissions for Bin
  */
 var preorderTraversal = function (root) {
   const result = [];
-  const preorder = (node) => {
+  const preOrder = (node) => {
     if (node == null) return;
     result.push(node.val);
-    preorder(node.left);
-    preorder(node.right);
+    preOrder(node.left);
+    preOrder(node.right);
   };
-  preorder(root);
+  preOrder(root);
   return result;
 };
 
