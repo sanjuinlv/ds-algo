@@ -27,94 +27,6 @@ Constraint:
  * @param {number[]} nums
  * @return {number}
  */
-var rob = function (nums) {
-  const N = nums.length;
-  let i = 0;
-  let robbedAmount = 0;
-  while (i + 2 < N) {
-    console.log(`i: ${i}`);
-    if (nums[i] + nums[i + 2] > nums[i + 1]) {
-      robbedAmount += nums[i] + nums[i + 2];
-      i += 4; // i+2 is robbed so we need to skip the neibhgor i+3
-    } else {
-      robbedAmount += nums[i + 1];
-      i += 3; // i+1 is robbed so we need to skip the neibhgor i+2
-    }
-  }
-  console.log(`i: ${i}`);
-  //copy remaining
-  while (i < N) {
-    console.log(`i: ${i}`);
-    //last two element left
-    if (N - i > 1) {
-      robbedAmount += Math.max(nums[i], nums[i + 1]);
-      i += 2;
-    } else {
-      //only one element left
-      robbedAmount += nums[i++];
-    }
-  }
-  console.log(`robbed amount: ${robbedAmount}`);
-  return robbedAmount;
-};
-
-//for submission
-// Fails for [1,1,1,2]
-// Fails [1,7,9,4]
-var rob = function (nums) {
-  const N = nums.length;
-  let i = 0;
-  let robbedAmount = 0;
-  while (i + 2 < N) {
-    if (nums[i] + nums[i + 2] > nums[i + 1]) {
-      robbedAmount += nums[i];
-      i += 2; //ith house is robbed move to i+2
-    } else {
-      robbedAmount += nums[i + 1];
-      i += 3; // (i+1)th house robbed, moved to (i+1) + 2 = i+3
-    }
-  }
-  while (i < N) {
-    console.log(`i: ${i}`);
-    //last two element left
-    if (N - i > 1) {
-      robbedAmount += Math.max(nums[i], nums[i + 1]);
-      i += 2;
-    } else {
-      //only one element left
-      robbedAmount += nums[i++];
-    }
-  }
-};
-
-var rob = function (nums) {
-  const N = nums.length;
-  if (!N) return 0;
-  if (N == 1) return nums[0];
-  let dp = new Array(N);
-  dp[0] = nums[0];
-  dp[1] = Math.max(nums[0], nums[1]);
-  for (let i = 2; i < N; i++) {
-    dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
-  }
-  return dp[N - 1];
-};
-
-/* 
-Runtime: 104 ms, faster than 49.43% of JavaScript online submissions for House Robber.
-Memory Usage: 38.4 MB, less than 73.88% of JavaScript online submissions for House Robber.
-*/
-var rob = function (nums) {
-  const N = nums.length;
-  let prevMax = 0;
-  let currMax = 0;
-  for (let i = 0; i < N; i++) {
-    let temp = currMax;
-    currMax = Math.max(prevMax + nums[i], currMax);
-    prevMax = temp;
-  }
-  return currMax;
-};
 
 /* 
 This particular problem and most of others can be approached using the following sequence:
@@ -142,86 +54,11 @@ Converting the recurrent relation from Step 1 shound't be very hard.
 */
 
 /* 
-1. Recursive (top-down) 
-This will time exceed for input
-[114,117,207,117,235,82,90,67,143,146,53,108,200,91,80,223,58,170,110,236,81,90,222,160,165,195,187,199,114,235,197,187,69,129,64,214,228,78,188,67,205,94,205,169,241,202,144,240]
-
-*/
-var rob = function (nums) {
-  const robHouse = (i) => {
-    if (i < 0) return 0;
-    return Math.max(robHouse(i - 2) + nums[i], robHouse(i - 1));
-  };
-  return robHouse(nums.length - 1);
-};
-
-/*
-2. Recursive + memo (top-down)
-Works fine with all input test cases, listed below
- */
-var rob = function (nums) {
-  const memo = new Array(nums.length).fill(-1);
-  const robHouse = (i) => {
-    if (i < 0) return 0;
-    if (memo[i] >= 0) return memo[i];
-    return Math.max(robHouse(i - 2) + nums[i], robHouse(i - 1));
-  };
-  return robHouse(nums.length - 1);
-};
-
-/* 
-3. Iterative + memo (bottom-up)
-Works fine with all input test cases, listed below
-*/
-var rob = function (nums) {
-  const N = nums.length;
-  if (N == 0) return 0;
-  const dp = new Array(N + 1);
-  dp[0] = 0;
-  dp[1] = nums[0];
-  for (let i = 1; i < N; i++) {
-    dp[i + 1] = Math.max(dp[i - 1] + nums[i], dp[i]);
-  }
-  return dp[N];
-};
-/* 
-4. Iterative + 2 variables (bottom-up)
-Already solved above
-*/
-
-/*
-[]
-[1]
-[1,1]
-[1,1,1]
-[1,1,1,2]
-[1,2,3,1]
-[2,7,9,3,1]
-[1,7,9,4]
-[114,117,207,117,235,82,90,67,143,146,53,108,200,91,80,223,58,170,110,236,81,90,222,160,165,195,187,199,114,235,197,187,69,129,64,214,228,78,188,67,205,94,205,169,241,202,144,240]
-*/
-
-//Time Limit Exceeded for:
-//[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-var rob = function (nums) {
-  const N = nums.length;
-  const memo = new Array(N).fill(-1);
-  memo[0] = nums[0];
-  memo[1] = Math.max(nums[0], nums[1]);
-  const dp = (i) => {
-    if (i <= 1) return memo[i];
-    if (memo[i] == -1) {
-      memo[i] = Math.max(nums[i] + dp(i - 2), dp(i - 1));
-    }
-    return memo[i];
-  };
-  return dp(N - 1);
-};
-
-/* 
-Approach - Top Down (Recursive with Memoization)
-Time: O(N)
-Space: O(N)
+Approach 1 - Top Down (Recursive with Memoization)
+Time: O(N), Since we process at most N recursive calls, thanks to caching, and during
+each of these calls, we make an O(1) computation which is simply making two other
+recursive calls, finding their maximum, and populating the cache based on that.
+Space: O(N), Cache
 Runtime: 111 ms, faster than 22.78% of JavaScript online submissions for House Robber.
 Memory Usage: 41.9 MB, less than 38.01% of JavaScript online submissions for House Robber.
 */
@@ -243,7 +80,7 @@ var rob = function (nums) {
 };
 
 /* 
-Approach - Bottom-up (Iterative)
+Approach 2 - Bottom-up (Iterative)
 Time: O(N)
 Space: O(N)
 Runtime: 96 ms, faster than 40.79% of JavaScript online submissions for House Robber.
@@ -262,7 +99,7 @@ var rob = function (nums) {
 };
 
 /* 
-Approach - Bottom-up (Iterative using variables)
+Approach 3 - Bottom-up (Iterative using variables)
 Time: O(N)
 Space: O(1)
 Runtime: 79 ms, faster than 63.31% of JavaScript online submissions for House Robber.

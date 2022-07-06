@@ -20,7 +20,7 @@ class MinStack {
   }
 
   pop() {
-    if (this.top(this._stack) === this.getMin()) {
+    if (this.top() === this.getMin()) {
       this._minStack.pop();
     }
     this._stack.pop();

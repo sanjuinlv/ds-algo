@@ -21,7 +21,7 @@ Note:
 
 */
 
-/** 
+/**
  * Your NumMatrix object will be instantiated and called as such:
  * var obj = new NumMatrix(matrix)
  * var param_1 = obj.sumRegion(row1,col1,row2,col2)
@@ -30,44 +30,44 @@ Note:
 /**
  * @param {number[][]} matrix
  */
-var NumMatrix = function(matrix) {
-    this.matrix = matrix;
+var NumMatrix = function (matrix) {
+  this.matrix = matrix;
 };
 
-/** 
- * @param {number} row1 
- * @param {number} col1 
- * @param {number} row2 
+/**
+ * @param {number} row1
+ * @param {number} col1
+ * @param {number} row2
  * @param {number} col2
  * @return {number}
  */
-NumMatrix.prototype.sumRegion = function(row1, col1, row2, col2) {
-    let sum = 0;
-    for (let row = row1; row <= row2; row++){
-        for(let col = col1; col <= col2; col++){
-            sum += this.matrix[row][col];
-        }
+NumMatrix.prototype.sumRegion = function (row1, col1, row2, col2) {
+  let sum = 0;
+  for (let row = row1; row <= row2; row++) {
+    for (let col = col1; col <= col2; col++) {
+      sum += this.matrix[row][col];
     }
-    return sum;
+  }
+  return sum;
 };
 
 /* 
 Approach I: Brute Force
 */
 class NumMatrix {
-    constructor(matrix){
-        this.matrix = matrix;
+  constructor(matrix) {
+    this.matrix = matrix;
+  }
+
+  sumRegion(row1, col1, row2, col2) {
+    let sum = 0;
+    for (let row = row1; row <= row2; row++) {
+      for (let col = col1; col <= col2; col++) {
+        sum += this.matrix[row][col];
+      }
     }
-    
-    sumRegion(row1, col1, row2, col2) {
-        let sum = 0;
-        for (let row = row1; row <= row2; row++){
-            for(let col = col1; col <= col2; col++){
-                sum += this.matrix[row][col];
-            }
-        }
-        return sum;    
-    }
+    return sum;
+  }
 }
 
 /* 
@@ -89,41 +89,47 @@ Runtime: 108 ms, faster than 69.23% of JavaScript online submissions for Range S
 Memory Usage: 43.6 MB, less than 43.59% of JavaScript online submissions for Range Sum Query 2D - Immutable.
 */
 class NumMatrix {
-    constructor(matrix){
-        this.matrix = matrix;
-        if (matrix.length == 0  || matrix[0].length == 0) return;        
-        this.sumMatrix = [...Array(matrix.length)].map(x => Array(matrix[0].length).fill(0));
-        this.prepareSum();
-    }
-    
-    prepareSum(){
-        for (let row = 0; row < this.matrix.length; row++){
-            for(let col = 0; col < this.matrix[0].length; col++){
-                if (col == 0) { 
-                    this.sumMatrix[row][col] = this.matrix[row][col]
-                } else {
-                    this.sumMatrix[row][col] = this.sumMatrix[row][col-1] 
-                    + this.matrix[row][col];
-                }
-            }
+  constructor(matrix) {
+    this.matrix = matrix;
+    if (matrix.length == 0 || matrix[0].length == 0) return;
+    this.sumMatrix = [...Array(matrix.length)].map((x) =>
+      Array(matrix[0].length).fill(0)
+    );
+    this.prepareSum();
+  }
+
+  prepareSum() {
+    for (let row = 0; row < this.matrix.length; row++) {
+      for (let col = 0; col < this.matrix[0].length; col++) {
+        if (col == 0) {
+          this.sumMatrix[row][col] = this.matrix[row][col];
+        } else {
+          this.sumMatrix[row][col] =
+            this.sumMatrix[row][col - 1] + this.matrix[row][col];
         }
+      }
     }
-    
-    sumRegion(row1, col1, row2, col2) {
-        let sum = 0;
-        if (row1 >= this.matrix.length || row2 >= this.matrix.length
-             || col1 >= this.matrix[0].length || col2 >= this.matrix[0].length){
-                 return sum;
-        }
-        for (let row = row1; row <= row2; row++){
-            if (col2 = 0) {
-                sum += this.sumMatrix[row][col1];
-            } else {
-                sum += this.sumMatrix[row][col2] - this.sumMatrix[row][col1-1];    
-            }            
-        }
-        return sum;    
+  }
+
+  sumRegion(row1, col1, row2, col2) {
+    let sum = 0;
+    if (
+      row1 >= this.matrix.length ||
+      row2 >= this.matrix.length ||
+      col1 >= this.matrix[0].length ||
+      col2 >= this.matrix[0].length
+    ) {
+      return sum;
     }
+    for (let row = row1; row <= row2; row++) {
+      if ((col2 = 0)) {
+        sum += this.sumMatrix[row][col1];
+      } else {
+        sum += this.sumMatrix[row][col2] - this.sumMatrix[row][col1 - 1];
+      }
+    }
+    return sum;
+  }
 }
 
 /* 
@@ -132,30 +138,32 @@ Runtime: 148 ms, faster than 35.35% of JavaScript online submissions for Range S
 Memory Usage: 43.5 MB, less than 44.44% of JavaScript online submissions for Range Sum Query 2D - Immutable.
 */
 class NumMatrix {
-    constructor(matrix){
-        this.matrix = matrix;
-        if (matrix.length == 0  || matrix[0].length == 0) return;        
-        //create 2-D with extra column so that we don't need to handle col-1 as negative val
-        this.sumMatrix = [...Array(matrix.length)].map(x => Array(matrix[0].length + 1).fill(0));
-        this.prepareSumMatric();
+  constructor(matrix) {
+    this.matrix = matrix;
+    if (matrix.length == 0 || matrix[0].length == 0) return;
+    //create 2-D with extra column so that we don't need to handle col-1 as negative val
+    this.sumMatrix = [...Array(matrix.length)].map((x) =>
+      Array(matrix[0].length + 1).fill(0)
+    );
+    this.prepareSumMatric();
+  }
+
+  prepareSumMatric() {
+    for (let row = 0; row < this.matrix.length; row++) {
+      for (let col = 0; col < this.matrix[0].length; col++) {
+        this.sumMatrix[row][col + 1] =
+          this.sumMatrix[row][col] + this.matrix[row][col];
+      }
     }
-    
-    prepareSumMatric(){
-        for (let row = 0; row < this.matrix.length; row++){
-            for(let col = 0; col < this.matrix[0].length; col++){
-                this.sumMatrix[row][col + 1] = this.sumMatrix[row][col] 
-                + this.matrix[row][col];
-            }
-        }
+  }
+
+  sumRegion(row1, col1, row2, col2) {
+    let sum = 0;
+    for (let row = row1; row <= row2; row++) {
+      sum += this.sumMatrix[row][col2 + 1] - this.sumMatrix[row][col1];
     }
-    
-    sumRegion(row1, col1, row2, col2) {
-        let sum = 0;
-        for (let row = row1; row <= row2; row++){
-            sum += this.sumMatrix[row][col2 + 1] - this.sumMatrix[row][col1];    
-        }
-        return sum;    
-    }
+    return sum;
+  }
 }
 
 /*
@@ -168,27 +176,73 @@ Runtime: 124 ms, faster than 45.45% of JavaScript online submissions for Range S
 Memory Usage: 43.4 MB, less than 57.58% of JavaScript online submissions for Range Sum Query 2D - Immutable.
  */
 class NumMatrix {
-    constructor(matrix){
-        this.matrix = matrix;
-        if (matrix.length == 0  || matrix[0].length == 0) return;        
-        //create 2-D with extra row & column for easy query
-        this.dp = [...Array(matrix.length + 1)].map(x => Array(matrix[0].length + 1).fill(0));
-        this.prepareSumMatric();
+  constructor(matrix) {
+    this.matrix = matrix;
+    if (matrix.length == 0 || matrix[0].length == 0) return;
+    //create 2-D with extra row & column for easy query
+    this.dp = [...Array(matrix.length + 1)].map((x) =>
+      Array(matrix[0].length + 1).fill(0)
+    );
+    this.prepareSumMatric();
+  }
+
+  prepareSumMatric() {
+    for (let r = 0; r < this.matrix.length; r++) {
+      for (let c = 0; c < this.matrix[0].length; c++) {
+        this.dp[r + 1][c + 1] =
+          this.dp[r + 1][c] +
+          this.dp[r][c + 1] -
+          this.dp[r][c] +
+          this.matrix[r][c];
+      }
     }
-    
-    prepareSumMatric(){
-        for (let r = 0; r < this.matrix.length; r++){
-            for(let c = 0; c < this.matrix[0].length; c++){
-                this.dp[r + 1][c + 1] = this.dp[r + 1][c] 
-                    + this.dp[r][c + 1] - this.dp[r][c] 
-                    + this.matrix[r][c];
-            }
-        }
-    }
-    
-    sumRegion(row1, col1, row2, col2) {
-        return this.dp[row2 + 1][col2 + 1] - this.dp[row1][col2 + 1] - this.dp[row2+1][col1]
-            + this.dp[row1][col1];    
-    }
+  }
+
+  sumRegion(row1, col1, row2, col2) {
+    return (
+      this.dp[row2 + 1][col2 + 1] -
+      this.dp[row1][col2 + 1] -
+      this.dp[row2 + 1][col1] +
+      this.dp[row1][col1]
+    );
+  }
 }
 
+/* 
+Runtime: 578 ms, faster than 71.66% of JavaScript online submissions for Range Sum Query 2D - Immutable.
+Memory Usage: 85.1 MB, less than 27.62% of JavaScript online submissions for Range Sum Query 2D - Immutable.
+*/
+class NumMatrix {
+  constructor(matrix) {
+    this.matrix = matrix;
+    this.rows = matrix.length;
+    this.cols = matrix[0].length;
+    if (this.rows == 0 || this.cols == 0) return;
+    //create 2-D with extra row & column for easy query
+    this.dp = [...Array(this.rows + 1)].map((x) =>
+      Array(this.cols + 1).fill(0)
+    );
+    this.prepareSumMatrix();
+  }
+
+  prepareSumMatrix() {
+    for (let r = 0; r < this.rows; r++) {
+      for (let c = 0; c < this.cols; c++) {
+        this.dp[r + 1][c + 1] =
+          this.dp[r + 1][c] +
+          this.dp[r][c + 1] -
+          this.dp[r][c] +
+          this.matrix[r][c];
+      }
+    }
+  }
+
+  sumRegion(row1, col1, row2, col2) {
+    return (
+      this.dp[row2 + 1][col2 + 1] -
+      this.dp[row1][col2 + 1] -
+      this.dp[row2 + 1][col1] +
+      this.dp[row1][col1]
+    );
+  }
+}

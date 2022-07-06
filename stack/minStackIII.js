@@ -22,7 +22,7 @@ class MinStack {
     this._stack.push(x);
     // If the min stack is empty, or this number is smaller
     // than the top of the min stack, put it on with a count of 1.
-    if (this._minStack.length == 0 || x <= this._last(this._minStack)[0]) {
+    if (this._minStack.length == 0 || x < this._last(this._minStack)[0]) {
       this._minStack.push([x, 1]);
       // Else if this number is equal to what's currently at the top
       // of the min stack, then increment the count at the top by 1.
@@ -35,7 +35,7 @@ class MinStack {
     // If the top of min stack is the same as the top of stack
     // then we need to decrement the count at the top by 1.
     if (this.top() === this._last(this._minStack)[0]) {
-        this._last(this._minStack)[1]--;
+      this._last(this._minStack)[1]--;
     }
     // If the count at the top of min stack is now 0, then remove
     // that value as we're done with it.
