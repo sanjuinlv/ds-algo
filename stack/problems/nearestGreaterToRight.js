@@ -38,7 +38,6 @@ var nearestGreaterToRight = function (nums) {
       result[i] = -1;
       //the top of stack is greater than the current num so add it to result
     } else if (stack.length !== 0 && top(stack) > nums[i]) {
-      // result.push(top(stack));
       result[i] = top(stack);
     } else if (stack.length !== 0 && top(stack) <= nums[i]) {
       //pop from stack until stack is empty or we find greater num than num[i]

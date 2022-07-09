@@ -1,4 +1,6 @@
 /* 
+Maximal Rectangle (Hard)
+https://leetcode.com/problems/maximal-rectangle/
 Given a rows x cols binary matrix filled with 0's and 1's, find the largest
 rectangle containing only 1's and return its area.
 
@@ -85,7 +87,7 @@ var maximalRectangle = function (matrix) {
   const rowData = new Array(cols).fill(0);
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      //if we found zero that means there is no based for block
+      //if we found zero that means there is no base for block
       if (matrix[i][j] == "0") {
         rowData[j] = 0;
       } else {
@@ -94,6 +96,7 @@ var maximalRectangle = function (matrix) {
       }
     }
     console.log(rowData);
+    //calculate the MAH at this row
     maxArea = Math.max(MAH(rowData), maxArea);
   }
   return maxArea !== -Infinity ? maxArea : 0;

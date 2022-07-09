@@ -33,17 +33,17 @@ Space Complexity: O(1)
 Runtime: 80 ms, faster than 58.62% of JavaScript online submissions for Find Peak Element.
 Memory Usage: 38.3 MB, less than 90.86% of JavaScript online submissions for Find Peak Element.
 */
-var findPeakElement = function(nums) {
-    const N = nums.length;
-    for (let i = 0; i < N; i++){
-        //nums[i-1] < nums[i] < nums[i+1]
-        const prev = i == 0 ? Number.NEGATIVE_INFINITY: nums[i-1];
-        const next = i == N - 1 ? Number.NEGATIVE_INFINITY: nums[i + 1];
-        if (prev < nums[i] && nums[i] > next){
-            return i;
-        }
+var findPeakElement = function (nums) {
+  const N = nums.length;
+  for (let i = 0; i < N; i++) {
+    //nums[i-1] < nums[i] < nums[i+1]
+    const prev = i == 0 ? Number.NEGATIVE_INFINITY : nums[i - 1];
+    const next = i == N - 1 ? Number.NEGATIVE_INFINITY : nums[i + 1];
+    if (prev < nums[i] && nums[i] > next) {
+      return i;
     }
-    return -1;
+  }
+  return -1;
 };
 
 //Solution reference
@@ -71,15 +71,15 @@ as the current element only when the check nums[i] > nums[i + 1] failed for the 
 (i-1)th element, indicating that nums[i-1] < nums[i]. Thus, we are able to identify the 
 peak element correctly in this case as well.
 */
-var findPeakElement = function(nums) {
-    const N = nums.length;
-    for (let i = 0; i < N - 1; i++){
-        //nums[i] > nums[i+1]
-        if (nums[i] > nums[i+1]){
-            return i;
-        }
+var findPeakElement = function (nums) {
+  const N = nums.length;
+  for (let i = 0; i < N - 1; i++) {
+    //nums[i] > nums[i+1]
+    if (nums[i] > nums[i + 1]) {
+      return i;
     }
-    return -1;
+  }
+  return N - 1;
 };
 
 /* 
@@ -87,25 +87,25 @@ Approach II: Recursive Binary Search
 Time Complexity: O(log N)
 Space Complexity: O(log N) (recursive call stack)
 */
-var findPeakElement = function(nums) {
-    const N = nums.length;
-    const search = (lo, hi) => {
-        //we are left with only one element which means all other check has failed, 
-        // or there is only one element in array
-        if (lo == hi) return lo;
-        const mid = lo + parseInt((hi - lo) / 2);
-        //mid is on descending slope
-        if (nums[mid] > nums[mid + 1]){
-            //look into left side, as peak will be in left side
-            return search(lo, mid);
-        } else {//mid is descending slope
-            //look into right side, as peak will be on right side
-            return search(mid + 1, hi);
-        }
+var findPeakElement = function (nums) {
+  const N = nums.length;
+  const search = (lo, hi) => {
+    //we are left with only one element which means all other check has failed,
+    // or there is only one element in array
+    if (lo == hi) return lo;
+    const mid = lo + parseInt((hi - lo) / 2);
+    //mid is on descending slope
+    if (nums[mid] > nums[mid + 1]) {
+      //look into left side, as peak will be in left side
+      return search(lo, mid);
+    } else {
+      //mid is descending slope
+      //look into right side, as peak will be on right side
+      return search(mid + 1, hi);
     }
-    return search(0, N - 1);
+  };
+  return search(0, N - 1);
 };
-
 
 /* 
 Approach III: Iterative Binary Search
@@ -115,19 +115,21 @@ Space Complexity: O(1) (recursive call stack)
 Runtime: 80 ms, faster than 58.62% of JavaScript online submissions for Find Peak Element.
 Memory Usage: 38.8 MB, less than 35.34% of JavaScript online submissions for Find Peak Element.
 */
-var findPeakElement = function(nums) {
-    const N = nums.length;
-    let lo = 0, hi = N -1;
-    while (lo < hi){
-        const mid = lo + parseInt((hi - lo) / 2);
-        //mid is on descending slope
-        if (nums[mid] > nums[mid + 1]){
-            //the peak must be on left side
-            hi = mid;
-        } else {//mid is on ascending slope
-            //the peak must be on right side
-            lo = mid + 1;
-        }
+var findPeakElement = function (nums) {
+  const N = nums.length;
+  let lo = 0,
+    hi = N - 1;
+  while (lo < hi) {
+    const mid = lo + parseInt((hi - lo) / 2);
+    //mid is on descending slope
+    if (nums[mid] > nums[mid + 1]) {
+      //the peak must be on left side
+      hi = mid;
+    } else {
+      //mid is on ascending slope
+      //the peak must be on right side
+      lo = mid + 1;
     }
-    return lo;
+  }
+  return lo;
 };
