@@ -106,7 +106,7 @@ var solution = function (knows) {
 
     //check for each person if they are celebrity
     let celebrityCandidate = 0;
-    for (let i = 0; i < n; i++) {
+    for (let i = 1; i < n; i++) {
       //if 'celebrityCandidate' knows 'i' then 'celebrityCandidate' can not be celebrity.
       // So next possible candidate can be 'i'
       if (knows(celebrityCandidate, i)) {

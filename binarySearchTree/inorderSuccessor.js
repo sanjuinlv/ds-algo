@@ -114,7 +114,7 @@ var inorderSuccessor = function (root, p) {
     }
     if (stack.length == 0) break;
     root = stack.pop();
-    if (found) return true;
+    if (found) return root;
     if (root.val === p.val) found = true;
     root = root.right;
   }

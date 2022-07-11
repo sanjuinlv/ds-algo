@@ -69,6 +69,34 @@ KthLargest.prototype._size = function (node) {
  */
 
 /* 
+Approach: Using Heap (MinPriority Queue)
+Time: O(N LogK + M * LogK), NLogK for creating heap and M * logK for adding M elements to heap
+Space: O(K) the size of heap
+Runtime: 221 ms, faster than 60.00% of JavaScript online submissions for Kth Largest Element in a Stream.
+Memory Usage: 52.2 MB, less than 41.64% of JavaScript online submissions for Kth Largest Element in a Stream.
+*/
+var KthLargest = function (k, nums) {
+  this.k = k;
+  this.minPQ = new MinPriorityQueue();
+  for (let num of nums) {
+    this.add(num);
+  }
+};
+/**
+ * @param {number} val
+ * @return {number}
+ */
+KthLargest.prototype.add = function (val) {
+  if (this.minPQ.size() < this.k) {
+    this.minPQ.enqueue(val);
+  } else if (val > this.minPQ.front().element) {
+    this.minPQ.dequeue();
+    this.minPQ.enqueue(val);
+  }
+  return this.minPQ.front().element;
+};
+
+/* 
 Approach: Using Heap
 Runtime: 2438 ms, faster than 32.36% of JavaScript online submissions for Kth Largest Element in a Stream.
 Memory Usage: 59.9 MB, less than 30.13% of JavaScript online submissions for Kth Largest Element in a Stream.

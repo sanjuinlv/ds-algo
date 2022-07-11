@@ -5,30 +5,30 @@
  * @param {number} n
  * @return {boolean}
  */
-var isPowerOfThree = function(n) {
+var isPowerOfThree = function (n) {
   if (n == 1) return true;
-//   if (n < 3 )  return false;
-  const checkPowerOfThree = num => {
+  //   if (n < 3 )  return false;
+  const checkPowerOfThree = (num) => {
     console.log(`num: ${num}`);
     if (num >= 3) checkPowerOfThree(Math.floor(num / 3));
     if (num == 1) return true;
     return false;
     // if (num < 3 && num % 3 == 0) return false;
     // return checkPowerOfThree(Math.floor(num / 3));
-  }
+  };
   return checkPowerOfThree(n);
 };
 
 //Fails for 10, 12
-var isPowerOfThree = function(n) {
-    if (n == 0) return false;
-    if (n == 1) return true;
-    const checkPowerOfThree = n => {
-        if (n > 3) return isPowerOfThree(Math.floor(n/3));
-        if (n % 3 == 0) return true;    
-        return false;
-    }
-    return checkPowerOfThree(n);
+var isPowerOfThree = function (n) {
+  if (n == 0) return false;
+  if (n == 1) return true;
+  const checkPowerOfThree = (n) => {
+    if (n > 3) return isPowerOfThree(Math.floor(n / 3));
+    if (n % 3 == 0) return true;
+    return false;
+  };
+  return checkPowerOfThree(n);
 };
 
 /* 
@@ -38,11 +38,11 @@ Memory Usage: 49.4 MB
 Your runtime beats 6.63 % of javascript submissions.
 Your memory usage beats 40.34 % of javascript submissions.
 */
-var isPowerOfThree = function(n) {
-    for (i = 1; i <= n; i = i * 3) {
-        if (n == i) return true;
-    }
-    return false;
+var isPowerOfThree = function (n) {
+  for (i = 1; i <= n; i = i * 3) {
+    if (n == i) return true;
+  }
+  return false;
 };
 
 //Other solutions
@@ -56,15 +56,15 @@ Space Complexity: O(1)
 Runtime: 396 ms, faster than 8.00% of JavaScript online submissions for Power of Three.
 Memory Usage: 48.8 MB, less than 89.83% of JavaScript online submissions for Power of Three.
 */
-var isPowerOfThree = function(n) {
-    if (n < 1) return 0;
-    //Keep dividing n until remainder is 0
-    while(n % 3 == 0){
-        n = Math.floor(n/3);
-    }
-    //if the number left is 1 then number is divisible by 3 else false
-    return n == 1;
-}
+var isPowerOfThree = function (n) {
+  if (n < 1) return 0;
+  //Keep dividing n until remainder is 0
+  while (n % 3 == 0) {
+    n = Math.floor(n / 3);
+  }
+  //if the number left is 1 then number is divisible by 3 else false
+  return n == 1;
+};
 
 /* 
 Approach: Integer Limitations
@@ -86,22 +86,24 @@ Space Complexity: O(1)
 Runtime: 360 ms, faster than 10.40% of JavaScript online submissions for Power of Three.
 Memory Usage: 50.2 MB, less than 5.83% of JavaScript online submissions for Power of Three.
 */
-var isPowerOfThree = function(n) {
-    if (n <= 0) return false;
-    //max integer number with power of 
-    //find the max power of 3, in integer range (2^31 - 1)
-    const maxPowerOfThree = Math.floor(Math.log(Math.pow(2, 31) - 1) / Math.log(3));
-    console.log(`maxPowerOfThree: ${maxPowerOfThree}`);
-    const maxInt = Math.pow(3, maxPowerOfThree);
-    //if n is facttor of maxInt then its divisible by 3
-    return maxInt % n == 0;
-}
+var isPowerOfThree = function (n) {
+  if (n <= 0) return false;
+  //max integer number with power of 3
+  //find the max power of 3, in integer range (2^31 - 1)
+  const maxPowerOfThree = Math.floor(
+    Math.log(Math.pow(2, 31) - 1) / Math.log(3)
+  );
+  // console.log(`maxPowerOfThree: ${maxPowerOfThree}`);
+  const maxInt = Math.pow(3, maxPowerOfThree);
+  //if n is factor of maxInt then its divisible by 3
+  return maxInt % n == 0;
+};
 
 /* 
 Runtime: 224 ms, faster than 98.29% of JavaScript online submissions for Power of Three.
 Memory Usage: 49.3 MB, less than 56.91% of JavaScript online submissions for Power of Three.
 */
-var isPowerOfThree = function(n) {
-    if (n <= 0) return false;
-    return 1162261467 % n == 0;
-}
+var isPowerOfThree = function (n) {
+  if (n <= 0) return false;
+  return 1162261467 % n == 0;
+};

@@ -1,29 +1,41 @@
-/**
- * Find the LCA (Least Common Ancestor) of the two nodes in a Binary Tree.
- * LCA: Let T be a rooted tree. The lowest common ancestor between two nodes n1
- * and n2 is defined as the lowest node in T that has both n1 and n2 as descendants
- * (where we allow a node to be a descendant of itself).
- * E.g.
- * LCA(4,5) = 2
- * LCA(4,6) = 1
- * LCA(3,4) = 1
- * LCA(2,4) = 2
- *       1
- *     /   \
- *    2     3
- *   / \   / \
- *  4   5 6   7
- *
- */
 /*
-root = new Node(1);
-root.left = new Node(2);
-root.right = new Node(3);
-root.left.left = new Node(4);
-root.left.right = new Node(5);
-root.right.left = new Node(6);
-root.right.right = new Node(7);
- */
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined
+between two nodes p and q as the lowest node in T that has both p and q as descendants
+(where we allow a node to be a descendant of itself).”
+
+        3
+      /   \
+     5     1
+    / \   / \
+   6   2 0   8
+      / \
+     7   4 
+  
+Example 1:
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+Output: 3
+Explanation: The LCA of nodes 5 and 1 is 3.
+
+Example 2:
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+Output: 5
+Explanation: The LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according
+to the LCA definition.
+
+Example 3:
+Input: root = [1,2], p = 1, q = 2
+Output: 1
+
+Constraints:
+
+The number of nodes in the tree is in the range [2, 10^5].
+-10^9 <= Node.val <= 10^9
+All Node.val are unique.
+p != q
+p and q will exist in the tree.
+*/
+
 /*
 Approach 1:
 1. Find a path from the root to n1 and store it in a vector or array. 
@@ -31,67 +43,13 @@ Approach 1:
 3. Traverse both paths till the values in arrays are the same. Return the common
  element just before the mismatch
 */
-LCA = (root, node1, node2) => {
-  if (root == null) return;
-  const findPath = (root, node, arr) => {
-    if (root == null) return false;
-    arr.push(root);
-    if (root.val == node.val) return true;
-    if (findPath(root.left, node, arr) || findPath(root.right, node, arr)) {
-      // arr.push(root.val);
-      return true;
-    }
-    //if no match found then remove it
-    arr.splice(arr.length - 1, 1);
-    return false;
-  };
-  let path1 = [],
-    path2 = [];
-  if (!findPath(root, node1, path1) || !findPath(root, node2, path2)) {
-    if (path1.length > 0) console.log(`node1 is present`);
-    if (path2.length > 0) console.log(`node2 is present`);
-    console.log(`no LCA found`);
-    return false;
-  }
-  let i;
-  for (i = 0; i < path1.length && i < path2.length; i++) {
-    if (path1[i].val !== path2[i].val) break;
-  }
-  console.log(`i: ${i}`);
-  //if we need to return the value we can return path1.[i-1].val
-  return path1[i - 1];
-};
 
-/*
-Approach 2:
-The idea is to traverse the tree starting from the root. If any of the given 
-keys (n1 and n2) matches with the root, then the root is LCA (assuming that both keys 
-are present). 
-If the root doesn’t match with any of the keys, we recur for the left and 
-right subtree. The node which has one key present in its left subtree and the other key 
-present in the right subtree is the LCA. 
-If both keys lie in the left subtree, then the left subtree has LCA also, otherwise, LCA lies in the right subtree.
- */
-LCA = (root, node1, node2) => {
-  if (root == null) return root;
-  //if any of the node1 and node2 matches root then, root is LCA
-  if (root.val == node1.val || root.val == node2.val) {
-    return root;
-  }
-  //find recursively the left child LCA
-  let left = LCA(root.left, node1, node2);
-  //find recursively the right child LCA
-  let right = LCA(root.right, node1, node2);
-  if (left && right) return root;
-  //If both keys lie in the left subtree, then the left subtree has LCA also, otherwise, LCA lies in the right subtree.
-  return left ? left : right;
-};
-function Node(val) {
-  this.val = val;
-  this.left = null;
-  this.right = null;
-}
-
+/* 
+Approach : Recursive
+Your runtime beats 34.16 % of javascript submissions.
+Runtime: 104 ms
+Memory Usage: 48.2 MB
+*/
 var lowestCommonAncestor = function (root, p, q) {
   if (root == null) return null;
   const LCA = (node, p, q) => {
@@ -118,4 +76,44 @@ var lowestCommonAncestor = function (root, p, q) {
   //if both left and right is under this node then this is LCA
   if (leftLCA && rightLCA) return root;
   return leftLCA ? leftLCA : rightLCA;
+};
+
+/* 
+Approach II: Iterative using parent pointers
+Time: O(N)
+Space: O(N)
+Runtime: 105 ms, faster than 70.07% of JavaScript online submissions for Lowest Common Ancestor of a Binary Tree.
+Memory Usage: 51.4 MB, less than 89.73% of JavaScript online submissions for Lowest Common Ancestor of a Binary Tree.
+*/
+var lowestCommonAncestor = function (root, p, q) {
+  if (root == null) return null;
+  const stack = [];
+  const parent = new Map();
+  stack.push(root);
+  parent.set(root, null);
+  // Iterate until we find both the nodes p and q
+  while (!parent.has(p) || !parent.has(q)) {
+    const node = stack.pop();
+    if (node.left) {
+      stack.push(node.left);
+      // While traversing the tree, keep saving the parent pointers.
+      parent.set(node.left, node);
+    }
+    if (node.right) {
+      stack.push(node.right);
+      parent.set(node.right, node);
+    }
+  }
+  // Ancestors set() for node p.
+  const ancestorsSet = new Set();
+  while (p != null) {
+    ancestorsSet.add(p);
+    p = parent.get(p);
+  }
+  // The first ancestor of q which appears in
+  // p's ancestor set() is their lowest common ancestor.
+  while (!ancestorsSet.has(q)) {
+    q = parent.get(q);
+  }
+  return q;
 };

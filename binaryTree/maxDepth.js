@@ -41,63 +41,65 @@ Output: 1
  */
 /* 
 Recursive Approach: Bottom-up
-
+Time: O(N), where N is the number of nodes
+Space: O(N) in worst case when tree is unbalanced, O(Log N) for balanced tree
 Runtime: 124 ms, faster than 5.37% of JavaScript online submissions for Maximum Depth of Binary Tree.
 Memory Usage: 41.5 MB, less than 56.15% of JavaScript online submissions for Maximum Depth of Binary Tree.
 */
-var maxDepth = function(root) {
-    if (root == null) return 0;
-    let depth = 1 + Math.max(maxDepth(root.left), maxDepth(root.right)) 
-    return depth;
+var maxDepth = function (root) {
+  if (root == null) return 0;
+  let depth = 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+  return depth;
 };
 
 /* 
 Recursive Approach: top-down
+Time: O(N), where N is the number of nodes
+Space: O(N) in worst case when tree is unbalanced, O(Log N) for balanced tree
 
 Runtime: 92 ms, faster than 42.83% of JavaScript online submissions for Maximum Depth of Binary Tree.
 Memory Usage: 41.7 MB, less than 26.60% of JavaScript online submissions for Maximum Depth of Binary Tree.
 */
-var maxDepth = function(root) {
-    if (root == null) return 0;
-    let answer = 0;
-    const helper = (node, depth) => {
-        if (node == null) return;
-        //reached leaf node
-        if (node.left == null && node.right == null){
-            answer = Math.max(answer, depth);
-        }
-        helper(node.left, depth + 1) ;
-        helper(node.right, depth + 1) ;
+var maxDepth = function (root) {
+  if (root == null) return 0;
+  let answer = 0;
+  const helper = (node, depth) => {
+    if (node == null) return;
+    //reached leaf node
+    if (node.left == null && node.right == null) {
+      answer = Math.max(answer, depth);
     }
-    helper(root, 1);
-    return answer;
+    helper(node.left, depth + 1);
+    helper(node.right, depth + 1);
+  };
+  helper(root, 1);
+  return answer;
 };
-
 
 /* 
 Approach II: Iterative (level order traversal) 
-Time Comlexity: O(N)
+Time Complexity: O(N)
 Space Complexity: O(w), where w is width of the tree
 Runtime: 112 ms, faster than 5.37% of JavaScript online submissions for Maximum Depth of Binary Tree.
 Memory Usage: 42 MB, less than 15.58% of JavaScript online submissions for Maximum Depth of Binary Tree.
 */
-var maxDepth = function(root) {
-    if (root == null) return 0;
-    const queue = [];
-    queue.push(root);
-    queue.push(null);
-    let depth = 0;
-    while(queue.length){
-        const node = queue.shift();
-        //end of the level
-        if (node == null) {
-            depth++;
-            //mark end of next level
-            if (queue.length) queue.push(null);            
-        } else {
-            if (node.left) queue.push(node.left);
-            if (node.right) queue.push(node.right);    
-        }
+var maxDepth = function (root) {
+  if (root == null) return 0;
+  const queue = [];
+  queue.push(root);
+  queue.push(null);
+  let depth = 0;
+  while (queue.length) {
+    const node = queue.shift();
+    //end of the level
+    if (node == null) {
+      depth++;
+      //mark end of next level
+      if (queue.length) queue.push(null);
+    } else {
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
-    return depth;
+  }
+  return depth;
 };

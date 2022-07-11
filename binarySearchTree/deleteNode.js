@@ -61,7 +61,7 @@ var deleteNode = function (root, key) {
     else {
       //case I: left child is null
       if (node.left == null) return node.right;
-      //case II: left child is null
+      //case II: right child is null
       if (node.right == null) return node.left;
       //case III: both child is present
       const temp = node;

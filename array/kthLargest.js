@@ -62,19 +62,24 @@ var findKthLargest = function (nums, k) {
     [a[i], a[j]] = [a[j], a[i]];
   };
   const partition = (A, lo, hi) => {
-    let i = lo,
-      j = hi + 1;
+    let i = lo;
+    let j = hi + 1;
     const pivot = A[lo];
     while (i < j) {
+      //find an element greater than pivot towards right
       while (A[++i] < pivot) {
         if (i === hi) break;
       }
+      //find an element less than pivot towards left
       while (A[--j] > pivot) {
         if (j === lo) break;
       }
+      //if pointers crossed then stop
       if (i >= j) break;
+      //else swap the element
       SWAP(A, i, j);
     }
+    //finally swap pivot position with j
     SWAP(A, lo, j);
     return j;
   };

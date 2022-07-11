@@ -24,8 +24,6 @@ File of folder structure
 Each tree node has child associated
 ------------------------------------
 
-
-
 BOOKS RECOMMENDED FOR SYSTEM DESIGN
 WEB SCALABILITY FOR STARTUP ENGINEERS
 DISIGNING DATA-INTENSIVE APPLICATIONS
@@ -121,3 +119,40 @@ Tips for great answers:
 - Specifics are key; avoid generalizations. Give a detailed account of one situation for each
  question you answer, and use data or metrics to support your example.
 - Be forthcoming and straightforward. Don't embellish or omit parts of the story.
+
+
+
+----- NOtes from Ambrish ----------
+Solve N- array tree
+dynamic programming adithya varma - Solve all his problems
+https://leetcode.com/problems/koko-eating-bananas/
+https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+https://leetcode.com/problems/divide-chocolate/
+
+monotonic stack
+
+Design
+Educative.io:
+ - Advance system design
+ - 
+ System Design Primer
+
+For interview Practice
+https://www.pramp.com/#/
+
+for drawing
+https://excalidraw.com/
+
+
+Most challenging work
+Conflict Resolution
+Strict Deadline
+How do you spend your day
+
+System design
+Type ahead suggestion
+Distributed Tracing (Jagger)
+ DS Algo
+ Stack
+ Graph (No of component)
+ 
