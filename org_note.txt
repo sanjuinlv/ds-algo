@@ -88,24 +88,10 @@ Failure https://youtu.be/eaUUeFoB9CQ
 
 
 ----------------------
-Amazon STAR format:
-SITUATION: Describe the situation that you were in, or the task that you needed to accomplish.
-Give enough detail for the interviewer to understand the complexities of the situation.
-This example can be from a previous job, school project, volunteer activity, or any relevant event.
-
-TASK
-What goal were you working toward?
-
-ACTION
-Describe the actions you took to address the situation with an appropriate amount of detail, 
-and keep the focus on you. What specific steps did you take? What was your particular contribution?
-Be careful that you don’t describe what the team or group did when talking about a project. 
-Let us know what you actually did. Use the word “I,” not “we,” when describing actions.
-
-RESULT
-Describe the outcome of your actions and don’t be shy about taking credit for your behavior.
-What happened? How did the event end? What did you accomplish? What did you learn? 
-Provide examples using metrics or data if applicable.
+PAR Format
+P: Problem
+A: Action
+R: Result
 
 Tips for great answers:
 - Practice using the STAR method to answer the behavioral-based interview questions listed above,
@@ -120,9 +106,18 @@ Tips for great answers:
  question you answer, and use data or metrics to support your example.
 - Be forthcoming and straightforward. Don't embellish or omit parts of the story.
 
+Ownership:
+Leaders are owners. They think long term and don’t sacrifice long-term value for short-term results. They act on behalf of the entire company, beyond just their own team. They never say “that’s not my job." 
+
+Provide an example of when you personally demonstrated ownership.
+
+2. Tell me about a time you went above and beyond.
+3. Tell me about a time when you took on something significant outside your area of responsibility. Why was it important? What was the outcome?
+4. Describe a project or idea (not necessarily your own) that was implemented primarily because of your efforts. What was your role? What was the outcome?
+5. Give an example of when you saw a peer struggling and decided to step in and help. What was the situation and what actions did you take? What was the outcome?
 
 
------ NOtes from Ambrish ----------
+----- Notes from Ambrish ----------
 Solve N- array tree
 dynamic programming adithya varma - Solve all his problems
 https://leetcode.com/problems/koko-eating-bananas/
@@ -149,6 +144,7 @@ Conflict Resolution
 Strict Deadline
 How do you spend your day
 
+Question asked to Ambrish
 System design
 Type ahead suggestion
 Distributed Tracing (Jagger)

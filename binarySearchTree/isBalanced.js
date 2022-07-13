@@ -44,7 +44,10 @@ var isBalanced = function (root) {
 };
 
 /* 
-Approach: Recursive 
+Approach: Bottom Up Recursive 
+Time: O(N),  For every subtree, we compute its height in constant time as well as compare 
+the height of its children
+Space: O(N), the recursion stack
 Runtime: 123 ms, faster than 23.42% of JavaScript online submissions for Balanced Binary Tree.
 Memory Usage: 46.7 MB, less than 94.59% of JavaScript online submissions for Balanced Binary Tree.
 */
@@ -65,7 +68,10 @@ var isBalanced = function (root) {
 };
 
 /* 
-Approach II:
+Approach II: Top Down Recursion
+Time: O(N LogN)
+For a node p at depth d, height(p) will be called d times.
+Space: O(N)
 Runtime: 139 ms, faster than 12.88% of JavaScript online submissions for Balanced Binary Tree.
 Memory Usage: 47.9 MB, less than 25.30% of JavaScript online submissions for Balanced Binary Tree.
 */
@@ -77,7 +83,6 @@ var isBalanced = function (root) {
   };
   const leftDepth = depth(root.left);
   const rightDepth = depth(root.right);
-  console.log(`leftDepth: ${leftDepth}, rightDepth: ${rightDepth}`);
   return (
     Math.abs(leftDepth - rightDepth) <= 1 &&
     isBalanced(root.left) &&

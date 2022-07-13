@@ -52,6 +52,30 @@ var nearestGreaterToRight = function (nums) {
   return result;
 };
 
+//cleaner than above
+var nextGreaterElements = function (nums) {
+  const stack = [];
+  const N = nums.length;
+  const result = new Array(N);
+  const top = (A) => A[A.length - 1];
+  stack.push(nums[N - 1]);
+  result[N - 1] = -1;
+  for (let i = N - 2; i >= 0; i--) {
+    //if the top of the element is greater than num then we found NGR
+    if (top(stack) > nums[i]) {
+      result[i] = top(stack);
+    } else {
+      //remove element from stack until we find greater than num
+      while (stack.length !== 0 && top(stack) <= nums[i]) stack.pop();
+      //nothing left on stack
+      if (stack.length === 0) result[i] = -1;
+      else result[i] = top(stack);
+    }
+    stack.push(nums[i]);
+  }
+  return result;
+};
+
 //nearestGreaterToRight([1,3,4,2]) => [3,4,-1,-1]
 //III
 var nearestGreaterToRight = function (nums) {

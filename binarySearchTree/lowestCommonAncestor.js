@@ -75,7 +75,7 @@ var lowestCommonAncestor = function (root, p, q) {
     //both nodes (p, q) are at left side of the tree
     return lowestCommonAncestor(root.right, p, q);
   } else if (p.val < root.val && q.val < root.val) {
-    //p & q are either side of the current node
+    //p & q are left side of the current node
     return lowestCommonAncestor(root.left, p, q);
   } else {
     return root;

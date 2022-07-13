@@ -60,8 +60,8 @@ BSTIterator.prototype._leftMostInOrder = function (node) {
 Approach 1: Flattening the BST
 
 Time: O(N): is the time taken by the constructor for the iterator.
-  -  next() would take O(1)O(1)
-  -  hasNext() would take O(1)O(1)
+  -  next() would take O(1)
+  -  hasNext() would take O(1)
 Space: O(h) height of the tree
 
 Runtime: 183 ms, faster than 44.79% of JavaScript online submissions for Binary Search Tree Iterator.
