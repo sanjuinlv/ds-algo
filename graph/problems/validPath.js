@@ -184,6 +184,7 @@ var validPath = function (n, edges, source, destination) {
   const adjacency = [...new Array(n)].map((x) => []);
   for (const edge of edges) {
     adjacency[edge[0]].push(edge[1]);
+    adjacency[edge[1]].push(edge[0]);
   }
   const visited = new Array(n).fill(false);
   const Q = [];
@@ -208,6 +209,7 @@ Runtime: 255 ms
 Memory Usage: 85.6 MB
 
 Your runtime beats 98.04 % of javascript submissions.
+Your memory usage beats 95.05 % of javascript submissions.
 */
 class UnionFind {
   constructor(n) {
@@ -216,7 +218,7 @@ class UnionFind {
 
     for (let i = 0; i < n; i++) {
       this.root[i] = i;
-      this.rank[i] = i;
+      this.rank[i] = 1;
     }
   }
 

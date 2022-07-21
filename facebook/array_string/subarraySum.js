@@ -26,48 +26,43 @@ Constraints:
 // nums = [1,2,3], k=3
 // nums = [-1,1,0,2,3,-2,1,1], k=0
 // Fails for input nums = [0,0,0], k=0. Expected output 6, but this one gives 3
-var subarraySum = function(nums, k) {
-    const N = nums.length;
-    let noOfSums = 0;
-    let kSum = 0;
-    let i = 0, j = 0;
-    while (i < N && j < N) {
-        console.log(`i: ${i}, j: ${j}`);
-        kSum += nums[j];
-        console.log(`kSum: ${kSum}`);
-        //sum is equal to k
-        if (kSum === k) {
-            noOfSums++;
-            j++;
-            console.log(`noOfSums: ${noOfSums}`);
-            // sum is greater than k            
-        } else if (kSum > k) {
-            kSum = 0;
-            i++;
-            j = i; // start over again (can we optimize it?)
-        } else {// sum is less than k
-            j++;
-        }
+/*
+Brute force
+Time: O(N^2)
+Space: O(1)
+*/
+var subarraySum = function (nums, k) {
+  let N = nums.length;
+  let count = 0;
+  for (let i = 0; i < N; i++) {
+    for (let j = i + 1; j < N; j++) {
+      let sum = 0;
+      for (let k = i; k < j; k++) {
+        sum += nums[k];
+      }
+      if (sum == k) count++;
     }
-    console.log(`noOfSums: ${noOfSums}`);
-    return noOfSums;
+  }
+  return count;
 };
 
-// From Solution
-// Without space and O(N^2) time complexity
-var subarraySum = function(nums, k) {
-    const N = nums.length;
-    let count = 0;
-    for (let start = 0; start < N; start++) {
-        let sum = 0;
-        for (let end = start; end < N; end++) {
-            sum += nums[end];
-            if (sum == k) count++;
-        }
+/* 
+Approach: Brute force without space 
+Time: O(N^2)
+Space: O(1)
+*/
+var subarraySum = function (nums, k) {
+  const N = nums.length;
+  let count = 0;
+  for (let start = 0; start < N; start++) {
+    let sum = 0;
+    for (let end = start; end < N; end++) {
+      sum += nums[end];
+      if (sum == k) count++;
     }
-    return count;
-}
-
+  }
+  return count;
+};
 
 // Using hashmap
 // Time complexity: O(N)
@@ -92,17 +87,18 @@ since it will determine the number of times a subarray with sum kk has occured u
 We increment the count by the same amount.
 After the complete array has been traversed, the count gives the required result
 */
-var subarraySum = function(nums, k) {
-    const N = nums.length;
-    let count = 0, sum = 0;
-    const countMap = new Map();
-    for (let i = 0; i < N; i++) {
-        sum += nums[i];
-        if (sum == k) count++;
-        if (countMap.has(sum - k)) {
-            count += countMap.get(sum - k);
-        }
-        countMap.set(sum, (countMap.get(sum) || 0) + 1);
+var subarraySum = function (nums, k) {
+  const N = nums.length;
+  let count = 0,
+    sum = 0;
+  const countMap = new Map();
+  for (let i = 0; i < N; i++) {
+    sum += nums[i];
+    if (sum == k) count++;
+    if (countMap.has(sum - k)) {
+      count += countMap.get(sum - k);
     }
-    return count;
-}
+    countMap.set(sum, (countMap.get(sum) || 0) + 1);
+  }
+  return count;
+};

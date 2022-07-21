@@ -56,7 +56,7 @@ class UnionFind {
 
     for (let i = 0; i < n; i++) {
       this.root[i] = i;
-      this.rank[i] = i;
+      this.rank[i] = 1;
     }
   }
 

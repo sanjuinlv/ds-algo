@@ -88,9 +88,12 @@ var longestCommonPrefix = function (strs) {
 };
 
 /* 
- Approach II: Without using min length
- Runtime: 80 ms, faster than 85.73% of JavaScript online submissions for Longest Common Prefix.
- Memory Usage: 38.9 MB, less than 82.18% of JavaScript online submissions for Longest Common Prefix.
+Approach II: Horizontal scanning
+(Without using min length)
+Time: O(S), where S is the sum of all characters in all strings
+Space: O(1)
+Runtime: 80 ms, faster than 85.73% of JavaScript online submissions for Longest Common Prefix.
+Memory Usage: 38.9 MB, less than 82.18% of JavaScript online submissions for Longest Common Prefix.
 */
 var longestCommonPrefix = function (strs) {
   if (!strs.length) return "";

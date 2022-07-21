@@ -152,3 +152,20 @@ Distributed Tracing (Jagger)
  Stack
  Graph (No of component)
  
+
+-- LP Preparation tips --
+- Review about major projects/team you have led before
+- Have a list of Projects and map to each job principle
+- Practice (in STAR format)
+
+
+My Events:
+IC Nuggets - customer obsession/ most difficult/challenging 
+SWIFT Quebec Localization - Work in pressure
+Argument with Manager to hire more resources for PASS apps - Showing Backbone / Conflict Resolution ? - 
+Mobile App Development - Taking ownership ?
+Delivering the demo app when key team member was not present - Ownership
+
+
+Leaders are owners. They think long term and don’t sacrifice long-term value for short-term results. They act on behalf of the entire company, beyond just their own team. They never say “that’s not my job." 
+

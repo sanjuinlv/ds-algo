@@ -28,9 +28,9 @@ Constraints:
 /* 
 Approach I: Union Find
 
-Time: O(N*k(N)), where N is number of nodes. 
+Time: O(N * α(N)), where N is number of nodes. 
 And α is the Inverse Ackermann Function. The incredible thing about this function is that it grows 
-so slowly that NN will never go higher than 4 in the universe as we know it.
+so slowly that N will never go higher than 4 in the universe as we know it.
 Space: O(N) space to the store the arrays it uses
 
 Runtime: 76 ms, faster than 86.82% of JavaScript online submissions for Graph Valid Tree.
@@ -43,7 +43,7 @@ class UnionFind {
 
     for (let i = 0; i < n; i++) {
       this.root[i] = i;
-      this.rank[i] = i;
+      this.rank[i] = 1;
     }
   }
 

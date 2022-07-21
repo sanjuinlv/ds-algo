@@ -169,3 +169,35 @@ var allPathsSourceTarget = function (graph) {
   backtrack(0, [0]);
   return paths;
 };
+
+/*
+Approach II: BFS + Backtracking (With complete Graph code)
+Time: O(2^N * N)
+ - There could be at most 2^{N-1} -1 possible paths in the graph.
+ - For each path, there could be at most N-2 intermediate nodes, i.e. it takes O(N) time to build a path.
+
+Space: O(2^N * N)
+ - Since at most we could have 2^{N-1}-1 paths as the results and each path can contain
+up to N nodes, the space we need to store the results would be O(2^N * N).
+ - the recursion would require additional O(N) space.
+
+Runtime: 175 ms, faster than 32.98% of JavaScript online submissions for All Paths From Source to Target.
+Memory Usage: 49.8 MB, less than 70.83% of JavaScript online submissions for All Paths From Source to Target.
+
+ */
+var allPathsSourceTarget = function (graph) {
+  const paths = [];
+  if (graph == null || graph.length == 0) return paths;
+
+  const destination = graph.length - 1;
+  const queue = [];
+  queue.push([0, [0]]);
+  while (queue.length) {
+    const [v, path] = queue.shift();
+    if (v === destination) paths.push([...path]);
+    for (let w of graph[v]) {
+      queue.push([w, [...path, w]]);
+    }
+  }
+  return paths;
+};

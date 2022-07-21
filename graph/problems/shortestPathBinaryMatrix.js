@@ -137,14 +137,14 @@ var shortestPathBinaryMatrix = function (grid) {
   //the top-left and bottom-right cell should be 0
   if (grid[0][0] !== 0 || grid[rows - 1][cols - 1] !== 0) return -1;
   const directions = [
-    [-1, -1],
-    [-1, 0],
-    [-1, 1],
-    [0, -1],
-    [0, 1],
-    [1, -1],
-    [1, 0],
-    [1, 1],
+    [-1, -1], //diagonal top left
+    [-1, 0], // top
+    [-1, 1], // diagonal top right
+    [0, -1], // left
+    [0, 1], // right
+    [1, -1], //diagonal bottom left
+    [1, 0], //down
+    [1, 1], //diagonal bottom right
   ];
 
   const getNeighbors = (row, col) => {
@@ -168,7 +168,7 @@ var shortestPathBinaryMatrix = function (grid) {
 
   const Q = [];
   const visited = [...Array(rows)].map((x) => Array(cols).fill(false));
-  Q.push([0, 0, 1]);
+  Q.push([0, 0, 1]); //row=0, col=0
   visited[0][0] = true;
   while (Q.length) {
     const [row, col, distance] = Q.shift();

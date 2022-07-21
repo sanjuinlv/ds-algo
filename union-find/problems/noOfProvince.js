@@ -46,7 +46,7 @@ var findCircleNum = function (isConnected) {
 
   for (let i = 0; i < this.N; i++) {
     this.root[i] = i;
-    this.rank[i] = i;
+    this.rank[i] = 1;
   }
 
   this.find = (p) => {

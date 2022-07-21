@@ -23,18 +23,18 @@ class QuickUnion {
     }
   }
 
-  root(p) {
+  find(p) {
     while (p != this.root[p]) p = this.root[p];
     return p;
   }
 
   connected(p, q) {
-    return this.root(p) === this.root(q);
+    return this.find(p) === this.find(q);
   }
 
   union(p, q) {
-    const pRoot = this.root(p);
-    const qRoot = this.root(q);
+    const pRoot = this.find(p);
+    const qRoot = this.find(q);
     //change root of p to point root of q (depth of p and q array accesses)
     if (pRoot !== qRoot) this.root[pRoot] = qRoot;
   }
