@@ -47,37 +47,6 @@ var mostCommonWord = function (paragraph, banned) {
   for (let word of words) {
     //replace special characters
     word = word.replace(/!|\?|'|,|;|\./g, "").toLocaleLowerCase();
-    wordCountMap.set(word, (wordCountMap.get(word) || 0) + 1);
-  }
-  //   console.log(wordCountMap);
-  //4. create Max PQ
-  const wordPQ = new MaxPriorityQueue((a, b) => {
-    return b.count - a.count;
-  });
-  for (const key of wordCountMap.keys()) {
-    wordPQ.enqueue({ word: key, count: wordCountMap.get(key) });
-  }
-  console.log(wordPQ);
-  //5. find the most common word
-  //   while (wordPQ.size) {
-  //     const item = wordPQ.dequeue();
-  //     console.log(`word: $word`);
-  //     if (!bannedSet.has(item)) return item.word;
-  //   }
-};
-//the above is not compiling
-
-var mostCommonWord = function (paragraph, banned) {
-  //1. create set for banned words for quick look up
-  const bannedSet = new Set();
-  for (const word in banned) bannedSet.add(word);
-  //2. created words array from paragraph
-  const words = paragraph.split(" ");
-  //3. create PQ for word count
-  const wordCountMap = new Map();
-  for (let word of words) {
-    //replace special characters
-    word = word.replace(/!|\?|'|,|;|\./g, "").toLocaleLowerCase();
     if (!bannedSet.has(word))
       wordCountMap.set(word, (wordCountMap.get(word) || 0) + 1);
   }
@@ -107,11 +76,11 @@ var mostCommonWord = function (paragraph, banned) {
   //2. created words array from paragraph by word character, ignoring non word characters
   // /\W+/ is same as [^a-zA-Z0-9]
   const words = paragraph.toLowerCase().split(/\W+/);
-  //3. create PQ for word count
+  //3. create map for word count
   const wordCountMap = new Map();
   const ans = { count: 0, word: "" };
   for (let word of words) {
-    //replace special characters
+    //skip banned word
     if (!bannedSet.has(word)) {
       wordCountMap.set(word, (wordCountMap.get(word) || 0) + 1);
       if (wordCountMap.get(word) > ans.count) {
@@ -120,5 +89,34 @@ var mostCommonWord = function (paragraph, banned) {
       }
     }
   }
-  return ans.result;
+  return ans.word;
+};
+//23/07/2022
+/* 
+Runtime: 96 ms, faster than 59.78% of JavaScript online submissions for Most Common Word.
+Memory Usage: 44.6 MB, less than 35.80% of JavaScript online submissions for Most Common Word.
+*/
+var mostCommonWord = function (paragraph, banned) {
+  //1. create set for banned words for quick look up
+  const bannedSet = new Set();
+  for (const word of banned) bannedSet.add(word);
+  //2. created words array from paragraph by word character, ignoring non word characters
+  // /\W+/ is same as [^a-zA-Z0-9]
+  const words = paragraph.toLowerCase().split(/\W+/);
+  //3. create map for word count
+  const wordCountMap = new Map();
+  const ans = { count: 0, word: "" };
+  for (let word of words) {
+    //skip banned word
+    if (!bannedSet.has(word)) {
+      let wordCount = wordCountMap.get(word) || 0;
+      wordCountMap.set(word, wordCount + 1);
+      wordCount++; //indicates current count
+      if (wordCount > ans.count) {
+        ans.count = wordCount;
+        ans.word = word;
+      }
+    }
+  }
+  return ans.word;
 };

@@ -256,33 +256,38 @@ var longestPalindrome = function (s) {
   return s.slice(start, end + 1);
 };
 
-//25/03/2022
+//23/07/2022
+/* 
+Dynamic Programming
+Runtime: 772 ms, faster than 28.94% of JavaScript online submissions for Longest Palindromic Substring.
+Memory Usage: 87.7 MB, less than 6.21% of JavaScript online submissions for Longest Palindromic Substring.
+*/
 var longestPalindrome = function (s) {
   const N = s.length;
   const dp = [...Array(N)].map((X) => new Array(N).fill(0));
   let longestStr = s[0];
+  const ans = { start: 0, end: 0 };
   //set diagonal as 1
   for (let i = 0; i < N; i++) {
     dp[i][i] = 1;
   }
-  console.log(dp);
   for (let i = 0; i < N - 1; i++) {
     const j = i + 1;
     if (s[i] == s[j]) {
       dp[i][j] = 1;
-      longestStr = s.substring(i, j + 1);
+      ans.start = i;
+      ans.end = j;
     }
   }
-  console.log(dp);
   for (let k = 3; k <= N; k++) {
     for (let i = 0; i <= N - k; i++) {
       const j = i + k - 1;
       if (s[i] == s[j] && dp[i + 1][j - 1] == 1) {
         dp[i][j] = 1;
-        longestStr = s.substring(i, j + 1);
+        ans.start = i;
+        ans.end = j;
       }
     }
   }
-  console.log(dp);
-  return longestStr;
+  return s.substring(ans.start, ans.end + 1);
 };

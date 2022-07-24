@@ -287,8 +287,7 @@ int findSubstring(string s){
   return d;
 }
 
-The code of solving Longest Substring with At Most Two Distinct Characters is below:
-
+#The code of solving Longest Substring with At Most Two Distinct Characters is below:
 int lengthOfLongestSubstringTwoDistinct(string s) {
         vector<int> map(128, 0);
         int counter=0, begin=0, end=0, d=0; 
@@ -300,10 +299,7 @@ int lengthOfLongestSubstringTwoDistinct(string s) {
         return d;
     }
     
-The code of solving Longest Substring Without Repeating Characters is below:
-
-Update 01.04.2016
-
+#The code of solving Longest Substring Without Repeating Characters is below:
 int lengthOfLongestSubstring(string s) {
         vector<int> map(128,0);
         int counter=0, begin=0, end=0, d=0; 

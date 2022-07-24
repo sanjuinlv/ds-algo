@@ -204,6 +204,7 @@ var myAtoi = function (s) {
   //convert number and avoid overflow
   while (i < N) {
     const digit = s.codePointAt(i) - "0".codePointAt(0);
+    //non-numeric field encountered. Stop processing others
     if (digit < 0 || digit > 9) break;
     if (
       result > Math.floor(MAX_INT / 10) ||
