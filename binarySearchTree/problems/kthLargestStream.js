@@ -97,7 +97,7 @@ KthLargest.prototype.add = function (val) {
 };
 
 /* 
-Approach: Using Heap
+Approach: Using Array as heap
 Runtime: 2438 ms, faster than 32.36% of JavaScript online submissions for Kth Largest Element in a Stream.
 Memory Usage: 59.9 MB, less than 30.13% of JavaScript online submissions for Kth Largest Element in a Stream.
 */

@@ -106,7 +106,7 @@ var kClosest = function (points, k) {
 /* 
 Approach III: Using Quick Select
 
-Time: O(N) Similar to the earlier binary search solution, the QuickSelect solution
+Time: O(N) Similar to the binary search solution, the QuickSelect solution
 has a worst-case time complexity of O(N^2) if the worst pivot is chosen each time. 
 On average, however, it has a time complexity of O(N) because it halves (roughly)
 the remaining elements needing to be processed at each iteration.

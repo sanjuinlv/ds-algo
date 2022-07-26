@@ -31,21 +31,6 @@ arr is sorted in ascending order.
  * @param {number} x
  * @return {number[]}
  */
-/* 
-Approach: Sorting with custom comparator
-Time: O(N LogN) + O(K LogK), first sorting N elements and then sorting k elements
-Space: O(N)
-Runtime: 176 ms, faster than 14.37% of JavaScript online submissions for Find K Closest Elements.
-Memory Usage: 49.1 MB, less than 40.11% of JavaScript online submissions for Find K Closest Elements.
-*/
-var findClosestElements = function (arr, k, x) {
-  //custom sort
-  arr.sort((a, b) => Math.abs(x - a) - Math.abs(x - b));
-  //consider only k elements
-  const result = arr.slice(0, k);
-  //return the sorted array, of this result
-  return result.sort((a, b) => a - b);
-};
 
 /* 
 Approach I: Sorting with custom comparator

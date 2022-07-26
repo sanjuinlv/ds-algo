@@ -47,6 +47,7 @@ class DirectedEdge {
 }
 
 var networkDelayTime = function (times, n, k) {
+  //TODO: why are we using n+1 instead of n?
   const edgeTo = new Array(n + 1);
   const distTo = new Array(n + 1).fill(Infinity);
   const adjacency = [...Array(n + 1)].map(() => []);

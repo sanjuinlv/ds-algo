@@ -2,6 +2,9 @@
 Approach: Bottom-Up (iterative)
 Time complexity: O(n)
 Space complexity: O(n)
+
+Runtime: 100 ms, faster than 23.56% of JavaScript online submissions for Climbing Stairs.
+Memory Usage: 41.4 MB, less than 93.05% of JavaScript online submissions for Climbing Stairs.
 */
 var climbStairs = function (n) {
   if (n == 1) return 1;
@@ -50,6 +53,10 @@ var climbStairs = function (n) {
 Top-down (recursive) with Memoization (Using Map)
 Time complexity: O(n)
 Space complexity: O(n) 
+
+Runtime: 102 ms, faster than 20.71% of JavaScript online submissions for Climbing Stairs.
+Memory Usage: 41.8 MB, less than 56.60% of JavaScript online submissions for Climbing Stairs.
+
 */
 var climbStairs = function (n) {
   const memo = new Map();

@@ -146,11 +146,11 @@ How do you spend your day
 
 Question asked to Ambrish
 System design
-Type ahead suggestion
-Distributed Tracing (Jagger)
+ - Type ahead suggestion
+ - Distributed Tracing (Jagger)
  DS Algo
- Stack
- Graph (No of component)
+  - Stack
+  - Graph (No of component)
  
 
 -- LP Preparation tips --

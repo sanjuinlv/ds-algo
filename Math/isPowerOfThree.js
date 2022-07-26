@@ -1,35 +1,35 @@
 /* 
+https://leetcode.com/problems/power-of-three/
+Easy 
 
+Given an integer n, return true if it is a power of three. Otherwise, return false.
+
+An integer n is a power of three, if there exists an integer x such that n == 3^x.
+
+Example 1:
+
+Input: n = 27
+Output: true
+
+Example 2:
+
+Input: n = 0
+Output: false
+
+Example 3:
+
+Input: n = 9
+Output: true
+
+Constraints:
+-2^31 <= n <= 2^31 - 1
+ 
+Follow up: Could you solve it without loops/recursion?
 */
 /**
  * @param {number} n
  * @return {boolean}
  */
-var isPowerOfThree = function (n) {
-  if (n == 1) return true;
-  //   if (n < 3 )  return false;
-  const checkPowerOfThree = (num) => {
-    console.log(`num: ${num}`);
-    if (num >= 3) checkPowerOfThree(Math.floor(num / 3));
-    if (num == 1) return true;
-    return false;
-    // if (num < 3 && num % 3 == 0) return false;
-    // return checkPowerOfThree(Math.floor(num / 3));
-  };
-  return checkPowerOfThree(n);
-};
-
-//Fails for 10, 12
-var isPowerOfThree = function (n) {
-  if (n == 0) return false;
-  if (n == 1) return true;
-  const checkPowerOfThree = (n) => {
-    if (n > 3) return isPowerOfThree(Math.floor(n / 3));
-    if (n % 3 == 0) return true;
-    return false;
-  };
-  return checkPowerOfThree(n);
-};
 
 /* 
 Using multiple of 3 to check if num is equal to any multiple of 3
@@ -47,7 +47,7 @@ var isPowerOfThree = function (n) {
 
 //Other solutions
 /* 
-Approch: Loop Iteration
+Approach I : Loop Iteration
 
 Time complexity : O(logb(n)), where b is base. 
 In our case that is O(log3n) (3 is base). The number of divisions is given by that logarithm.
@@ -64,6 +64,29 @@ var isPowerOfThree = function (n) {
   }
   //if the number left is 1 then number is divisible by 3 else false
   return n == 1;
+};
+
+/* 
+Approach II : Mathematics
+n = 3^i
+i = log{base 3}(n)
+i = log{b}(n) / log{b}(3)
+
+n is a power of three if and only if i is an integer. In Java, we check if a number is
+an integer by taking the decimal part (using % 1) and checking if it is 0.
+
+Time complexity : Unknown. The expensive operation here is Math.log, which upper
+bounds the time complexity of our algorithm. The implementation is dependent on
+the language we are using and the compiler.
+
+Space Complexity: O(1), O(1). We are not using any additional memory. The epsilon variable can be inlined.
+
+Runtime: 242 ms, faster than 85.43% of JavaScript online submissions for Power of Three.
+Memory Usage: 50.9 MB, less than 75.93% of JavaScript online submissions for Power of Three.
+*/
+var isPowerOfThree = function (n) {
+  if (n < 1) return 0;
+  return (Math.log10(n) / Math.log10(3)) % 1 === 0;
 };
 
 /* 
@@ -90,6 +113,8 @@ var isPowerOfThree = function (n) {
   if (n <= 0) return false;
   //max integer number with power of 3
   //find the max power of 3, in integer range (2^31 - 1)
+  //3^[log3(MAX_INT)] = 3 ^ [19.56] = 3 ^ 19 = 1162261467
+  //log3(MAX_INT) => log(MAX_INT) / log3 => Math.log(2^31-1) / Math.log(3)
   const maxPowerOfThree = Math.floor(
     Math.log(Math.pow(2, 31) - 1) / Math.log(3)
   );
