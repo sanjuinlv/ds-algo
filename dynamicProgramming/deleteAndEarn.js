@@ -1,6 +1,9 @@
 /* 
+https://leetcode.com/problems/delete-and-earn/
+Category - Medium
+
 You are given an integer array nums. You want to maximize the number of points
- you get by performing the following operation any number of times:
+you get by performing the following operation any number of times:
 
 Pick any nums[i] and delete it to earn nums[i] points. Afterwards, you must
 delete every element equal to nums[i] - 1 and every element equal to nums[i] + 1.
@@ -25,8 +28,8 @@ Explanation: You can perform the following operations:
 You earn a total of 9 points.
 
 Constraint:
-1 <= nums.length <= 2 * 104
-1 <= nums[i] <= 104
+1 <= nums.length <= 2 * 10^4
+1 <= nums[i] <= 10^4
 */
 /**
  * @param {number[]} nums

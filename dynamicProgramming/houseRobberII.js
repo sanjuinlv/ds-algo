@@ -1,4 +1,7 @@
 /*
+https://leetcode.com/problems/house-robber-ii/
+Category: Medium
+
 You are a professional robber planning to rob houses along a street. 
 Each house has a certain amount of money stashed. All houses at this place
 are arranged in a circle. That means the first house is the neighbor of the
@@ -31,24 +34,31 @@ Constraint:
 */
 
 /* 
-Top-down
-// fails for rob([2,3,2]) => 5
+Approach: Top Down
+Time: O(N)
+Space: O(N)
+
+Runtime: 67 ms, faster than 85.71% of JavaScript online submissions for House Robber II.
+Memory Usage: 42.4 MB, less than 15.74% of JavaScript online submissions for House Robber II.
 */
 var rob = function (nums) {
   const N = nums.length;
   if (N == 1) return nums[0];
-  const memo = new Array(N).fill(-1);
-  const first = nums.shift();
-  nums.push(first);
-  memo[0] = nums[0];
-  memo[1] = Math.max(nums[0], nums[1]);
-  const dp = (i) => {
-    if (memo[i] == -1) {
-      memo[i] = Math.max(nums[i] + dp(i - 2), dp(i - 1));
-    }
-    return memo[i];
+  const helper = (start, end) => {
+    if (start == end) return nums[start];
+    const memo = new Array(N).fill(-1);
+    memo[start] = nums[start];
+    memo[start + 1] = Math.max(nums[start], nums[start + 1]);
+    const dp = (i, j) => {
+      //base case for termination
+      if (i == j) return memo[i];
+      if (memo[j] !== -1) return memo[j];
+      memo[j] = Math.max(nums[j] + dp(i, j - 2), dp(i, j - 1));
+      return memo[j];
+    };
+    return dp(start, end);
   };
-  return dp(N - 1);
+  return Math.max(helper(0, N - 2), helper(1, N - 1));
 };
 
 /* 
