@@ -1,24 +1,47 @@
 /**
+https://leetcode.com/problems/maximal-square/solution/
+Category - Medium
+
 Given a 2D binary matrix filled with 0's and 1's, find the largest square containing only 1's 
 and return its area.
 
-Input: [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
-1 0 1 0 0
-1 0 1 1 1
-1 1 1 1 1
-1 0 0 1 0
+Example 1:
+Input: [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],
+  ["1","0","0","1","0"]]
 
-Output: 4
-
- * @param {character[][]} matrix
- * @return {number}
- */
 matrix = [
   ["1", "0", "1", "0", "0"],
   ["1", "0", "1", "1", "1"],
   ["1", "1", "1", "1", "1"],
   ["1", "0", "0", "1", "0"],
 ];
+
+Output: 4
+
+Example 2:
+Input: matrix = [["0","1"],["1","0"]]
+Output: 1
+
+Example 3:
+Input: matrix = [["0"]]
+Output: 0
+
+Constraints:
+
+m == matrix.length
+n == matrix[i].length
+1 <= m, n <= 300
+matrix[i][j] is '0' or '1'.
+*/
+/*
+ * @param {character[][]} matrix
+ * @return {number}
+ */
+/* 
+Approach: Dynamic Programming
+Time: O(M*N)
+Space: O(M*N)
+*/
 var maximalSquare = function (matrix) {
   const rows = matrix.length;
   const cols = matrix[0].length;

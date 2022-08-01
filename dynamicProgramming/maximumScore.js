@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations/
+Category - Medium
+
 You are given two integer arrays nums and multipliers of size n and m respectively,
  where n >= m. The arrays are 1-indexed.
 
@@ -30,6 +33,13 @@ Explanation: An optimal solution is as follows:
 - Choose from the end, [-2,7], adding 7 * 6 = 42 to the score. 
 The total score is 50 + 15 - 9 + 4 + 42 = 102.
 
+Constraints:
+
+n == nums.length
+m == multipliers.length
+1 <= m <= 10^3
+m <= n <= 10^5
+-1000 <= nums[i], multipliers[i] <= 1000
 */
 /**
  * @param {number[]} nums
@@ -38,10 +48,30 @@ The total score is 50 + 15 - 9 + 4 + 42 = 102.
  */
 /* 
 Approach - Top-Down
+Time: O(2^M*N), where M is the length of multiplier array
+Space: O(??)
+*/
+var maximumScore = function (nums, multipliers) {
+  const n = nums.length;
+  const m = multipliers.length;
+  //memo
+  const dp = (i, left) => {
+    //finished with elements in multipliers (base case)
+    if (i === m) return 0;
+    const right = n - 1 - (i - left);
+    const leftProduct = multipliers[i] * nums[left] + dp(i + 1, left + 1);
+    const rightProduct = multipliers[i] * nums[right] + dp(i + 1, left);
+    return Math.max(leftProduct, rightProduct);
+  };
+  return dp(0, 0);
+};
+
+/* 
+Approach - Top-Down (with Memoization)
 Time: O(M^2), where M is the length of multiplier array
 Space: O(M^2)
-Runtime: 1119 ms, faster than 19.82% of JavaScript online submissions for Maximum Score from Performing Multiplication Operations.
-Memory Usage: 87.1 MB, less than 28.75% of JavaScript online submissions for Maximum Score from Performing Multiplication Operations.
+Runtime: 752 ms, faster than 49.02% of JavaScript online submissions for Maximum Score from Performing Multiplication Operations.
+Memory Usage: 87 MB, less than 35.29% of JavaScript online submissions for Maximum Score from Performing Multiplication Operations.
 */
 var maximumScore = function (nums, multipliers) {
   const n = nums.length;
@@ -73,12 +103,12 @@ Memory Usage: 85.8 MB, less than 52.42% of JavaScript online submissions for Max
 var maximumScore = function (nums, multipliers) {
   const n = nums.length;
   const m = multipliers.length;
+  //we need to initialize the dp with one extra row so that we don't go out of
+  // bound for 1st iteration
   const dp = [...Array(m + 1)].map((x) => Array(m + 1).fill(0));
   for (let i = m - 1; i >= 0; i--) {
-    console.log(`i: ${i}`);
     for (let left = i; left >= 0; left--) {
       const right = n - 1 - (i - left);
-      console.log(`left: ${left}, right: ${right}`);
       dp[i][left] = Math.max(
         multipliers[i] * nums[left] + dp[i + 1][left + 1],
         multipliers[i] * nums[right] + dp[i + 1][left]

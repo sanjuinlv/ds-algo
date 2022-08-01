@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/coin-change/
+Category - Medium
+
 You are given an integer array coins representing coins of different denominations 
 and an integer amount representing a total amount of money.
 Return the fewest number of coins that you need to make up that amount. If that amount
@@ -20,8 +23,8 @@ Output: 0
 
 Constraint:
 1 <= coins.length <= 12
-1 <= coins[i] <= 231 - 1
-0 <= amount <= 104
+1 <= coins[i] <= 2^31 - 1
+0 <= amount <= 10^4
 
 */
 
@@ -57,7 +60,7 @@ var coinChange = function (coins, amount) {
 
 //Solution Reference
 /* 
-Approach: Recursion
+Approach I : Recursion
 */
 var coinChange = function (coins, amount) {
   const dp = (coins, remain) => {
@@ -75,13 +78,13 @@ var coinChange = function (coins, amount) {
 };
 
 /* 
-Approach: Dynamic Programming (Top Down, Recursion with memoization) 
+Approach II: Dynamic Programming (Top Down) 
+
 Time: O(S*n), where S is the amount, n is denomination count. In the worst case the recursive 
 tree of the algorithm has height of S and the algorithm solves only S subproblems because it 
 caches precalculated solutions in a table. Each subproblem is computed with nn iterations, 
 one by coin denomination. Therefore there is O(S*n) time complexity
 Space: O(S), where SS is the amount to change We use extra space for the memoization table
-
 */
 var coinChange = function (coins, amount) {
   const memo = new Array(coins.length).fill(null);

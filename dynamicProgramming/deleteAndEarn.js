@@ -46,25 +46,29 @@ Memory Usage: 46.5 MB, less than 13.83% of JavaScript online submissions for Del
 */
 var deleteAndEarn = function (nums) {
   const N = nums.length;
-  let maxNumber = Number.MIN_VALUE;
+  let maxNumber = 0;
   const numCountMap = new Map();
   const points = new Map();
-  //creat map of number and number * count,
+  //create map of number and number * count,
   // e.g., [2,2,2,3,3,3,3] => {2: 6, 3: 12}
   for (let i = 0; i < N; i++) {
     numCountMap.set(nums[i], (numCountMap.get(nums[i]) || 0) + nums[i]);
     maxNumber = Math.max(maxNumber, nums[i]);
   }
-  //base case
+  //base cases
+  //the max gain we can get from 0 is always 0
   points.set(0, 0);
+  //we know that if we arrived at 1, it means that we must not have taken 2,
+  //and because 1 times any quantity will be greater than or equal to the number
+  //of points we can get from taking 0, we should always take 1 (if there are any).
   points.set(1, numCountMap.get(1) || 0);
   const dp = (num) => {
-    if (!points.has(num)) {
-      const gain = numCountMap.get(num) || 0;
-      //recurrence relation
-      points.set(num, Math.max(gain + dp(num - 2), dp(num - 1)));
-    }
-    return points.get(num);
+    if (points.has(num)) return points.get(num);
+    const gain = numCountMap.get(num) || 0;
+    //recurrence relation
+    totalGain = Math.max(gain + dp(num - 2), dp(num - 1));
+    points.set(num, totalGain);
+    return totalGain;
   };
   return dp(maxNumber);
 };
