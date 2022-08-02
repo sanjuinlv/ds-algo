@@ -45,20 +45,71 @@ s1 = (target + arraySum) / 2
 /* 
 Approach I : Recursive
 Time: O(2^N)
-Space: O()
+Space: O(N)
+
+[0,0,1,0,0]
+0
+[7,9,3,8,0,2,4,8,3,9]
+0
+[0,0,0,0,0,0,0,0,1]
+1
+[1]
+2
 */
 var findTargetSumWays = function (nums, target) {
   const n = nums.length;
+  let count = 0;
+  const helper = (i, sum) => {
+    if (i === n) {
+      if (sum == target) {
+        count++;
+        return;
+      }
+    } else {
+      //include
+      helper(i + 1, sum - nums[i]);
+      //exclude
+      helper(i + 1, sum + nums[i]);
+    }
+  };
+  helper(0, 0, target);
+  return count;
 };
 
 /* 
 Approach II : Dynamic programming (Top Down)
-Time: O(N * M), when is M is (target + arraySum)/2
+Time: O(N * M), where M is sum of nums array
 Space: O(N * M)
 
+Runtime: 120 ms, faster than 92.95% of JavaScript online submissions for Target Sum.
+Memory Usage: 47.7 MB, less than 61.57% of JavaScript online submissions for Target Sum.
 */
 var findTargetSumWays = function (nums, target) {
   const n = nums.length;
+  let count = 0;
+  let arraySum = 0;
+  nums.forEach((num) => (arraySum += num));
+  const memo = [...Array(n)].map((x) => Array(2 * arraySum + 1).fill(-1));
+  const helper = (i, sum) => {
+    if (i === n) {
+      if (sum == target) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      //Note: The factor of total has been added as an offset to the sum value to map
+      // all the sums possible to positive integer range
+      if (memo[i][sum + arraySum] !== -1) return memo[i][sum + arraySum];
+      //include
+      const addCount = helper(i + 1, sum - nums[i]);
+      //exclude
+      const subTractCount = helper(i + 1, sum + nums[i]);
+      memo[i][sum + arraySum] = addCount + subTractCount;
+      return memo[i][sum + arraySum];
+    }
+  };
+  return helper(0, 0);
 };
 
 /* 
