@@ -46,8 +46,8 @@ var minCost = function (n, cuts) {
   for (let i = 1; i <= n; i++) {
     length[i - 1] = i;
   }
-  const dp = [...Array(n + 1)].map((x) => Array(n + 1).fill(0));
-  for (let i = 1; i <= n; i++) {
+  const dp = [...Array(m + 1)].map((x) => Array(n + 1).fill(0));
+  for (let i = 1; i <= m; i++) {
     for (let j = 1; j <= n; j++) {
       //if current cut can fit
       if (length[i - 1] <= j) {
