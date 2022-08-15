@@ -36,6 +36,9 @@ between them.
 [1,2,3,4,5,null,6,7,8,null,9,null,null,null,null,5,null,4,3,5,6,null,null,null,5] - PASS
 */
 /* 
+Approach: DFS
+Time: O(N)
+Space: O(N)
 Your runtime beats 80.81 % of javascript submissions.
 Runtime: 88 ms
 Memory Usage: 41.8 MB

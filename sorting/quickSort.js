@@ -60,26 +60,19 @@ class QuickSort {
   }
 
   static partition(A, lo, hi) {
-    console.log(`lo: ${lo}, hi: ${hi}`);
-    //lo is pivot point in our case
-    let i = lo,
-      j = hi + 1;
+    let i = lo;
+    let j = hi + 1;
+    const pivot = A[lo];
     while (i < j) {
-      // scan until we find an item lower than low
-      //A[++i] < A[lo]
-      while (A[++i] < A[lo]) {
-        if (i == hi) break;
-      }
-      // scan until we find an item greater than low
-      while (A[--j] > A[lo]) {
-        if (j == lo) break;
-      }
-      console.log(`i: ${i}, j: ${j}`);
+      //find the number larger than pivot from left
+      while (A[++i] < pivot) if (i === hi) break;
+      //find the number smaller than pivot from right
+      while (A[--j] > pivot) if (j === lo) break;
       if (i >= j) break;
-      QuickSort.swap(A, i, j);
+      //swap element at i and j
+      SWAP(A, i, j);
     }
-    //swap pivot and element at j
-    QuickSort.swap(A, lo, j);
+    SWAP(A, lo, j);
     return j;
   }
 

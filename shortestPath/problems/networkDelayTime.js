@@ -28,6 +28,11 @@ Output: -1
  */
 /* 
 Approach: Dijkstra Algorithm
+Runtime: 225 ms
+Memory Usage: 53.8 MB
+
+Your runtime beats 37.46 % of javascript submissions.
+Your memory usage beats 25.08 % of javascript submissions.
 */
 class DirectedEdge {
   constructor(v, w, weight) {

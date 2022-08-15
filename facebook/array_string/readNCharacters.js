@@ -42,7 +42,7 @@ You may assume the destination buffer array, buf, is guaranteed to have enough s
 */
 /**
  * Definition for read4()
- * 
+ *
  * @param {character[]} buf4 Destination buffer
  * @return {number} The number of actual characters read
  * read4 = function(buf4) {
@@ -50,9 +50,9 @@ You may assume the destination buffer array, buf, is guaranteed to have enough s
  * };
  */
 
-var read4 = function(buf4) {
-    console.log(`buf4: ${buf4}`);
-}
+var read4 = function (buf4) {
+  console.log(`buf4: ${buf4}`);
+};
 /**
  * @param {function} read4()
  * @return {function}
@@ -61,71 +61,71 @@ var read4 = function(buf4) {
 // file = "abcde", n = 5
 // file = "abcdABCD1234", n = 12
 // file = "leetcode", n = 5
-var solution = function(read4) {
-    /**
-     * @param {character[]} buf Destination buffer
-     * @param {number} n Number of characters to read
-     * @return {number} The number of actual characters read
-     */
-    return function(buf, n) {
-        console.log(`read called with buf: ${buf} and size: ${n}`);
-        let charReadCounts = 0;
-        let buf4 = [4];
-        while (charReadCounts <= n) {
-            let charCount = read4(buf4);
-            console.log(`char read count from read4: ${charCount}`)
-            console.log(`read char : ${buf4}`)
-            //no more character to read
-            if (charCount == 0) break;
-            const remainingReadCount = n - charReadCounts;
-            // console.log(`remainingReadCount: ${remainingReadCount}`);
-            buf4.forEach(char => {
-                if (charReadCounts < n) {
-                    buf.push(char);
-                    charReadCounts++;
-                }
-            })
-            // for (let i = 0; i < remainingReadCount && i < 4; i++) {
-            //     buf.push(buf4[i]);
-            //     charReadCount++;
-            // }
-            // charReadCount += charCount;
-            // buf4.forEach(char => buf.push(char));
-            console.log(`updated buffer : ${buf}`)
-            buf4 = []; //reset the buffer 
-            console.log(`toal character read count : ${charReadCounts}`)
+var solution = function (read4) {
+  /**
+   * @param {character[]} buf Destination buffer
+   * @param {number} n Number of characters to read
+   * @return {number} The number of actual characters read
+   */
+  return function (buf, n) {
+    console.log(`read called with buf: ${buf} and size: ${n}`);
+    let charReadCounts = 0;
+    let buf4 = [4];
+    while (charReadCounts <= n) {
+      let charCount = read4(buf4);
+      console.log(`char read count from read4: ${charCount}`);
+      console.log(`read char : ${buf4}`);
+      //no more character to read
+      if (charCount == 0) break;
+      const remainingReadCount = n - charReadCounts;
+      // console.log(`remainingReadCount: ${remainingReadCount}`);
+      buf4.forEach((char) => {
+        if (charReadCounts < n) {
+          buf.push(char);
+          charReadCounts++;
         }
-        console.log(`buf: ${buf}`);
-        console.log(`final read count: ${charReadCounts}`);
-        return charReadCounts;
-    };
+      });
+      // for (let i = 0; i < remainingReadCount && i < 4; i++) {
+      //     buf.push(buf4[i]);
+      //     charReadCount++;
+      // }
+      // charReadCount += charCount;
+      // buf4.forEach(char => buf.push(char));
+      console.log(`updated buffer : ${buf}`);
+      buf4 = []; //reset the buffer
+      console.log(`toal character read count : ${charReadCounts}`);
+    }
+    console.log(`buf: ${buf}`);
+    console.log(`final read count: ${charReadCounts}`);
+    return charReadCounts;
+  };
 };
 
 // for submission
 // Runtime: 72 ms
 // Memory Usage: 38.7 MB
 // Your runtime beats 88.40 % of javascript submissions.
-var solution = function(read4) {
-    /**
-     * @param {character[]} buf Destination buffer
-     * @param {number} n Number of characters to read
-     * @return {number} The number of actual characters read
-     */
-    return function(buf, n) {
-        let charReadCounts = 0;
-        let buf4 = [4];
-        while (charReadCounts <= n) {
-            let charCount = read4(buf4);
-            //no more character to read
-            if (charCount == 0) break;
-            buf4.forEach(char => {
-                if (charReadCounts < n) {
-                    buf.push(char);
-                    charReadCounts++;
-                }
-            })
-            buf4 = []; //reset the buffer 
+var solution = function (read4) {
+  /**
+   * @param {character[]} buf Destination buffer
+   * @param {number} n Number of characters to read
+   * @return {number} The number of actual characters read
+   */
+  return function (buf, n) {
+    let charReadCounts = 0;
+    let buf4 = new Array(4);
+    while (charReadCounts <= n) {
+      let charCount = read4(buf4);
+      //no more character to read
+      if (charCount == 0) break;
+      buf4.forEach((char) => {
+        if (charReadCounts < n) {
+          buf.push(char);
+          charReadCounts++;
         }
-        return charReadCounts;
-    };
+      });
+      buf4 = []; //reset the buffer
+    }
+    return charReadCounts;
+  };
 };

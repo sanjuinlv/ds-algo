@@ -43,7 +43,7 @@ var mincostToHireWorkers = function (quality, wage, K) {
   for (let i = 0; i < N; i++) {
     workers[i] = [wage[i] / quality[i], quality[i]];
   }
-  //sort the ratio
+  //sort the ratios, in ascending order
   workers.sort((a, b) => a[0] - b[0]);
   const maxPQ = new MaxPriorityQueue();
   let sumHeap = 0;
@@ -53,7 +53,7 @@ var mincostToHireWorkers = function (quality, wage, K) {
     //add quality of this worker
     sumHeap += workers[i][1];
   }
-  //the first captain can be worker which has k-1 worker less than his ration
+  //the first captain can be worker which has k-1 worker less than his ratio
   let captainRatio = workers[K - 1][0];
   //total cost for this captain ration
   let minCost = captainRatio * sumHeap;
@@ -62,8 +62,10 @@ var mincostToHireWorkers = function (quality, wage, K) {
     captainRatio = workers[i][0];
     //try with other workers with lower quality
     if (maxPQ.size() > 0 && maxPQ.front().element > workers[i][1]) {
+      //take out the quality of this worker and remove from heap
       sumHeap -= maxPQ.front().element;
       maxPQ.dequeue();
+      //add new work quality to the heap and in sumHeap
       maxPQ.enqueue(workers[i][1]);
       sumHeap += workers[i][1];
     }

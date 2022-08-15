@@ -145,7 +145,7 @@ var search = function (nums, target) {
     //mid
     const mid = parseInt(left + (right - left) / 2);
     if (nums[mid] === target) return mid;
-    //if mid is less than left then this part is not rotated
+    //if mid is greater than left then this part is not rotated
     if (nums[mid] >= nums[left]) {
       //the number is between the sorted array
       if (target >= nums[left] && target < nums[mid]) {

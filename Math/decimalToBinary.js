@@ -18,6 +18,7 @@ function decimalToBinary(num) {
 /* 
 Approach II: Using bitwise operator
 Note: bitwise operators work faster than arithmetic operators used above
+this will work with negative numbers as well
 */
 function decimalToBinary(num) {
   let binary = "";

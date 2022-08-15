@@ -176,3 +176,9 @@ https://leetcode.com/explore/interview/card/amazon/79/sorting-and-searching/2991
 
 2. Longest Increasing Subsequence
 https://leetcode.com/problems/longest-increasing-subsequence/
+
+
+Quotes:
+Luck is when preparation meets opportunity
+No matter how tall the mountain is, it cannot block the sun.
+

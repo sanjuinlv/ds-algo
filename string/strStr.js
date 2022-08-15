@@ -58,7 +58,7 @@ var strStr = function (haystack, needle) {
 
 /* 
 Approach 2: Two pointer: Linear time slice
-Time complexity: O((n-m)*m), n is lenght of haystack and m is length of needle
+Time complexity: O((n-m)*m), n is length of haystack and m is length of needle
 Space complexity: O(1)
 Runtime: 80 ms, faster than 70.13% of JavaScript online submissions for Implement strStr().
 Memory Usage: 40.6 MB, less than 12.94% of JavaScript online submissions for Implement strStr().
