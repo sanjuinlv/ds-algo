@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/find-the-duplicate-number/
+Category - Medium
+
 Given an array of integers nums containing n + 1 integers where each integer
 is in the range [1, n] inclusive.
 There is only one repeated number in nums, return this repeated number.
@@ -14,10 +17,10 @@ Input: nums = [3,1,3,4,2]
 Output: 3
 
 Constraint:
-1 <= n <= 105
-nums.length == n + 1
-1 <= nums[i] <= n
-All the integers in nums appear only once except for precisely one integer 
+  - 1 <= n <= 10^5
+  - nums.length == n + 1
+  - 1 <= nums[i] <= n
+  - All the integers in nums appear only once except for precisely one integer 
 which appears two or more times.
 
 Follow up:
@@ -54,11 +57,14 @@ in a total of O(nlogn) + O(n) = O(nlogn) time.
 Space Complexity: O(logn) or O(n)
 The space complexity of the sorting algorithm depends on the implementation of each programming language.
 
+Runtime: 430 ms, faster than 5.72% of JavaScript online submissions for Find the Duplicate Number.
+Memory Usage: 54.3 MB, less than 41.67% of JavaScript online submissions for Find the Duplicate Number.
+
 */
 var findDuplicate = function (nums) {
   //sort the array
   nums.sort();
-  for (let i = 0; i < nums.length; i++) {
+  for (let i = 1; i < nums.length; i++) {
     if (nums[i] == nums[i - 1]) {
       return nums[i];
     }
@@ -68,6 +74,11 @@ var findDuplicate = function (nums) {
 
 /* 
 Approach 2: Set
+Time: O(N)
+Space: O(N)
+
+Runtime: 101 ms, faster than 88.22% of JavaScript online submissions for Find the Duplicate Number.
+Memory Usage: 61.1 MB, less than 24.58% of JavaScript online submissions for Find the Duplicate Number.
 */
 var findDuplicate = function (nums) {
   const visited = new Set();
@@ -82,6 +93,11 @@ var findDuplicate = function (nums) {
 
 /* 
 Approach 3: Negative marking
+Time: O(N)
+Space: O(1)
+
+Runtime: 94 ms, faster than 91.97% of JavaScript online submissions for Find the Duplicate Number.
+Memory Usage: 49.5 MB, less than 93.83% of JavaScript online submissions for Find the Duplicate Number.
 */
 var findDuplicate = function (nums) {
   for (let i = 0; i < nums.length; i++) {
@@ -125,7 +141,7 @@ var findDuplicate = function (nums) {
   const maxNum = findMaxNum(nums);
   const maxBits = parseInt(Math.log(maxNum) / Math.log(2)) + 1;
   let duplicate = 0;
-  //iterate but by bit
+  //iterate bit by bit
   for (let bit = 0; bit < maxBits; bit++) {
     //check for each numbers
     let baseCount = 0,

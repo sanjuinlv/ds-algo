@@ -57,8 +57,8 @@ class MergeSort {
 
   static merge(A, lo, mid, hi) {
     console.log(`lo: ${lo}, mid: ${mid}, hi: ${hi}`);
-    let left = lo,
-      right = mid + 1;
+    let left = lo;
+    let right = mid + 1;
     let k = lo;
     // copy data to aux array
     const aux = new Array(hi - lo + 1);

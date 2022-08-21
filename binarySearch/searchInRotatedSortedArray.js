@@ -155,7 +155,7 @@ var search = function (nums, target) {
         left = mid + 1;
       }
     } else {
-      //mid < nums[start] implies rotation index is between 0 and mid.
+      //mid < nums[left] implies rotation index is between 0 and mid.
       //It implies that sub-array from mid to end is not rotated
       //check if target is between mid and end
       if (target > nums[mid] && target <= nums[right]) {

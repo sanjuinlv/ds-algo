@@ -24,7 +24,6 @@ function LRUCache(capacity) {
    * Always add node to the head
    */
   this.addNode = (node) => {
-    // console.log(head)
     node.prev = head;
     node.next = head.next;
     head.next.prev = node;
@@ -52,7 +51,7 @@ function LRUCache(capacity) {
   this.get = (key) => {
     const node = this.cache.get(key);
     if (node == null) return -1;
-    //remove this node from list add it to the list tail
+    //remove this node from list and add it to the list head
     this.moveToHead(node);
     return node.value;
   };

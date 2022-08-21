@@ -29,11 +29,10 @@ var toHex = function (num) {
   let result = "";
   const hexMap = "0123456789abcdef";
   while (num != 0 && result.length < 8) {
-    //num & 15 is same as num % 15
+    //num & 15 is same as num % 16
     result = hexMap[num & 15] + result;
     //num >> 4 is same as num / 16 (2*2*2*2)
     num = num >> 4;
   }
   return result;
 };
-

@@ -72,7 +72,9 @@ class QuickSort {
       //swap element at i and j
       SWAP(A, i, j);
     }
+    //swap pivot element with index 'j'
     SWAP(A, lo, j);
+    //return pivot index (now j)
     return j;
   }
 
