@@ -17,9 +17,9 @@ class WeightedUF {
     }
   }
 
-  find(i) {
-    while (i != this.root[i]) i = this.root[i];
-    return i;
+  find(p) {
+    while (p != this.root[p]) p = this.root[p];
+    return p;
   }
 
   connected(p, q) {

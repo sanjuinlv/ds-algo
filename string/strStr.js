@@ -37,7 +37,7 @@ haystack = "aabba", needle = "ba"           - PASS
 haystack = "", needle = ""                  - PASS
 
 Approach 1: substring: Linear time slice 
-Time complexity: O((n-m)*m), n is lenght of haystack and m is length of needle
+Time complexity: O((n-m)*m), n is length of haystack and m is length of needle
 Space complexity: O(1)
 Runtime: 84 ms, faster than 45.00% of JavaScript online submissions for Implement strStr().
 Memory Usage: 38.8 MB, less than 60.13% of JavaScript online submissions for Implement strStr().
@@ -112,3 +112,27 @@ var strStr = function (haystack, needle) {
 /* 
 Approach 3: Rabin Karp: Constant Time Slice
 */
+
+/* 
+Brute force
+Time: O(N * M)
+Space: O(1)
+
+Your runtime beats 41.81 % of javascript submissions.
+Your memory usage beats 41.72 % of javascript submissions.
+*/
+var strStr = function (haystack, needle) {
+  if (!needle.length) return 0;
+  const N = haystack.length;
+  const M = needle.length;
+  for (let i = 0; i <= N - M; i++) {
+    let j = 0;
+    while (j < M) {
+      if (haystack[i + j] !== needle[j]) break;
+      j++;
+    }
+    //full length match found for `needle`, return start index
+    if (j === M) return i;
+  }
+  return -1;
+};

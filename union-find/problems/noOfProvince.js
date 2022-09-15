@@ -57,9 +57,8 @@ var findCircleNum = function (isConnected) {
   this.union = (p, q) => {
     const pRoot = this.find(p);
     const qRoot = this.find(q);
-    if (pRoot == qRoot) return;
+    if (pRoot == qRoot) return false;
     //two points will be connected so reduce the disjoint component size
-    this.componentSize--;
     if (this.rank[pRoot] > this.rank[qRoot]) {
       this.root[qRoot] = pRoot;
     } else if (this.rank[pRoot] < this.rank[qRoot]) {
@@ -70,18 +69,18 @@ var findCircleNum = function (isConnected) {
       //increase the height by one of pRoot
       this.rank[pRoot] += 1;
     }
+    return true;
   };
 
   //build rank UF
   for (let i = 0; i < this.N; i++) {
     for (let j = 0; j < this.N; j++) {
       if (i === j) continue;
-      if (isConnected[i][j] === 1) this.union(i, j);
+      if (isConnected[i][j] === 1 && this.union(i, j)) this.componentSize--;
     }
   }
   return this.componentSize;
 };
-
 /* 
 Approach II: DFS
 
