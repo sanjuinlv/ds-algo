@@ -41,6 +41,11 @@ Constraints:
  * @param {number} destValue
  * @return {string}
  */
+/*
+Approach I: DFS
+Runtime: 547 ms, faster than 26.35% of JavaScript online submissions for Step-By-Step Directions From a Binary Tree Node to Another.
+Memory Usage: 110.5 MB, less than 59.34% of JavaScript online submissions for Step-By-Step Directions From a Binary Tree Node to Another.
+ */
 var getDirections = function (root, startValue, destValue) {
   const LCA = (node, p, q) => {
     if (node === null) return null;
@@ -51,7 +56,69 @@ var getDirections = function (root, startValue, destValue) {
     return left ? left : right;
   };
   //1. find LCA of both nodes
-  const LCANode = LCA(startValue, destValue);
-  console.log(`LCANode: ${LCANode.val}`);
+  const LCANode = LCA(root, startValue, destValue);
   //2. Find path
+  const findStartPath = (node, target, path) => {
+    if (node == null) return "";
+    if (node.val == target) return path;
+    //reached leaf node without finding the target
+    if (node.left === null && node.right == null) return "";
+    const leftPath = findStartPath(node.left, target, path + "U");
+    if (leftPath) return leftPath;
+    return findStartPath(node.right, target, path + "U");
+  };
+  //3. find destination path
+  const findDestPath = (node, target, path) => {
+    //reached leaf node without finding the target
+    if (node == null) return "";
+    if (node.val == target) return path;
+    //reached leaf node without finding the target
+    if (node.left === null && node.right == null) return "";
+    const leftPath = findDestPath(node.left, target, path + "L");
+    if (leftPath) return leftPath;
+    return findDestPath(node.right, target, path + "R");
+  };
+
+  const startPath = findStartPath(LCANode, startValue, "");
+  const destPath = findDestPath(LCANode, destValue, "");
+  // console.log(`startPath: ${startPath}, destPath: ${destPath}`);
+  return startPath + destPath;
+};
+
+/*
+II: MOdified version with only one path method
+Runtime: 476 ms, faster than 47.58% of JavaScript online submissions for Step-By-Step Directions From a Binary Tree Node to Another.
+Memory Usage: 110.1 MB, less than 59.48% of JavaScript online submissions for Step-By-Step Directions From a Binary Tree Node to Another.
+ */
+var getDirections = function (root, startValue, destValue) {
+  const LCA = (node, p, q) => {
+    if (node === null) return null;
+    if (node.val === p || node.val === q) return node;
+    const left = LCA(node.left, p, q);
+    const right = LCA(node.right, p, q);
+    if (left && right) return node;
+    return left ? left : right;
+  };
+  //1. find LCA of both nodes
+  const LCANode = LCA(root, startValue, destValue);
+
+  const findPath = (node, target, path) => {
+    //reached leaf node without finding the target
+    if (node == null) return "";
+    if (node.val == target) return path;
+    //reached leaf node without finding the target
+    if (node.left === null && node.right == null) return "";
+    const leftPath = findPath(node.left, target, path + "L");
+    if (leftPath) return leftPath;
+    return findPath(node.right, target, path + "R");
+  };
+
+  //2. Find left and right path
+  const path = findPath(LCANode, startValue, "");
+  let startPath = "";
+  for (let i = 0; i < path.length; i++) {
+    startPath += "U";
+  }
+  const destPath = findPath(LCANode, destValue, "");
+  return startPath + destPath;
 };
