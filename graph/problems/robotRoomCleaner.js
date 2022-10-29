@@ -1,4 +1,7 @@
 /**
+ * https://leetcode.com/problems/robot-room-cleaner/
+ * Category - Hard
+ *
  * // This is the robot's control interface.
  * // You should not implement it, or speculate about its implementation
  * function Robot() {
@@ -51,10 +54,10 @@ Memory Usage: 46.2 MB, less than 90.99% of JavaScript online submissions for Rob
 var cleanRoom = function (robot) {
   //directions: 0: up, 1: right, 2: down, 3: left
   const directions = [
-    [-1, 0],
-    [0, 1],
-    [1, 0],
-    [0, -1],
+    [-1, 0], //UP
+    [0, 1], // Right
+    [1, 0], // Down
+    [0, -1], //Left
   ];
 
   const goBack = () => {

@@ -146,12 +146,13 @@ var openLock = function (deadends, target) {
       for (let i = 0; i < 4; i++) {
         //we can go +1 or -1 for current digit
         for (let d = -1; d <= 1; d += 2) {
+          //-1 & 1
           const digit = node[i].codePointAt() - "0".codePointAt();
           //adding 10 and modulus of sum ensures we always have number between 0-9
           const nextDigit = (digit + d + 10) % 10;
           const neighbor =
             node.substring(0, i) + nextDigit + node.substring(i + 1);
-          if (!seen.has(neighbor)) {
+          if (!seen.has(neighbor) && !dead.has(neighbor)) {
             queue.push(neighbor);
             seen.add(neighbor);
           }

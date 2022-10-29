@@ -96,6 +96,54 @@ var infixToPostfix = (expression) => {
   return postfix;
 };
 
+//final code
+//"A*B-(C+D)+E" => "AB*CD+-E+"
+var infixToPostfix = (expression) => {
+  const stack = [];
+  const postfix = [];
+  const top = (A) => A[A.length - 1];
+  precedenceMap = { "(": 1, ")": 1, "+": 2, "-": 2, "*": 3, "/": 3 };
+  let currNum = 0;
+  for (let char of expression) {
+    console.log(`char: ${char}, stack: ${stack}, postfix: ${postfix}`);
+    //char is operand
+    if (!precedenceMap[char]) {
+      currNum = currNum * 10 + parseInt(precedenceMap[char]);
+      postfix.push(char);
+    } else {
+      currNum = 0;
+      if (char === "(") {
+        stack.push(char);
+      } else {
+        if (char === ")") {
+          //remove items from stack until we find "("
+          while (top(stack) !== "(") {
+            postfix.push(stack.pop());
+          }
+          //finally remove "("
+          stack.pop();
+        } else {
+          //char is operator or "("
+          //pop and output tokens until one of the lower priority than 'char' is encountered
+          // or a left parenthesis is encountered or stack is empty
+          if (precedenceMap[char] > precedenceMap[top(stack)]) {
+            stack.push(char);
+          } else {
+            while (precedenceMap[char] <= precedenceMap[top(stack)]) {
+              postfix.push(stack.pop());
+            }
+            stack.push(char);
+          }
+        }
+      }
+    }
+  }
+  while (stack.length) {
+    postfix.push(stack.pop());
+  }
+  return postfix.join("");
+};
+
 //Postfix evaluation
 /* 
 1. Scan the postfix string from left to right
