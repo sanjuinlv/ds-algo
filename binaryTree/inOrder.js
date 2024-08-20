@@ -69,6 +69,21 @@ var inorderTraversal = function (root) {
   }
   return result;
 };
+//Iterative with slight change- II
+var inorderTraversal = function (root) {
+  const result = [];
+  const stack = [];
+  while (root != null || stack.length != 0) {
+    while (root != null) {
+      stack.push(root);
+      root = root.left;
+    }
+    root = stack.pop();
+    result.push(root.val);
+    root = root.right;
+  }
+  return result;
+};
 
 //Need fix
 var inorderTraversal = function (root) {

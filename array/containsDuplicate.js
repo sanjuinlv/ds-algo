@@ -37,7 +37,6 @@ var containsDuplicate = function(nums) {
     let visited = new Set();
     for (let i = 0; i < N; i++){
         if (visited.has(nums[i])){
-            console.log(`${nums[i]} found in set`);
             return true;
         }
         visited.add(nums[i]);
@@ -53,14 +52,13 @@ Note: Here sorting will modify the array. If that is not allowed then we may cop
 Runtime: 88 ms, faster than 72.35% of JavaScript online submissions for Contains Duplicate.
 Memory Usage: 42.9 MB, less than 75.95% of JavaScript online submissions for Contains Duplicate.
 */
-var containsDuplicate = function(nums) {
-    const N = nums.length;
-    nums = nums.sort();
-    for (let i=0; i< nums.length - 1; i++){
-        if (nums[i] == nums[i+1]) return true;
-    }
-    return false;
-}
+var containsDuplicate = function (nums) {
+  nums.sort((a, b) => a - b);
+  for (let i = 0; i < nums.length - 1; i++) {
+    if (nums[i] == nums[i + 1]) return true;
+  }
+  return false;
+};
 
 /* Approach 3: 
 i) visit each index item and mark the corresponding index item as negative 
@@ -72,7 +70,7 @@ Note: for index lookup use positive value of current index value, i.e, Math.abs(
 Time complexity: O(N)
 Space complexity: O(1)
         
-i=0 => nums[0] => nums[1] => 2=> -2:  [1,-2,3,1]
+i=0 => nums[0] => nums[1] => 2 => -2:  [1,-2,3,1]
 i=1 => nums[1] => nums[2] => 3 => -3: [1,-2,-3,1]
 i=2 => nums[2] => nums[3] => 1 => -1: [1,-2,-3,-1]
 i=3 => nums[3] => nums[1] => -ve => already visited

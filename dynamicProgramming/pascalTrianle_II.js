@@ -49,7 +49,6 @@ var getRow = function (rowIndex) {
   return rows[rowIndex];
 };
 
-// Approach 2, using O(k) space
 /**
  * Approach 2, using O(k) space
  * Time: O:k^2

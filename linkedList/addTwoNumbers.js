@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/add-two-numbers/description/
+Type: Medium
+
 Example 1:
 Input: l1 = [2,4,3], 
        l2 = [5,6,4]
@@ -83,8 +86,8 @@ Your runtime beats 30.41 % of javascript submissions.
 */
 var addTwoNumbers = function (l1, l2) {
   const result = [];
-  let num1 = l1,
-    num2 = l2;
+  let num1 = l1;
+  let num2 = l2;
   let carryOver = 0;
   while (num1 != null || num2 != null) {
     const digit1 = num1 ? num1.val : 0;
@@ -112,8 +115,8 @@ Runtime: 140 ms, faster than 45.43% of JavaScript online submissions for Add Two
 Memory Usage: 44.2 MB, less than 42.16% of JavaScript online submissions for Add Two Numbers.
 */
 var addTwoNumbers = function (l1, l2) {
-  let num1 = l1,
-    num2 = l2;
+  let num1 = l1;
+  let num2 = l2;
   let carryOver = 0;
   let dummyHead = new ListNode(0);
   let curr = dummyHead;

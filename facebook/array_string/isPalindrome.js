@@ -12,48 +12,14 @@ Output: false
  * @param {string} s
  * @return {boolean}
  */
-// s = "A man, a plan, a canal: Panama"
-// s = "race a car"
-var isPalindrome = function(s) {
-    const N = s.length;
-    let leftIndex = 0; rightIndex = N - 1;
-    let isPalindrome = true;
-    const isAlphanumeric = char => {
-        return ('a' <= char && char <= 'z') || ('0'.codePointAt(0) <= char.codePointAt(0) && char.codePointAt(0) <= '9'.codePointAt(0));
-    }
+/* 
+Time complexity: O(N)
+Space complexity: O(1)
+Runtime: 96 ms
+Memory Usage: 43.2 MB
+Your runtime beats 60.11 % of javascript submissions.
+*/
 
-    while (leftIndex <= rightIndex) {
-        console.log(`left: ${leftIndex}, right: ${rightIndex}`);
-        const leftChar = s[leftIndex].toLowerCase();
-        const rightChar = s[rightIndex].toLowerCase();
-        console.log(`leftChar: ${leftChar}, rightChar: ${rightChar}`);
-        if (!(isAlphanumeric(leftChar))) {
-            console.log(`leftChar: ${leftChar} is not alphanumeric`)
-            leftIndex++;
-            continue;
-        }
-        if (!(isAlphanumeric(rightChar))) {
-            console.log(`rightChar: ${rightChar} is not alphanumeric`)
-            rightIndex--;
-            continue;
-        }
-        if (leftChar !== rightChar) {
-            isPalindrome = false;
-            break;
-        }
-        leftIndex++;
-        rightIndex--;
-    }
-    console.log(`isPalindrom: ${isPalindrome}`);
-    return isPalindrome;
-};
-
-// Time complexity: O(N)
-// Space complexity: O(1)
-// for submission
-// Runtime: 96 ms
-// Memory Usage: 43.2 MB
-// Your runtime beats 60.11 % of javascript submissions.
 var isPalindrome = function(s) {
     const N = s.length;
     let leftIndex = 0; rightIndex = N - 1;

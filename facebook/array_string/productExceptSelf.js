@@ -20,64 +20,24 @@ for the purpose of space complexity analysis.)
  * @param {number[]} nums
  * @return {number[]}
  */
+//Brute Force
+//this will fail for array having zeros, e[-1,1,0,-3,3]
+var productExceptSelf = function (nums) {
+  let allNumProduct = 1;
+  for (let i = 0; i < nums.length; i++) {
+    allNumProduct = allNumProduct * nums[i];
+  }
+  for (let i = 0; i < nums.length; i++) {
+    nums[i] = allNumProduct / nums[i];
+  }
+  return nums;
+};
 /* 
 Time complexity: O(N) ( O(N+N+N) => O(3N) => O(N))
 Space complexity: O(N) ( O(2N)=> O(N), excluding result array)
 Runtime: 112 ms
 Memory Usage: 49.7 MB
 Your runtime beats 62.70 % of javascript submissions.
-*/
-var productExceptSelf = function (nums) {
-  const N = nums.length;
-  const result = [];
-  const A = [N];
-  const B = [N];
-  A[0] = 1;
-  for (let i = 1; i < N; i++) {
-    A[i] = A[i - 1] * nums[i - 1];
-  }
-  B[N - 1] = 1;
-  for (let i = N - 2; i >= 0; i--) {
-    B[i] = B[i + 1] * nums[i + 1];
-  }
-  for (let i = 0; i < N; i++) {
-    result[i] = A[i] * B[i];
-  }
-  return result;
-};
-
-//Approach 2: Using constant space O(N)
-// we can avoid creating the left and right product array and re-use the input array
-// and create the result array on the fly
-var productExceptSelf = function (nums) {
-  const N = nums.length;
-  const result = [];
-  result[0] = 1;
-  for (let i = 1; i < N; i++) {
-    result[i] = result[i - 1] * nums[i - 1];
-  }
-  console.log(`result: ${result}`);
-  let temp = nums[N - 1];
-  nums[N - 1] = 1;
-  for (let i = N - 2; i >= 0; i--) {
-    const product = nums[i + 1] * temp;
-    temp = nums[i];
-    nums[i] = product;
-  }
-  console.log(`nums: ${nums}`);
-  for (let i = 0; i < N; i++) {
-    result[i] = result[i] * nums[i];
-  }
-  console.log(`final result: ${result}`);
-  return result;
-};
-
-// 06/03/2020
-//productExceptSelf([1,2,3,4])
-//productExceptSelf([2,3,1,4])
-/* 
-Time: O(N)
-Space: O(N)
 */
 var productExceptSelf = function (nums) {
   const N = nums.length;
@@ -98,11 +58,14 @@ var productExceptSelf = function (nums) {
   return result;
 };
 
+//Approach 2: Using constant space O(N)
 /* 
 Without using extra space
+we can avoid creating the left and right product array and re-use the input array
+and create the result array on the fly
+
 Time: O(N)
 Space: O(1)
-
 Runtime: 104 ms, faster than 92.65% of JavaScript online submissions for Product of Array Except Self.
 Memory Usage: 55.6 MB, less than 22.21% of JavaScript online submissions for Product of Array Except Self.
 */
@@ -113,7 +76,7 @@ var productExceptSelf = function (nums) {
   for (let i = 1; i < N; i++) {
     result[i] = result[i - 1] * nums[i - 1];
   }
-  rightProduct = 1;
+  let rightProduct = 1;
   for (let i = N - 2; i >= 0; i--) {
     rightProduct = rightProduct * nums[i + 1];
     result[i] = result[i] * rightProduct;

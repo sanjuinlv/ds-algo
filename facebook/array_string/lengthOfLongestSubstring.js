@@ -1,4 +1,6 @@
 /**
+https://leetcode.com/problems/longest-substring-without-repeating-characters
+Type: Medium
 
 Given a string s, find the length of the longest substring without repeating characters.
 
@@ -18,30 +20,6 @@ Notice that the answer must be a substring, "pwke" is a subsequence and not a su
 Input: s = ""
 Output: 0
 */
-/**
- * This solution will only work when longest substring is formed from beginning
- * s = "abcabcbb"   - PASS
- * s = "bbbbb"      - PASS
- * s = "pwwkew"     - FAIL
- * @param {string} s
- * @return {number}
- */
-var lengthOfLongestSubstring = function (s) {
-  const N = s.length;
-  if (N == 0) return 0;
-  let local_max = s[0];
-  let global_max = "";
-  for (i = 1; i < N; i++) {
-    if (local_max.indexOf(s.charAt(i)) < 0) {
-      local_max += s.charAt(i);
-    }
-    console.log(`local_max: ${local_max}`);
-    if (local_max.length > global_max.length) global_max = local_max;
-    console.log(`gloabl_max: ${global_max}`);
-  }
-  console.log(`final gloabl_max: ${global_max}`);
-  return global_max.length;
-};
 
 // Using 2-D array and dp
 // Time complexity: O(N^2) (can it be O(N^3)) because of char look=up inside inner loop?
@@ -86,38 +64,17 @@ var lengthOfLongestSubstring = function (s) {
 
 // Using Sliding window approach
 /* 
-    We use HashSet to store the characters in current window [i, j)[i,j) (j = ij=i initially). 
-    Then we slide the index jj to the right. If it is not in the HashSet, we slide jj further. 
-    Doing so until s[j] is already in the HashSet. At this point, we found the maximum size of 
-    substrings without duplicate characters start with index ii. If we do this for all ii, 
-    we get our answer.
+  We use HashSet to store the characters in current window [i,j] (j = i initially). 
+  Then we slide the index j to the right. If it is not in the HashSet, we slide j further. 
+  Doing so until s[j] is already in the HashSet. At this point, we found the maximum size of 
+  substrings without duplicate characters start with index ii. If we do this for all ii, 
+  we get our answer.
  */
-// Time complexity : O(2n) = O(n). In the worst case each character will be visited twice by i and j.
-// Space complexity : O(min(m, n)). We need O(k) space for the sliding window, where k is the size of the Set.
-// The size of the Set is upper bounded by the size of the string n and the size of the charset/alphabet m.
-var lengthOfLongestSubstring = function (s) {
-  const N = s.length;
-  let maxLength = 0;
-  let leftPointer = 0;
-  let rightPointer = 0;
-  const seen = new Set();
-  while (leftPointer < N && rightPointer < N) {
-    if (!seen.has(s.charAt(rightPointer))) {
-      seen.add(s.charAt(rightPointer));
-      rightPointer++;
-      maxLength = Math.max(maxLength, seen.size);
-    } else {
-      /* the character at right pointer already seen. So remove the char at left pointer 
-               and increase the left pointer
-            */
-      seen.delete(s.charAt(leftPointer));
-      leftPointer++;
-    }
-  }
-  return maxLength;
-};
-
-// For submission
+/* 
+Time complexity : O(2n) = O(n). In the worst case each character will be visited twice by i and j.
+Space complexity : O(min(m, n)). We need O(k) space for the sliding window, where k is the size of the Set.
+The size of the Set is upper bounded by the size of the string n and the size of the charset/alphabet m.
+*/
 //Runtime: 108 ms, faster than 78.75% of JavaScript online submissions for Longest Substring Without Repeating Characters.
 //Memory Usage: 42.7 MB, less than 5.23% of JavaScript online submissions for Longest Substring Without Repeating Characters.
 var lengthOfLongestSubstring = function (s) {
@@ -131,7 +88,8 @@ var lengthOfLongestSubstring = function (s) {
       seen.add(s.charAt(rightPointer));
       rightPointer++;
       maxLength = Math.max(maxLength, seen.size);
-    } else {
+    } else {//The character at right pointer already seen.
+      // remove the char at left pointer and increase the left pointer
       seen.delete(s.charAt(leftPointer));
       leftPointer++;
     }
@@ -194,14 +152,3 @@ var lengthOfLongestSubstring = function (s) {
   }
   return longestLength;
 };
-
-// var lengthOfLongestSubstring(string s) {
-//   vector<int> map(128,0);
-//   int counter=0, begin=0, end=0, d=0;
-//   while(end<s.size()){
-//       if(map[s[end++]]++>0) counter++;
-//       while(counter>0) if(map[s[begin++]]-->1) counter--;
-//       d=max(d, end-begin); //while valid, update d
-//   }
-//   return d;
-// }

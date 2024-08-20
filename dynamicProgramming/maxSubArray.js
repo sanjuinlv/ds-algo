@@ -73,7 +73,7 @@ var maxSubArray = function(nums) {
     return global_max;
 }
 
-[-2,1,-3,4,-1,2,1,-5,4]
+//[-2,1,-3,4,-1,2,1,-5,4]
 
 /*
 2nd Try (6-Jan-21)
@@ -83,13 +83,12 @@ Space Complexity: O(1)
 Runtime: 80 ms, faster than 89.47% of JavaScript online submissions for Maximum Subarray.
 Memory Usage: 39.1 MB, less than 60.90% of JavaScript online submissions for Maximum Subarray.
  */
-var maxSubArray = function(nums) {
-    if (nums.length == 1) return nums[0];
+var maxSubArray = function (nums) {
     let localMax = nums[0];
-    let gloablMax = - Number.MAX_VALUE;
-    for (let i = 1; i < nums.length; i++){
-        localMax = Math.max(nums[i], localMax + nums[i]);
-        gloablMax = Math.max(gloablMax, localMax);
+    let gloablMax = localMax;
+    for (let i = 1; i < nums.length; i++) {
+      localMax = Math.max(nums[i], localMax + nums[i]);
+      gloablMax = Math.max(gloablMax, localMax);
     }
     return gloablMax;
-};
+  };

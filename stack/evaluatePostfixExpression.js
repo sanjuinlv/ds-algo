@@ -51,24 +51,24 @@ Runtime: 114 ms, faster than 43.00% of JavaScript online submissions for Evaluat
 Memory Usage: 44.7 MB, less than 76.01% of JavaScript online submissions for Evaluate Reverse Polish Notation.
  */
 var evalRPN = function (tokens) {
-  const stack = [];
   const operatorMap = new Map();
   operatorMap.set("+", (a, b) => a + b);
   operatorMap.set("-", (a, b) => a - b);
   operatorMap.set("*", (a, b) => a * b);
   operatorMap.set("/", (a, b) => parseInt(a / b));
+  const resultStack = [];
   for (let i = 0; i < tokens.length; i++) {
     const char = tokens[i];
-    //token is operand, push it to stack
-    if (!operatorMap.has(char)) {
-      stack.push(char);
-    } else {
-      const val2 = parseInt(stack.pop());
-      const val1 = parseInt(stack.pop());
+    //if the char is operator then evaluate it
+    if (operatorMap.has(char)) {
       const operation = operatorMap.get(char);
+      const val2 = parseInt(resultStack.pop());
+      const val1 = parseInt(resultStack.pop());
       const result = operation(val1, val2);
-      stack.push(result);
+      resultStack.push(result);
+    } else {
+      resultStack.push(char);
     }
   }
-  return stack.pop();
+  return resultStack.pop();
 };

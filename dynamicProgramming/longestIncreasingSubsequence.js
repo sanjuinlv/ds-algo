@@ -1,5 +1,6 @@
 /* 
 https://leetcode.com/problems/longest-increasing-subsequence/
+Type: Medium
 
 Given an integer array nums, return the length of the longest strictly increasing subsequence.
 A subsequence is a sequence that can be derived from an array by deleting some or no elements

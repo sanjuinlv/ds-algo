@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/valid-parentheses/
+Type: Easy
+
 Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', 
 determine if the input string is valid.
 
@@ -66,7 +69,9 @@ var isValid = function (s) {
 
 //Solution reference
 /*
-Approach II:
+Approach II: Using Stack
+Idea is to keep adding the closing braces for openning braces encountered and when 
+closing braces char is encountere the top of stack should have the same char otherwise its invalid parenthesis
 Runtime: 84 ms, faster than 46.15% of JavaScript online submissions for Valid Parentheses.
 Memory Usage: 39.2 MB, less than 41.60% of JavaScript online submissions for Valid Parentheses.
  */
@@ -87,7 +92,7 @@ var isValid = function (s) {
 };
 
 /*
-Approach III:
+Approach III: Using Map
 Runtime: 84 ms, faster than 46.15% of JavaScript online submissions for Valid Parentheses.
 Memory Usage: 39 MB, less than 51.90% of JavaScript online submissions for Valid Parentheses.
  */

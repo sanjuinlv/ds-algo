@@ -1,4 +1,13 @@
 /* 
+https://leetcode.com/problems/climbing-stairs/description/
+Type: Easy
+
+You are climbing a staircase. It takes n steps to reach the top.
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+
+*/
+/* 
 Approach: Bottom-Up (iterative)
 Time complexity: O(n)
 Space complexity: O(n)
