@@ -1,4 +1,6 @@
-/* 
+/*
+https://leetcode.com/problems/min-stack
+Type: Medium
 Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
 
 Implement the MinStack class:
@@ -38,48 +40,60 @@ At most 3 * 10^4 calls will be made to push, pop, top, and getMin.
 
 */
 /*
-Approach: Stack of Value/Min pair
+Approach I: Stack of Value/Min pair
 Min Stack implementation using the array
 Time Complexity: O(1) for all operations (push, pop, top, getMin)
 Space: O(N)
 
-Runtime: 148 ms, faster than 37.22% of JavaScript online submissions for Min Stack.
-Memory Usage: 47.8 MB, less than 15.73% of JavaScript online submissions for Min Stack.
+Runtime: 76 ms, faster than 94.66% of JavaScript online submissions for Min Stack.
+Memory Usage: 59.43 MB, less than 37.63% of JavaScript online submissions for Min Stack.
 */
 class MinStack {
   constructor() {
-    this._stack = [];
+    this.arr = [];
   }
-
-  push(x) {
-    if (this._stack.length == 0) {
-      this._stack.push([x, x]);
+  /**
+   * @param {number} val
+   * @return {void}
+   */
+  push(val) {
+    if (this.arr.length == 0) {
+      this.arr.push([val, val]);
     } else {
       const currentMin = this._last()[1];
-      this._stack.push([x, Math.min(currentMin, x)]);
+      this.arr.push([val, Math.min(val, currentMin)]);
     }
   }
 
+  /**
+   * @return {void}
+   */
   pop() {
-    this._stack.pop();
+    const top = this.arr.pop();
+    return top[0];
   }
 
+  /**
+   * @return {number}
+   */
   top() {
     return this._last()[0];
   }
 
+  /**
+   * @return {number}
+   */
   getMin() {
     return this._last()[1];
   }
 
-  //internal method
   _last() {
-    return this._stack[this._stack.length - 1];
+    return this.arr[this.arr.length - 1];
   }
 }
 
 /*
-Approach II: Two stack
+Approach II: using Two stacks
 Time Complexity: O(1) for all operations (push, pop, top, getMin)
 Space: O(N)
 
@@ -121,7 +135,7 @@ class MinStack {
 }
 
 /*
-Approach III: Improved Two Stacks
+Approach III: Improved Two Stacks using count
 
 Time Complexity: O(1) for all operations (push, pop, top, getMin)
 Space: O(N)
@@ -176,5 +190,61 @@ class MinStack {
 
   getMin() {
     return this._last(this._minStack)[0];
+  }
+}
+
+
+// Approach IV: Linked List
+/* 
+Time:  O(1) for all operations (push, pop, top, getMin)
+Space: O(N)
+
+Runtime: 92 ms Beats 45.97%
+Memory: 58.66 MB Beats 75.64%
+*/
+class MinStack {
+  
+  static Node = class {
+    constructor(value, min, next = null) {
+      this.value = value;
+      this.min = min;
+      this.next = next;
+    }
+  };
+
+  constructor() {
+    this.head = null;    
+  }
+  /**
+   * @param {number} val
+   * @return {void}
+   */
+  push(val) {
+    if (this.head == null) {
+        this.head = new MinStack.Node(val, val);
+    } else {
+        this.head = new MinStack.Node(val, Math.min(val, this.head.min), this.head);
+    }
+  }
+
+  /**
+   * @return {void}
+   */
+  pop() {
+    this.head = this.head.next;
+  }
+
+  /**
+   * @return {number}
+   */
+  top() {
+    return this.head.value;
+  }
+
+  /**
+   * @return {number}
+   */
+  getMin() {
+    return this.head.min;
   }
 }

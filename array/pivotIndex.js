@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/find-pivot-index/
+Type: Easy
+
 Given an array of integers nums, calculate the pivot index of this array.
 The pivot index is the index where the sum of all the numbers strictly to the left of
 the index is equal to the sum of all the numbers strictly to the index's right.
@@ -66,7 +69,7 @@ var pivotIndex = function (nums) {
   const allSum = nums.reduce((prev, curr) => prev + curr, 0);
   let currSum = 0;
   for (let i = 0; i < nums.length; i++) {
-    //if currSum* is equal to all - currNum then we have found the pivot
+    //if currSum*2 is equal to all - currNum then we have found the pivot
     if (currSum + currSum === allSum - nums[i]) return i;
     currSum += nums[i];
   }

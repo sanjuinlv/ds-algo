@@ -1,5 +1,7 @@
 /*
 Basic Calculator II
+https://leetcode.com/problems/basic-calculator-ii/
+Type: Medium
 
 Given a string s which represents an expression, evaluate this expression and return its value. 
 The integer division should truncate toward zero.
@@ -22,10 +24,10 @@ Output: 5
 
 Constraints:
 
-1 <= s.length <= 3 * 10^5
-s consists of integers and operators ('+', '-', '*', '/') separated by some number of spaces.
-s represents a valid expression.
-All the integers in the expression are non-negative integers in the range [0, 2^31 - 1].
+ - 1 <= s.length <= 3 * 10^5
+ - s consists of integers and operators ('+', '-', '*', '/') separated by some number of spaces.
+ - s represents a valid expression.
+ - All the integers in the expression are non-negative integers in the range [0, 2^31 - 1].
 The answer is guaranteed to fit in a 32-bit integer.
  */
 /**
@@ -130,7 +132,6 @@ Memory Usage: 45.7 MB, less than 79.67% of JavaScript online submissions for Bas
 */
 var calculate = function (s) {
   s = s.replace(/\s/g, "");
-  const stack = [];
   let result = 0;
   let lastNumber = 0;
   let currNumber = 0;

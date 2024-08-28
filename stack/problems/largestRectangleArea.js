@@ -1,6 +1,7 @@
 /* 
-Largest Rectangle in Histogram (Hard)
+Largest Rectangle in Histogram
 https://leetcode.com/problems/largest-rectangle-in-histogram/ 
+Tyep: Hard
 
 Given an array of integers heights representing the histogram's bar height where
 the width of each bar is 1, return the area of the largest rectangle in the histogram.
@@ -40,7 +41,7 @@ var largestRectangleArea = function (heights) {
   const top = (A) => A[A.length - 1];
   //1. calculate NSL (next smaller to right) index
   stack.push([heights[0], 0]);
-  NSLIndex[0] = -1;
+  NSLIndex[0] = -1; 
   for (let i = 1; i < N; i++) {
     //if the top of the stack is smaller than curr num then we found NSL
     if (top(stack)[0] < heights[i]) {
@@ -61,7 +62,7 @@ var largestRectangleArea = function (heights) {
   //2. NSR Indexes
   stack = [];
   stack.push([heights[N - 1], N - 1]);
-  NSRIndex[N - 1] = N;
+  NSRIndex[N - 1] = N; //pseduo index
   for (let i = N - 2; i >= 0; i--) {
     //if the top of the stack is smaller than curr num then we found NSR
     if (top(stack)[0] < heights[i]) {
@@ -71,6 +72,7 @@ var largestRectangleArea = function (heights) {
       while (stack.length !== 0 && top(stack)[0] >= heights[i]) stack.pop();
       //nothing left in stack
       if (stack.length == 0) {
+        //no small number found to the right, use pseudo index as outside the array size
         NSRIndex[i] = N;
       } else {
         NSRIndex[i] = top(stack)[1];
@@ -78,10 +80,10 @@ var largestRectangleArea = function (heights) {
     }
     stack.push([heights[i], i]);
   }
-  console.log(NSRIndex);
   let maxArea = -Infinity;
   for (let i = 0; i < N; i++) {
     maxArea = Math.max(maxArea, (NSRIndex[i] - NSLIndex[i] - 1) * heights[i]);
   }
   return maxArea !== -Infinity ? maxArea : 0;
 };
+

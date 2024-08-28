@@ -1,3 +1,4 @@
+//nearestGreaterToRight([1,3,4,2]) => [3,4,-1,-1]
 /**
  * @param {number[]} nums
  * @return {number[]}
@@ -56,13 +57,13 @@ var nearestGreaterToRight = function (nums) {
 var nextGreaterElements = function (nums) {
   const stack = [];
   const N = nums.length;
-  const result = new Array(N);
+  const result = new Array(N).fill(-1);
   const top = (A) => A[A.length - 1];
   stack.push(nums[N - 1]);
   result[N - 1] = -1;
   for (let i = N - 2; i >= 0; i--) {
     //if the top of the element is greater than num then we found NGR
-    if (top(stack) > nums[i]) {
+    if (stack.length && top(stack) > nums[i]) {
       result[i] = top(stack);
     } else {
       //remove element from stack until we find greater than num
@@ -76,7 +77,6 @@ var nextGreaterElements = function (nums) {
   return result;
 };
 
-//nearestGreaterToRight([1,3,4,2]) => [3,4,-1,-1]
 //III
 var nearestGreaterToRight = function (nums) {
   const stack = [];

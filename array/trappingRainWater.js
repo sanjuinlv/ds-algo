@@ -1,5 +1,8 @@
 /*
-https://leetcode.com/problems/trapping-rain-water/solution/ 
+Trapping Rain Water
+https://leetcode.com/problems/trapping-rain-water/description/
+Type: Hard
+
 Given n non-negative integers representing an elevation map where the width of each bar is 1,
  compute how much water it can trap after raining.
 
@@ -13,9 +16,10 @@ Input: height = [4,2,0,3,2,5]
 Output: 9
 
 Constraints:
-n == height.length
-1 <= n <= 2 * 10^4
-0 <= height[i] <= 10^5
+ - n == height.length
+ - 1 <= n <= 2 * 10^4
+ - 0 <= height[i] <= 10^5
+
 */
 /**
  * @param {number[]} height
@@ -69,26 +73,27 @@ Runtime: 79 ms, faster than 71.50% of JavaScript online submissions for Trapping
 Memory Usage: 44.8 MB, less than 35.26% of JavaScript online submissions for Trapping Rain Water.
  */
 var trap = function (height) {
-  let ans = 0;
   const N = height.length;
-  if (N === 1) return ans;
-  const left_max = new Array(N);
-  const right_max = new Array(N);
+  const leftMax = new Array(N);
+  const rightMax = new Array(N);
 
-  left_max[0] = height[0];
+  //1. calculate the max height to the left of an elevation 
+  leftMax[0] = height[0];
   for (let i = 1; i < N; i++) {
-    left_max[i] = Math.max(height[i], left_max[i - 1]);
+    leftMax[i] = Math.max(height[i], leftMax[i - 1]);
   }
-
-  right_max[N - 1] = height[N - 1];
+  //2. calculate the max height to the right of an elevation
+  rightMax[N - 1] = height[N - 1];
   for (let i = N - 2; i >= 0; i--) {
-    right_max[i] = Math.max(height[i], right_max[i + 1]);
+    rightMax[i] = Math.max(height[i], rightMax[i + 1]);
   }
-
+  //3. calculate the total trapped water
+  let totalTrappedWater = 0;
   for (let i = 0; i < N; i++) {
-    ans += Math.min(left_max[i], right_max[i]) - height[i];
+    //the trapped water at a building will be min of left and right height minus its own height
+    totalTrappedWater += Math.min(leftMax[i], rightMax[i]) - height[i];
   }
-  return ans;
+  return totalTrappedWater;
 };
 
 /*
@@ -122,7 +127,6 @@ var trap = function (height) {
         totalWater += maxLeft - height[left];
       }
       // Increment left, we'll now look at the next point.
-
       left++;
     } else {
       // Similarly to above, we see that we've found a height greater than the max, and cannot fill it whatsoever, but

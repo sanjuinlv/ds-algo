@@ -15,26 +15,22 @@ For example, there will not be input like 3a or 2[4].
 The test cases are generated so that the length of the output will never exceed 10^5.
 
 Example 1:
-
 Input: s = "3[a]2[bc]"
 Output: "aaabcbc"
 
 Example 2:
-
 Input: s = "3[a2[c]]"
 Output: "accaccacc"
 
 Example 3:
-
 Input: s = "2[abc]3[cd]ef"
 Output: "abcabccdcdcdef"
 
 Constraints:
-
-1 <= s.length <= 30
-s consists of lowercase English letters, digits, and square brackets '[]'.
-s is guaranteed to be a valid input.
-All the integers in s are in the range [1, 300].
+ - 1 <= s.length <= 30
+ - s consists of lowercase English letters, digits, and square brackets '[]'.
+ - s is guaranteed to be a valid input.
+ - All the integers in s are in the range [1, 300].
 */
 /**
  * @param {string} s
@@ -51,12 +47,15 @@ encoded string ,n as 2.
 Space: O(sum(maxK^countK * n)), where maxK is the maximum value of k, countK is
 the count of nested k values and n is the maximum length of encoded string.
 
-Runtime: 74 ms, faster than 72.57% of JavaScript online submissions for Decode String.
-Memory Usage: 41.7 MB, less than 87.50% of JavaScript online submissions for Decode String.
+Runtime: 41 ms, faster than 95.50% of JavaScript online submissions for Decode String.
+Memory Usage: 48.89 MB, less than 48.30% of JavaScript online submissions for Decode String.
  */
 var decodeString = function (s) {
-  var stack = [];
-  const top = (s) => s[s.length - 1];
+  const stack = [];
+  const top = (A) => A[A.length - 1];
+  const isDigit = (char) => {
+    return char - "0" >= 0 && char - "0" <= 9;
+  };
   for (let i = 0; i < s.length; i++) {
     //keep adding to stack until we get closing braces
     if (s[i] !== "]") {
@@ -68,12 +67,10 @@ var decodeString = function (s) {
       //step 2. remove the opening bracket
       stack.pop();
       //step 3. get the number
-      let numStr = ""; //23
-      while (parseInt(top(stack)) || parseInt(top(stack)) == 0) {
-        numStr = stack.pop() + numStr;
-      }
+      let numStr = "";
+      while (isDigit(top(stack))) numStr = stack.pop() + numStr;
       const k = parseInt(numStr);
-      for (let i = 0; i < k; i++) {
+      for (let j = 0; j < k; j++) {
         stack.push(charStr);
       }
     }

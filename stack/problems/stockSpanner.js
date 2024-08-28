@@ -1,5 +1,7 @@
 /* 
 https://leetcode.com/problems/online-stock-span/
+Type: Medium
+
 Design an algorithm that collects daily price quotes for some stock and returns the span
 of that stock's price for the current day.
 
@@ -45,7 +47,8 @@ Memory Usage: 54.8 MB, less than 82.91% of JavaScript online submissions for Onl
 */
 var StockSpanner = function () {
   this.stack = [];
-  this.N = 0;
+  this.result = [];
+  this.N = -1;
 };
 
 /**
@@ -53,26 +56,20 @@ var StockSpanner = function () {
  * @return {number}
  */
 StockSpanner.prototype.next = function (price) {
-  if (this.stack.length == 0) {
-    this.stack.push([price, this.N++]);
-    return 1;
-  }
+  this.N++;
   const top = (A) => A[A.length - 1];
   let span = 1;
-  //if the top of stack is greater than curr num then we found NGL
-  if (top(this.stack)[0] > price) {
+  if (this.stack.length && top(this.stack)[0] > price) {
     span = this.N - top(this.stack)[1];
   } else {
-    //until the top of stack is smaller than curr num pop
-    while (this.stack.length !== 0 && top(this.stack)[0] <= price) {
-      this.stack.pop();
-    }
+    //until top is smaller pop
+    while (this.stack.length && top(this.stack)[0] <= price) this.stack.pop();
     //nothing left in stack, which means no price exist before this which
     //was greater than this 'price'. i.e, this price is largest so far, so N+1
-    if (this.stack.length == 0) span = this.N + 1;
+    if (this.stack.length == 0) span = this.N + 1;    
     else span = this.N - top(this.stack)[1];
   }
-  this.stack.push([price, this.N++]);
+  this.stack.push([price, this.N]);
   return span;
 };
 

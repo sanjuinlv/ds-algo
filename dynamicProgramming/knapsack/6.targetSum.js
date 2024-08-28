@@ -1,4 +1,7 @@
 /*
+https://leetcode.com/problems/target-sum/
+Category: Medium
+
 You are given an integer array nums and an integer target.
 
 You want to build an expression out of nums by adding one of the symbols '+' and '-' before each integer in nums and then concatenate all the integers.
@@ -43,37 +46,22 @@ s1 = (target + arraySum) / 2
 */
 
 /* 
-Approach I : Recursive
+Approach I : DFS without memoization
 Time: O(2^N)
 Space: O(N)
-
-[0,0,1,0,0]
-0
-[7,9,3,8,0,2,4,8,3,9]
-0
-[0,0,0,0,0,0,0,0,1]
-1
-[1]
-2
 */
 var findTargetSumWays = function (nums, target) {
-  const n = nums.length;
-  let count = 0;
-  const helper = (i, sum) => {
-    if (i === n) {
-      if (sum == target) {
-        count++;
+  let noOfWays = 0;
+  const dfs = (i, totalSum) => {
+    if (i >= nums.length) {
+        if (totalSum == target) noOfWays++;
         return;
-      }
-    } else {
-      //include
-      helper(i + 1, sum - nums[i]);
-      //exclude
-      helper(i + 1, sum + nums[i]);
-    }
+    } 
+    dfs(i + 1, totalSum + nums[i]);
+    dfs(i + 1, totalSum - nums[i]);
   };
-  helper(0, 0, target);
-  return count;
+  dfs(0, 0);
+  return noOfWays;
 };
 
 /* 
@@ -85,29 +73,28 @@ Runtime: 120 ms, faster than 92.95% of JavaScript online submissions for Target 
 Memory Usage: 47.7 MB, less than 61.57% of JavaScript online submissions for Target Sum.
 */
 var findTargetSumWays = function (nums, target) {
-  const n = nums.length;
-  let count = 0;
+  const N = nums.length;
   let arraySum = 0;
   nums.forEach((num) => (arraySum += num));
-  const memo = [...Array(n)].map((x) => Array(2 * arraySum + 1).fill(-1));
+  //we set the colum size twice the total sum of array. E.g.,
+  //if totalSum is 5 we can get sum ranging from -5 (all nums added with minus sign) to 5
+  //so we need to store twice the number of variations.
+  const dp = [...Array(N)].map((x) => Array(2 * arraySum + 1).fill(-1));
   const helper = (i, sum) => {
-    if (i === n) {
-      if (sum == target) {
-        return 1;
-      } else {
-        return 0;
-      }
-    } else {
-      //Note: The factor of total has been added as an offset to the sum value to map
-      // all the sums possible to positive integer range
-      if (memo[i][sum + arraySum] !== -1) return memo[i][sum + arraySum];
-      //include
-      const addCount = helper(i + 1, sum - nums[i]);
-      //exclude
-      const subTractCount = helper(i + 1, sum + nums[i]);
-      memo[i][sum + arraySum] = addCount + subTractCount;
-      return memo[i][sum + arraySum];
+    //reached at the end of array
+    if (i === N) {
+      return sum == target ? 1 : 0;
     }
+    //Note: The factor of total has been added as an offset to the sum value to map
+    // all the sums possible to positive integer range
+    const sumIndex = sum + arraySum;
+    if (dp[i][sumIndex] != -1) return dp[i][sumIndex];
+    //add this num
+    const addSumCount = helper(i + 1, sum + nums[i]);
+    //subtract this num
+    const substractSumCount = helper(i + 1, sum - nums[i]);
+    dp[i][sumIndex] = addSumCount + substractSumCount;
+    return dp[i][sumIndex];
   };
   return helper(0, 0);
 };

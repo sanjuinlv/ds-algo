@@ -1,3 +1,32 @@
+/* 
+Score of Parentheses
+https://leetcode.com/problems/score-of-parentheses/
+Type: Medium
+
+Given a balanced parentheses string s, return the score of the string.
+The score of a balanced parentheses string is based on the following rule:
+ - "()" has score 1.
+ - AB has score A + B, where A and B are balanced parentheses strings.
+ - (A) has score 2 * A, where A is a balanced parentheses string.
+
+Example 1:
+Input: s = "()"
+Output: 1
+
+Example 2:
+Input: s = "(())"
+Output: 2
+
+Example 3:
+Input: s = "()()"
+Output: 2
+
+Constraints:
+ - 2 <= s.length <= 50
+ - s consists of only '(' and ')'.
+ - s is a balanced parentheses string.
+
+*/
 /**
  * @param {string} s
  * @return {number}
@@ -26,7 +55,7 @@ var scoreOfParentheses = function (s) {
 };
 
 /* 
-Approach: using Stack
+Approach 1: using Stack
 Every position in the string has a depth - some number of matching parentheses surrounding it.
 For example, the dot in (()(.())) has depth 2, because of these parentheses: (__(.__))
 
@@ -68,7 +97,28 @@ var scoreOfParentheses = function (s) {
 };
 
 /* 
-Approach: count cores
+//Approach 1.1. Stack with score variable
+Time Complexity: O(N), where N is the length of S.
+Space Complexity: O(N), the size of the stack.
+
+Runtime: 51 ms, faster than 61.76% of JavaScript online submissions for Score of Parentheses.
+Memory Usage: 48.64 MB, less than 72.55% of JavaScript online submissions for Score of Parentheses.
+*/
+var scoreOfParentheses = function (s) {
+  const stack = [];
+  let score = 0;
+  for (const c of s) {
+    if (c === "(") {
+      stack.push(score);
+      score = 0;
+    } else {
+      score = stack.pop() + Math.max(2 * score, 1);
+    }
+  }
+  return score;
+};
+/* 
+Approach III: count cores
 
 Intuition
 The final sum will be a sum of powers of 2, as every core (a substring (), with score 1) 
