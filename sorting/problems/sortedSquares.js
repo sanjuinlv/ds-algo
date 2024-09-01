@@ -1,66 +1,64 @@
+/* 
+https://leetcode.com/problems/squares-of-a-sorted-array/
+Type: Easy
+
+Given an integer array nums sorted in non-decreasing order, return an array of the
+ squares of each number sorted in non-decreasing order.
+
+Example 1:
+Input: nums = [-4,-1,0,3,10]
+Output: [0,1,9,16,100]
+Explanation: After squaring, the array becomes [16,1,0,9,100].
+After sorting, it becomes [0,1,9,16,100].
+
+Example 2:
+Input: nums = [-7,-3,2,3,11]
+Output: [4,9,9,49,121]
+
+Constraints:
+ - 1 <= nums.length <= 104
+ - -104 <= nums[i] <= 104
+ - nums is sorted in non-decreasing order.
+
+Follow up: Squaring each element and sorting the new array is very trivial, could
+ you find an O(n) solution using a different approach?
+
+*/
 /**
  * @param {number[]} A
  * @return {number[]}
  */
-var sortedSquares = function(A) {
-    let left = 0; right = A.length - 1;
-    let insertPointer = right;
-    let sortedSquares = new Array(A.length);
-    while (left <= right) {
-        let leftVal = A[left];
-        let rightVal = A[right];
-        if (left === right) {
-            sortedSquares[insertPointer] = leftVal * leftVal;
-            break;
-        }
-        if (Math.abs(leftVal) < Math.abs(rightVal)) {
-            sortedSquares[insertPointer] = rightVal * rightVal;
-            sortedSquares[insertPointer - 1] = leftVal * leftVal;
-        } else {
-            sortedSquares[insertPointer] = leftVal * leftVal;
-            sortedSquares[insertPointer - 1] = rightVal * rightVal;
-        }
-        left++;
-        right--;
-        insertPointer = insertPointer - 2;
-    }
-    return sortedSquares;
-};
 
-// The above solution fails when input has repeated number, e.g., 
-// input:  [-1,2,2]
-// output: [4,1,4]
+/* 
+Approach: using two pointers
+Time: O(N)
+Space: O(1)
 
-// Other only right solution would be:
-// 1. Loop through the array items and create square of item. 
-// After the loop we will only have positive integers, though it will not be sorted.
-// Time: N
-// 2. Now sort the array:
-// Time: O(NLogN)
-// so final time complexity : O(NLogN) and Space: O(N)
-
-
-// Corrected solution with reference
-// O(N), Space: O(N)
-var sortedSquares = function(A) {
+Runtime: 81 ms Beats 69.11%
+Memory: 56.12 MB Beats 65.08%
+*/
+var sortedSquares = function (A) {
+    const N = A.length;
     let left = 0;
-    let right = A.length - 1;
-    let insertPointer = right;
-    let sortedSquares = new Array(A.length);
+    let right = N - 1;
+    let insertPointer = N - 1;
+    let result = new Array(N);
     while (left <= right) {
-        if (Math.abs(A[left]) > Math.abs(A[right])) {
-            sortedSquares[insertPointer] = A[left] * A[left];
-            left++;
-        } else {
-            sortedSquares[insertPointer] = A[right] * A[right];
-            right--;
-        }
-        insertPointer--;
+      if (Math.abs(A[left]) < Math.abs(A[right])) {
+        result[insertPointer] = A[right] * A[right];
+        right--;
+      } else {
+        result[insertPointer] = A[left] * A[left];
+        left++;
+      }
+      insertPointer--;
     }
-    return sortedSquares;
-};
+    return result;
+  };
 
-// easiest solution given by user ;) 
+
+// Approach II: Using inbuild sorting
+// Time: O(NLogN)
 var sortedSquares = function(A) {
     return A.map(e => e * e).sort((a, b) => a - b);
 };

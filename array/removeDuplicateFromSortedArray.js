@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+Type: Easy
+
 Given a sorted array nums, remove the duplicates in-place such that each element appears 
 only once and returns the new length.
 Do not allocate extra space for another array, you must do this by modifying the input array
@@ -17,51 +20,38 @@ Input: nums = [0,0,1,1,1,2,2,3,3,4]
 Output: 5, nums = [0,1,2,3,4]
 Explanation: Your function should return length = 5, with the first five elements of nums being modified to 0, 1, 2, 3, and 4 respectively. It doesn't matter what values are set beyond the returned length.
 
+Constraint:
 
-0 <= nums.length <= 3 * 104
--104 <= nums[i] <= 104
-nums is sorted in ascending order.
+ - 0 <= nums.length <= 3 * 10^4
+ - -10^4 <= nums[i] <= 10^4
+ - nums is sorted in ascending order.
 
 */
 /**
  * @param {number[]} nums
  * @return {number}
  */
-// nums = [1,1,2]   => PASSED
-// removeDuplicates(nums)
-// nums = [0,0,1,1,1,2,2,3,3,4]
-var removeDuplicates = function(nums) {
-    let i = 1, j = 1, prev = nums[0];
-    while (i < nums.length) {
-        if (nums[i] == prev) {
-            i++;
-        } else {
-            nums[j++] = nums[i++];
-            prev = nums[j - 1];
-        }
-    }
-    console.log(`final array: ${nums}`);
-    console.log(`array length: ${j}`);
-    return j;
-};
-
-// for submission
 // Runtime: 84 ms
 // Memory Usage: 39.1 MB
 // Your runtime beats 91.67 % of javascript submissions.
 // Your memory usage beats 62.92 % of javascript submissions.
-var removeDuplicates = function(nums) {
-    let i = 1, j = 1, prev = nums[0];
-    while (i < nums.length) {
-        if (nums[i] == prev) {
-            i++;
-        } else {
-            nums[j++] = nums[i++];
-            prev = nums[j - 1];
-        }
+var removeDuplicates = function (nums) {
+    let i = 1;
+    let j = 1;
+    let prev = nums[0];
+    while (j < nums.length) {
+      if (nums[j] == prev) {
+        //until current is same as previous move the pointer
+        j++;
+      } else {
+        //swap with insert point i
+        nums[i++] = nums[j++];
+        //update previous to last swapped number
+        prev = nums[i-1];
+      }
     }
-    return j;
-};
+    return i;
+  };
 
 // Using only two pointers as solution given in leet code
 /*
