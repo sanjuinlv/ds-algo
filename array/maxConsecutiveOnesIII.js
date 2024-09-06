@@ -41,9 +41,9 @@ Runtime: 65 ms, faster than 53.22% of JavaScript online submissions for Max Cons
 Memory Usage: 53.74 MB, less than 87.03% of JavaScript online submissions for Max Consecutive Ones III.
 */
 var longestOnes = function (A, K) {
-  let start = 0,
-    zeroCount = 0,
-    maxConsecutiveOnes = 0;
+  let start = 0;
+  let zeroCount = 0;
+  let maxConsecutiveOnes = 0;
   for (let end = 0; end < A.length; end++) {
     if (A[end] === 0) zeroCount++;
     //evict the extra zeros, and move the start pointer

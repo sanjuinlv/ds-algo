@@ -1,28 +1,31 @@
 /*
 Implement strStr().
 
-Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+Type: Easy
+
+Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
 
 Clarification:
 
 What should we return when needle is an empty string? This is a great question to ask during an interview.
-
 For the purpose of this problem, we will return 0 when needle is an empty string. This is consistent to C's strstr() and Java's indexOf().
 
-
+Example 1:
 Input: haystack = "hello", needle = "ll"
 Output: 2
 
+Example 2:
 Input: haystack = "aaaaa", needle = "bba"
 Output: -1
 
+Example 3:
 Input: haystack = "", needle = ""
 Output: 0
 
 Constraints:
-0 <= haystack.length, needle.length <= 5 * 104
-haystack and needle consist of only lower-case English characters.
-
+ - 0 <= haystack.length, needle.length <= 5 * 104
+ - haystack and needle consist of only lower-case English characters.
  */
 /**
  * @param {string} haystack
@@ -36,22 +39,21 @@ haystack = "aaaaa", needle = "bba"          - PASS
 haystack = "aabba", needle = "ba"           - PASS
 haystack = "", needle = ""                  - PASS
 
-Approach 1: substring: Linear time slice 
+Approach 1: 
 Time complexity: O((n-m)*m), n is length of haystack and m is length of needle
 Space complexity: O(1)
-Runtime: 84 ms, faster than 45.00% of JavaScript online submissions for Implement strStr().
-Memory Usage: 38.8 MB, less than 60.13% of JavaScript online submissions for Implement strStr().
+Runtime: 58 ms, faster than 26.08% of JavaScript online submissions for Implement strStr().
+Memory Usage: 48.65 MB, less than 79.99% of JavaScript online submissions for Implement strStr().
 */
 var strStr = function (haystack, needle) {
-  if (!needle.length) return 0;
-  const n = haystack.length;
-  const m = needle.length;
-  for (let i = 0; i < n; i++) {
+  if (!needle.length) return -1;
+  const N = haystack.length;
+  const M = needle.length;
+  for (let i = 0; i < N - M + 1; i++) {
     let j = 0;
-    while (j < m) {
-      if (haystack[i] != needle[j++]) break;
-    }
-    if (j == m) return i;
+    while (j < M && haystack[i + j] == needle[j]) j++;
+    //full length match found for `needle`, return start index
+    if (j == M) return i;
   }
   return -1;
 };
@@ -60,35 +62,29 @@ var strStr = function (haystack, needle) {
 Approach 2: Two pointer: Linear time slice
 Time complexity: O((n-m)*m), n is length of haystack and m is length of needle
 Space complexity: O(1)
-Runtime: 80 ms, faster than 70.13% of JavaScript online submissions for Implement strStr().
-Memory Usage: 40.6 MB, less than 12.94% of JavaScript online submissions for Implement strStr().
+Runtime: 60 ms, faster than 18.13% of JavaScript online submissions for Implement strStr().
+Memory Usage: 49.95 MB, less than 9.18% of JavaScript online submissions for Implement strStr().
 */
 var strStr = function (haystack, needle) {
-  const n = haystack.length;
-  const m = needle.length;
-  if (m == 0) return 0;
+  const N = haystack.length;
+  const M = needle.length;
+  if (M == 0) return 0;
   let i = 0;
-  while (i < n - m + 1) {
+  while (i < N - M + 1) {
     //find the position of first needle character in haystack
-    while (i < n - m + 1 && haystack[i] != needle[0]) {
-      i++;
-    }
-    let currLength = 0,
-      j = 0;
+    while (i < N - M + 1 && haystack[i] != needle[0]) i++;
+    let j = 0;
     //compute the next matching string
-    while (j < m && i < n && haystack[i] == needle[j]) {
+    while (j < M && i < N && haystack[i] == needle[j]) {
       i++;
       j++;
-      currLength++;
     }
-    console.log(`i: ${i}, j: ${j}, currLength: ${currLength}`);
-    if (currLength == m) return i - m;
+    if (j == M) return i - M;
     //otherwise, backtrack
-    i = i - currLength + 1;
+    i = i - j + 1;
   }
   return -1;
 };
-
 // from Nishant
 var strStr = function (haystack, needle) {
   //Ask what if needle is "" ie blank
@@ -114,25 +110,17 @@ Approach 3: Rabin Karp: Constant Time Slice
 */
 
 /* 
-Brute force
-Time: O(N * M)
-Space: O(1)
-
-Your runtime beats 41.81 % of javascript submissions.
-Your memory usage beats 41.72 % of javascript submissions.
+Runtime: 84 ms Beats 5.02%
+Memory: 38.84 MB Beats 100.00%
 */
-var strStr = function (haystack, needle) {
+var strStr = function(haystack, needle) {
   if (!needle.length) return 0;
-  const N = haystack.length;
-  const M = needle.length;
-  for (let i = 0; i <= N - M; i++) {
-    let j = 0;
-    while (j < M) {
-      if (haystack[i + j] !== needle[j]) break;
-      j++;
-    }
-    //full length match found for `needle`, return start index
-    if (j === M) return i;
+  const n = haystack.length;
+  const m = needle.length;
+  for (let i = 0; i < n - m + 1; i++){
+      if (haystack.substring(i, i + m) == needle){
+          return i;
+      }
   }
   return -1;
 };

@@ -32,25 +32,25 @@ Constraints:
  * @param {number[]} A
  * @return {boolean}
  */
+
 /* 
 Time: O(N)
 Space: O(1)
+
+Runtime: 58 ms Beats 59.75%
+Memory: 51.73 MB Beats 63.15%
 */
-var validMountainArray = function(A) {
-    if (A.length < 3) return false;
-    let N = A.length;
+var validMountainArray = function (arr) {
+    const N = arr.length;
+    if (N < 3) return false;
     let i = 0;
     //climb up
-    while (i + 1 < N && A[i] < A[i + 1]) {
-        i++;
-    }
-    // peak can't be first or last
-    if (i == 0 || i == N - 1) {
-        return false;
-    }
-    //climb down
-    while (i + 1 < N && A[i] > A[i + 1]) {
-        i++;
-    }
-    return i === N - 1;
-}
+    while (i + 1 < N && arr[i] < arr[i + 1]) i++;
+    //peak can't be first or last
+    if (i == 0 || i == N - 1) return false;
+    //climb donw
+    while (i + 1 < N && arr[i] > arr[i + 1]) i++;
+    //if we reached too end then its valid mountain
+    return i == N - 1;
+  };
+  

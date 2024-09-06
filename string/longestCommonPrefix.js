@@ -1,4 +1,5 @@
 /* 
+https://leetcode.com/problems/longest-common-prefix/
 Type: Easy
 
 Write a function to find the longest common prefix string amongst an array of strings.
@@ -38,25 +39,24 @@ strs = [""] - PASS
 Runtime: 88 ms, faster than 53.67% of JavaScript online submissions for Longest Common Prefix.
 Memory Usage: 39.6 MB, less than 43.54% of JavaScript online submissions for Longest Common Prefix.
  */
-var longestCommonPrefix = function (strs) {
+var longestCommonPrefix = function(strs) {
   if (!strs.length) return "";
-  //find the min length of intput string
-  let minLength = Number.MAX_VALUE;
-  strs.forEach((str) => {
-    if (str.length < minLength) minLength = str.length;
-  });
-  let lcp = "";
-  //loop through the each entry of array and compare the char at ith position
-  for (let i = 0; i < minLength; i++) {
-    let prefix = strs[0][i];
-    for (let j = 1; j < strs.length; j++) {
-      //mismatch found, return current lcp
-      if (strs[j][i] != prefix) return lcp;
-    }
-    lcp += `${prefix}`;
-  }
-  console.log(`final lcp: ${lcp}`);
-  return lcp;
+ //find the min length of intput string
+ let minLength = Number.MAX_VALUE;
+ strs.forEach(str => {
+     if (str.length < minLength) minLength = str.length;
+ });
+ let lcp = "";
+ //loop through the each entry of array and compare the char at ith position
+ for (let i = 0; i < minLength; i++){
+     let prefix = strs[0][i];
+     for (let j = 1; j < strs.length; j++){
+       //mismatch found, return current lcp
+       if (strs[j][i] != prefix) return lcp;
+     }
+     lcp += `${prefix}`;
+ }
+ return lcp;
 };
 
 /* 
@@ -64,8 +64,8 @@ We can avoid using the space by using the index till where the match was
 found, the returning the string sliced from till that index
 
 Space Complexity: O(1)
-Runtime: 76 ms, faster than 94.56% of JavaScript online submissions for Longest Common Prefix.
-Memory Usage: 39.4 MB, less than 57.52% of JavaScript online submissions for Longest Common Prefix.
+Runtime: 76 ms, faster than 5.30% of JavaScript online submissions for Longest Common Prefix.
+Memory Usage: 39.38 MB, less than 100% of JavaScript online submissions for Longest Common Prefix.
 */
 var longestCommonPrefix = function (strs) {
   if (!strs.length) return "";
@@ -90,10 +90,13 @@ var longestCommonPrefix = function (strs) {
 /* 
 Approach II: Horizontal scanning
 (Without using min length)
-Time: O(S), where S is the sum of all characters in all strings
-Space: O(1)
-Runtime: 80 ms, faster than 85.73% of JavaScript online submissions for Longest Common Prefix.
-Memory Usage: 38.9 MB, less than 82.18% of JavaScript online submissions for Longest Common Prefix.
+Time: O(S), where S is the sum of all characters in all strings. 
+In the worst case all n strings are the same. The algorithm compares the string S1 with the other strings [S2…Sn].
+There are S character comparisons, where S is the sum of all characters in the input array.
+Space: O(1): We only used constant extra space.
+
+Runtime: 80 ms, faster than 5.30% of JavaScript online submissions for Longest Common Prefix.
+Memory Usage: 38.9 MB, less than 100% of JavaScript online submissions for Longest Common Prefix.
 */
 var longestCommonPrefix = function (strs) {
   if (!strs.length) return "";
@@ -108,8 +111,30 @@ var longestCommonPrefix = function (strs) {
 };
 
 /* 
- Approach II:
+Approach III:
+Variation of above (optimized than above)
+Time: O(S) where S is the sum of all characters in all strings. 
+Space: O(1)
 
+Runtime: 60 ms Beats 33.87% 
+Memory: 49.93 MB Beats 41.44%
+*/
+var longestCommonPrefix = function (strs) {
+  let longestPrefix = strs[0];
+  for (let i = 1; i < strs.length; i++) {
+    const s2 = strs[i];
+    //compare s1 and s2 until the characters matched
+    let j = 0;
+    while (j < longestPrefix.length && longestPrefix[j] == s2[j]) j++;
+    //if no match found then we don't have common prefix. Terminate early
+    if (j == 0) return "";
+    //if new length is less then record the longestPrefix
+    if (j < longestPrefix.length) longestPrefix = longestPrefix.slice(0, j);
+  }
+  return longestPrefix;
+};
+/* 
+Approach IV:
  */
 // Need to solve this once study on tries is over
 // https://leetcode.com/problems/longest-common-prefix/solution/

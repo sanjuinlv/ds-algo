@@ -1,62 +1,46 @@
 /**
- * Given an array nums, write a function to move all 0's to the end of it 
- * while maintaining the relative order of the non-zero elements.
-    Input: [0,1,0,3,12]
-    Output: [1,3,12,0,0]
- * Note:
-    - You must do this in-place without making a copy of the array.
-    - Minimize the total number of operations.
+https://leetcode.com/problems/move-zeroes
+Type: Easy
+Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+Note that you must do this in-place without making a copy of the array.
+
+Example 1:
+Input: nums = [0,1,0,3,12]
+Output: [1,3,12,0,0]
+
+Example 2:
+Input: nums = [0]
+Output: [0]
+
+Constraints:
+ - 1 <= nums.length <= 10^4
+ - -2^31 <= nums[i] <= 2^31 - 1
+
+Follow up: Could you minimize the total number of operations done?
+*/
+
+/**
  * @param {number[]} nums
  * @return {void} Do not return anything, modify nums in-place instead.
  */
-/* 
-nums = [0,1,0,3,12]  => PASSED
-nums = [1,1,0,3,12]  => PASSED
-nums = [-1,1,-1,-1]  => PASSED
-nums = [0,0,0,0]     => PASSED
-*/
-// Time complexity: O(N)
-// Space: O(N)
-var moveZeroes = function (nums) {
-  let j = 0,
-    N = nums.length;
-  for (let i = 0; i < N; i++) {
-    //if its non zero then copy to last insert point (j),
-    //if both are not same (case of no zeros found)
-    if (nums[i] !== 0) {
-      if (i !== j) {
-        nums[j++] = nums[i];
-      } else {
-        j++;
-      }
-    }
-  }
-  console.log(`j: ${j}`);
-  //copy zeros from j until end of the array.
-  while (j < N) {
-    nums[j++] = 0;
-  }
-  console.log(`final array: ${nums}`);
-};
 
-// for submission
-/* 
+/*
+Time complexity: O(N)
+Space: O(N)
+
 Runtime: 80 ms
 Memory Usage: 38.6 MB
 Your runtime beats 82.25 % of javascript submissions.
 Your memory usage beats 38.61 % of javascript submissions.
 */
 var moveZeroes = function (nums) {
-  let j = 0,
-    N = nums.length,
-    i = 0;
+  const N = nums.length;
+  let i = 0;
+  let j = 0;
   while (i < N) {
     if (nums[i] !== 0) {
-      if (i === j) {
-        j++;
-      } else {
-        nums[j++] = nums[i];
-      }
+      if (i === j) j++;
+      else nums[j++] = nums[i];
     }
     i++;
   }
@@ -79,25 +63,28 @@ If it's the latter one, the current position will be eventually occupied by a no
 or a 0, which lies at a index greater than 'cur' index. 
 We fill the current position by 0 right away,so that unlike the previous solution, 
 we don't need to come back here in next iteration.
+
+Time: O(N)
+Space: O(1)
+
+Runtime: 69 ms Beats 83.41%
+Memory: 53.76 MB Beats 78.28%
+
 */
 var moveZeroes = function (nums) {
-  let slowPointer = 0,
-    N = nums.length;
-  for (let currentPointer = 0; currentPointer < N; currentPointer++) {
-    if (nums[currentPointer] != 0) {
+  //slow pointer
+  let i = 0;
+  const N = nums.length;
+  for (let j = 0; j < N; j++) {
+    if (nums[j] != 0) {
       //swap elements
-      let temp = nums[slowPointer];
-      nums[slowPointer++] = nums[currentPointer];
-      nums[currentPointer] = temp;
+      let temp = nums[i];
+      nums[i++] = nums[j];
+      nums[j] = temp;
     }
   }
 };
 
-//2nd try
-/**
- * @param {number[]} nums
- * @return {void} Do not return anything, modify nums in-place instead.
- */
 /*
 nums = [0,1,0,3,12] - PASS
 nums = [1,1,0,0,2,3] - PASS
@@ -131,6 +118,7 @@ var moveZeroes = function (nums) {
   }
 };
 
+
 /* 
 without using zeroCount variable
 Runtime: 80 ms
@@ -138,7 +126,6 @@ Memory Usage: 40.4 MB
 Your runtime beats 92.10 % of javascript submissions.
 Your memory usage beats 48.50 % of javascript submissions.
 */
-
 var moveZeroes = function (nums) {
   let N = nums.length;
   //slow pointer
@@ -166,8 +153,8 @@ var moveZeroes = function (nums) {
  */
 var moveZeroes = function (nums) {
   const N = nums.length;
-  let i = 0,
-    j = 0;
+  let i = 0;
+  let j = 0;
   while (j < N) {
     if (nums[j] != 0) {
       if (i != j) {
@@ -197,5 +184,33 @@ var moveZeroes = function (nums) {
       nums[i++] = nums[j];
       nums[j] = 0;
     }
+  }
+};
+
+/* 
+//Sep 1, 2024
+Time: O(N^2 ?), since we move the i pointer again from j this can turn out to be expensive
+Space: O(1)
+Runtime: 111 ms Beats 10.71%
+Memory: 54.10 MB Beats 63.74%
+*/
+var moveZeroes = function (nums) {
+  const N = nums.length;
+  //pointer to track non '0'
+  let i = 0;
+  //insert pointer
+  let j = 0;
+  while (j < N && i < N) {
+    //find the '0' element index
+    while (j < N && nums[j] !== 0) j++;
+    i = j;
+    //find non '0' to swap
+    while (i < N && nums[i] == 0) i++;
+    //swap element to zero index
+    if (i != j && i < N) {
+      nums[j] = nums[i];
+      nums[i] = 0;
+    }
+    j++;
   }
 };
