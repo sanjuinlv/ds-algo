@@ -1,28 +1,34 @@
 /**
  *  The class provides a static method to sort an array using heapsort
  *
- *  This implementation takes O(N Log N) time
- *  to sort any array of length n (assuming comparisons
- *  take constant time). It makes at most
- *  2 n log 2 n compares.
+ *  This implementation takes O(N Log N) time to sort any array
+ *  of length n (assuming comparisons take constant time).
+ *  It makes at most 2NLog2N compares.
  *  This sorting algorithm is not stable.
  *  It uses O(1) extra memory (not including the input array).
  */
 
+/* 
+Usage
+let arr = [4,5,2,9,10];
+Heap.sort(arr);
+arr = [1,-2,3,-5,10];
+Heap.sort(arr);
+
+*/
 class Heap {
   /**
-   *
    * @param {Array} A - Input array to sort
    */
   static sort(A) {
+    const N = A.length; 
     //phase I: heapify
-    const N = A.length; //TODO: check why we shouldn't do N-1
     for (let k = parseInt(N / 2); k >= 1; k--) {
       Heap.sink(A, k, N);
     }
     console.log(`heapified array: ${A}`);
-    //phase II: sorting
     let k = N;
+    //phase II: sorting phase
     while (k > 1) {
       //exchange first element with last element
       Heap.swap(A, 1, k--);
@@ -34,8 +40,9 @@ class Heap {
 
   static sink(A, k, N) {
     while (2 * k <= N) {
-      // find the largest of the child
+      //child level
       let j = 2 * k;
+      // find the largest of the childs
       if (j < N && Heap.less(A, j, j + 1)) j++;
       if (!Heap.less(A, k, j)) break;
       // if parent is smaller than largest of child, then swap
@@ -54,5 +61,3 @@ class Heap {
     [A[i - 1], A[j - 1]] = [A[j - 1], A[i - 1]];
   }
 }
-//A = [4,5,2,9,10] => [2,4,5,9,10]
-//A = [1,-2,3,-5,10] => [-5,-2,1,3,10]

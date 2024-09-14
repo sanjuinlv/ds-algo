@@ -1,3 +1,5 @@
+/* 
+*/
 var keyIndexCounting = function(a, R) {
     const N = a.length;
     const count = [R + 1].fill(0);
@@ -8,7 +10,7 @@ var keyIndexCounting = function(a, R) {
     }
     // Transform count to indices
     // we do not update the 0th index and since count size is R+1 we can loop until R
-    for (let r = 0; r < R; i++) {
+    for (let r = 0; r < R; r++) {
         count[r + 1] += count[r]
     }
     //distribute the records

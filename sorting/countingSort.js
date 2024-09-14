@@ -17,19 +17,16 @@ countingSort(arr);
 */
 function countingSort(arr) {
   //1. find the max of the array;
-  let K = 0;
-  arr.forEach((element) => {
-    K = Math.max(K, element);
-  });
+  let K = Math.max(...arr);
   //2. create counting array
-  const counts = [...Array(K + 1)].fill(0);
+  const counts = new Array(K + 1).fill(0);
   for (let num of arr) counts[num]++;
   console.log(counts);
   //2. create start index
   // we now overwrite our original counts with the starting index
   // of each element in the final sorted array
   let startingIndex = 0;
-  for (let i = 0; i < counts.length; i++) {
+  for (let i = 0; i <= K; i++) {
     const count = counts[i];
     counts[i] = startingIndex;
     startingIndex += count;
@@ -43,40 +40,32 @@ function countingSort(arr) {
 }
 
 /* 
-Modified version to handle the negative numbers
-
-public class Solution {
-    public void countingSort(int[] arr) {
-        // Sorts an array of integers (handles shifting of integers to range 0 to K)
-        int shift = Arrays.stream(arr).min().getAsInt();
-        int K = Arrays.stream(arr).max().getAsInt() - shift;
-        int[] counts = new int[K + 1];
-        for (int elem : arr) {
-            counts[elem - shift] += 1;
-        }
-        // we now overwrite our original counts with the starting index
-        // of each element in the final sorted array
-        int startingIndex = 0;
-        for (int i = 0; i < K + 1; i++) {
-            int count = counts[i];
-            counts[i] = startingIndex;
-            startingIndex += count;
-        }
-
-        int sortedArray[] = new int[arr.length];
-        for (int elem : arr) {
-            sortedArray[counts[elem - shift]] = elem;
-            // since we have placed an item in index counts[elem], we need to
-            // increment counts[elem] index by 1 so the next duplicate element
-            // is placed in appropriate index
-            counts[elem - shift] += 1;
-        }
-
-        // common practice to copy over sorted list into original arr
-        // it's fine to just return the sortedArray at this point as well
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = sortedArray[i];
-        }
-    }
-}
+Handle negative values
+arr = [-5,4,-5,6,1,10,3]
+countingSort(arr);
 */
+function countingSort(arr) {
+  //1. find the max of the array;
+  const shift = Math.min(...arr);
+  const K = Math.max(...arr) - shift;
+  console.log(`shift: ${shift}, K after shift: ${K}`);
+  //2. create counting array
+  const counts = new Array(K + 1).fill(0);
+  for (let num of arr) counts[num - shift]++;
+  console.log(counts);
+  //2. create start index
+  // we now overwrite our original counts with the starting index
+  // of each element in the final sorted array
+  let startingIndex = 0;
+  for (let i = 0; i <= K; i++) {
+    const count = counts[i];
+    counts[i] = startingIndex;
+    startingIndex += count;
+  }
+  const sortedArray = new Array(arr.length);
+  for (let num of arr) {
+    sortedArray[counts[num - shift]] = num;
+    counts[num - shift]++;
+  }
+  return sortedArray;
+}

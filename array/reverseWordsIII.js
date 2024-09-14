@@ -1,4 +1,7 @@
 /*
+https://leetcode.com/problems/reverse-words-in-a-string-iii
+Type: Easy
+
 Given a string s, reverse the order of characters in each word within a sentence while
 still preserving whitespace and initial word order.
 
@@ -24,8 +27,8 @@ All the words in s are separated by a single space.
  */
 /* 
 Approach: Using two pointers with characters array
-Runtime: 91 ms, faster than 68.62% of JavaScript online submissions for Reverse Words in a String III.
-Memory Usage: 49.5 MB, less than 11.94% of JavaScript online submissions for Reverse Words in a String III.
+Runtime: 91 ms, faster than 5.66% of JavaScript online submissions for Reverse Words in a String III.
+Memory Usage: 49.58 MB, less than 100% of JavaScript online submissions for Reverse Words in a String III.
 
 */
 var reverseWords = function (s) {
@@ -55,4 +58,37 @@ var reverseWords = function (s) {
   //char array
   const chars = Array.from(s);
   return reverseWords(chars, n);
+};
+
+/*
+Approach II: Using for loop
+
+Runtime: 84 ms Beats 5.66%
+Memory: 55.79 MB Beats 46.94%
+ */
+var reverseWords = function (s) {
+  const N = s.length;
+  let result = "";
+  let i = 0;
+  for (let j = 0; j < N; j++) {
+    if (s[j] == " "){
+        //get the word before space and reverse it
+        const word = s.slice(i, j);
+        const chars = Array.from(word);
+        chars.reverse();
+        result+= chars.join("");
+        //add space to the result
+        result+= " ";
+        //reset left pointer
+        i = j + 1;
+    }
+  }
+  //add last word
+  if (i < N){
+    const word = s.slice(i, N);
+    const chars = Array.from(word);
+    chars.reverse();
+    result+= reversedChars.join("");
+  }
+  return result;
 };

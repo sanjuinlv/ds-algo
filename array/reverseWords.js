@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/reverse-words-in-a-string/
+Type: Easy
+
 Given an input string s, reverse the order of the words.
 A word is defined as a sequence of non-space characters. The words in s will be separated
 by at least one space.
@@ -23,6 +26,12 @@ Input: s = "a good   example"
 Output: "example good a"
 Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
 
+Constraints:
+ - 1 <= s.length <= 104
+ - s contains English letters (upper-case and lower-case), digits, and spaces ' '.
+ - There is at least one word in s.
+ 
+Follow-up: If the string data type is mutable in your language, can you solve it in-place with O(1) extra space?
 */
 /**
  * @param {string} s
@@ -40,6 +49,36 @@ var reverseWords = function (s) {
   return s.trim().split(/\W+/).reverse().join(" ");
 };
 
+/* 
+Approach I: Using two pointers
+Time: O(N)
+Space: O(1)
+Runtime: 64 ms Beats 17.37%
+Memory: 51.99 MB Beats 10.36%
+*/
+var reverseWords = function (s) {
+  const N = s.length;
+  if (N == 0) return s;
+  const result = [];
+  let j = N;
+  for (let i = N - 1; i >= 0; i--) {
+    if (s[i] == " ") {
+      //check if we have already scanned a word
+      if (j - i - 1 > 0) {
+        if (result.length) result.push(" ");
+        result.push(s.slice(i + 1, j));
+      }
+      //move j to ith position
+      j = i;
+    }
+  }
+  //add last word 
+  if (j > 0) {
+    if (result.length) result.push(" ");
+    result.push(s.slice(0, j));
+  } 
+  return result.join("");
+};
 /* 
 Approach II: Using two pointers
 Time: O(N)

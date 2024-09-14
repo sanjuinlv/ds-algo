@@ -1,5 +1,7 @@
 /* 
-Problem Type: Simple
+https://leetcode.com/problems/rotate-array/description/
+Type: Medium
+
 Given an array, rotate the array to the right by k steps, where k is non-negative.
 Follow up:
 Try to come up as many solutions as you can, there are at least 3 different ways to 
@@ -26,6 +28,7 @@ Contraint
     -2^31 <= nums[i] <= 2^31 - 1
     0 <= k <= 10^5
 */
+
 /**
  * Time complexity: O(N)
  * Space complexity: O(N) (Using temp array)
@@ -69,20 +72,23 @@ var rotate = function (nums, k) {
  * @param k
  */
 /*
-Runtime: 88 ms, faster than 79.35% of JavaScript online submissions for Rotate Array.
-Memory Usage: 39.4 MB, less than 90.90% of JavaScript online submissions for Rotate Array.
+Runtime: 77 ms, faster than 75.15% of JavaScript online submissions for Rotate Array.
+Memory Usage: 57.41 MB, less than 63.35% of JavaScript online submissions for Rotate Array.
  */
 var rotate = function (nums, k) {
   const N = nums.length;
   if (k > N) k = k % N;
-  const reverse = (arr, start, end) => {
-    while (start < end) {
-      let temp = arr[start];
-      arr[start++] = arr[end];
-      arr[end--] = temp;
+  const revesre = (left, right) => {
+    while (left < right) {
+      const temp = nums[left];
+      nums[left++] = nums[right];
+      nums[right--] = temp;
     }
   };
-  reverse(nums, 0, N - 1);
-  reverse(nums, 0, k - 1);
-  reverse(nums, k, N - 1);
+  //1. reverse the array
+  revesre(0, N - 1);
+  //2. reverse 0 to k-1
+  revesre(0, k - 1);
+  //3. reverse k to N-1
+  revesre(k, N - 1);
 };

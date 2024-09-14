@@ -1,5 +1,6 @@
 /* 
 https://leetcode.com/problems/top-k-frequent-elements/
+Type: Medium
 
 Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
 
@@ -62,17 +63,13 @@ var topKFrequent = function (nums, k) {
 (Optimized) Using Map and min PQ (to store only k element)
 Time: O(N Log k)
 Space: O(N + k) to store hashmap and a heap with k elements
-Runtime: 103 ms, faster than 57.14% of JavaScript online submissions for Top K Frequent Elements.
-Memory Usage: 46.6 MB, less than 36.78% of JavaScript online submissions for Top K Frequent Elements.
+Runtime: 95 ms, faster than 9.64% of JavaScript online submissions for Top K Frequent Elements.
+Memory Usage: 56.07 MB, less than 29.10% of JavaScript online submissions for Top K Frequent Elements.
 */
 var topKFrequent = function (nums, k) {
-  const numMap = new Map();
+  const numCountMap = new Map();
   for (let num of nums) {
-    if (!numMap.has(num)) {
-      numMap.set(num, 1);
-    } else {
-      numMap.set(num, numMap.get(num) + 1);
-    }
+    numCountMap.set(num, (numCountMap.get(num) || 0) + 1);
   }
   const minPQ = new MinPriorityQueue({
     compare: (a, b) => {
@@ -80,13 +77,13 @@ var topKFrequent = function (nums, k) {
     },
   });
   //with this changes we only need to store upto k elements
-  for (const key of numMap.keys()) {
+  for (const key of numCountMap.keys()) {
     if (minPQ.size() < k) {
-      minPQ.enqueue({ num: key, count: numMap.get(key) });
+      minPQ.enqueue({ num: key, count: numCountMap.get(key) });
     } else {
-      if (minPQ.front().count < numMap.get(key)) {
+      if (minPQ.front().count < numCountMap.get(key)) {
         minPQ.dequeue();
-        minPQ.enqueue({ num: key, count: numMap.get(key) });
+        minPQ.enqueue({ num: key, count: numCountMap.get(key) });
       }
     }
   }
@@ -107,19 +104,27 @@ Runtime: 104 ms, faster than 55.65% of JavaScript online submissions for Top K F
 Memory Usage: 45.1 MB, less than 69.45% of JavaScript online submissions for Top K Frequent Elements.
 */
 var topKFrequent = function (nums, k) {
-  const numMap = new Map();
+  const countMap = new Map();
+  //create count map
   for (let num of nums) {
-    numMap.set(num, (numMap.get(num) || 0) + 1);
+    countMap.set(num, (countMap.get(num) || 0) + 1);
   }
+  //create frequency bucket
   const bucket = new Array(nums.length);
-  for (const key of numMap.keys()) {
-    const frequency = numMap.get(key);
+  for (let key of countMap.keys()) {
+    const frequency = countMap.get(key);
+    //we store in array for a given freq so that we can avoid
+    //overriding for same freq numbers
     if (!bucket[frequency]) bucket[frequency] = [];
     bucket[frequency].push(key);
   }
+  //If we look at bucket then we can find that most frequent elements are located 
+  //at the end of arr and least frequent elemnts at the begining
+  //so we can iterate from end to the begining of the arr and add element to the result array
   const result = [];
   for (let i = bucket.length - 1; i >= 0 && result.length < k; i--) {
     if (bucket[i]) result.push(...bucket[i]);
   }
   return result;
 };
+

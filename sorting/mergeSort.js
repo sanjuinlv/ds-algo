@@ -1,33 +1,43 @@
+/*
+
+- Mereg sort is stable sort 
+
+Time: O(NlogN)
+Ssace: O(N) for auxilary array
+
+Usage:
+let arr = [3,4,5,1,1,2,2,7];
+MergeSort.sort(arr);
+*/
 class MergeSort {
-  static sort(A, lo = 0, hi = A.length - 1) {
-    // merge left and right
-    console.log(`sort:: lo: ${lo}, hi: ${hi}`);
+  static sort(A) {
+    const aux = new Array(A.length);
+    MergeSort._sort(A, aux, 0, A.length - 1);
+  }
+  static _sort(A, aux, lo, hi) {
     if (lo < hi) {
-      const middle = lo + parseInt((hi - lo) / 2);
-      console.log(`sort:: mid: ${middle}`);
-      MergeSort.sort(A, lo, middle);
-      MergeSort.sort(A, middle + 1, hi);
-      MergeSort.merge(A, lo, middle, hi);
+      const mid = lo + Math.floor((hi - lo) / 2);
+      //sort two half of the array
+      MergeSort._sort(A, aux, lo, mid);
+      MergeSort._sort(A, aux, mid + 1, hi);
+      //merge the sorted array
+      MergeSort._merge(A, aux, lo, mid, hi);
     }
   }
-
-  static merge(A, lo, mid, hi) {
-    let left = lo,
-      right = mid + 1;
-    console.log(`merge:: lo: ${lo}, mid: ${mid}, hi: ${hi}`);
-    let aux = new Array(hi - lo);
-    const LESS = (a, b) => a - b < 0;
-    //copy item to aux array
+  static _merge(A, aux, lo, mid, hi) {
+    //copy to aux array
     for (let k = lo; k <= hi; k++) {
       aux[k] = A[k];
     }
-
+    const LESS = (a, b) => a < b;
+    let left = lo;
+    let right = mid + 1;
     for (let k = lo; k <= hi; k++) {
-      // if left pointer has crossed the mid then copy remaining right items until done (K==hi)
+      // if left has crossed mid
       if (left > mid) {
         A[k] = aux[right++];
       } else if (right > hi) {
-        // if right pointer has crossed the hi then copy remaining left items until done (K==hi)
+        //right has crossed hi
         A[k] = aux[left++];
       } else if (LESS(aux[left], aux[right])) {
         A[k] = aux[left++];
@@ -37,6 +47,7 @@ class MergeSort {
     }
   }
 }
+
 // A = [0] => [0]
 // A = [1,1] => [1,1]
 // A = [2,1] => [1, 2]

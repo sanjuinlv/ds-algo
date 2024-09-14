@@ -37,7 +37,7 @@ Constraints:
  * @return {number[][]}
  */
 /* 
-Approach I: sort and traversal
+Approach I: sort and traversal (One Pass)
 Time: O(NLogN)
 Space: O(logN), based on sorting algorithm
 
@@ -61,12 +61,37 @@ var minimumAbsDifference = function (arr) {
   return result;
 };
 
+/*
+Approach I: Sort + traversal (two pass) 
+Time: O(NLogN)
+Space; O(1), no extra space other than result
+
+Runtime: 133 ms Beats 68.24% 
+Memory: 63.32 MB Beats 55.00%
+ */
+var minimumAbsDifference = function (arr) {
+  const result = [];
+  const N = arr.length;
+  //sort the array
+  arr.sort((a, b) => a - b);
+  //find the min dif
+  let minDiff = Infinity;
+  for (let i = 1; i < N; i++) {
+    minDiff = Math.min(minDiff, arr[i] - arr[i - 1]);
+  }
+  //find all pairs which has this diff
+  for (let i = 1; i < N; i++) {
+    if (arr[i] - arr[i - 1] == minDiff) result.push([arr[i - 1], arr[i]]);
+  }
+  return result;
+};
+
 /* 
 Approach II: Counting Sort
 Time: O(m + n), 
     - We initialize an auxiliary array of all zeros, which takes O(m) time.
     - We then iterate over arr to inspect each element and increment the
-     corresponding element in line; this takes O(n)O(n) time.
+     corresponding element in line; this takes O(n) time.
     - To check every pair of elements, we must iterate over line; this takes O(m) time.
     - To sum up, the overall time complexity is O(m + n)
 

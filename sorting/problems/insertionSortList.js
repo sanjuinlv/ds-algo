@@ -13,17 +13,17 @@ the location it belongs within the sorted list and inserts it there.
 It repeats until no input elements remain.
 
 Example 1:
-Input: head = [4,2,1,3]
-Output: [1,2,3,4]
+(4)-->(2)-->(1)--(3) => (1)-->(2)-->(3)--(4)
+  Input: head = [4,2,1,3]
+  Output: [1,2,3,4]
 
 Example 2:
-Input: head = [-1,5,3,4,0]
-Output: [-1,0,3,4,5]
+  Input: head = [-1,5,3,4,0]
+  Output: [-1,0,3,4,5]
 
 Constraints:
-
-The number of nodes in the list is in the range [1, 5000].
--5000 <= Node.val <= 5000
+ * The number of nodes in the list is in the range [1, 5000].
+ * -5000 <= Node.val <= 5000
 
 */
 /**
@@ -37,6 +37,8 @@ The number of nodes in the list is in the range [1, 5000].
  * @param {ListNode} head
  * @return {ListNode}
  */
+//Approach I: 
+//This is not in working 
 var insertionSortList = function (head) {
   if (head === null) return head;
   const reverse = (node) => {
@@ -68,11 +70,12 @@ var insertionSortList = function (head) {
 };
 
 /* 
+Approach I: Insertion Sort
 Time: O(N^2)
 Space: O(N)
 
-Runtime: 180 ms, faster than 25.14% of JavaScript online submissions for Insertion Sort List.
-Memory Usage: 44.5 MB, less than 68.85% of JavaScript online submissions for Insertion Sort List.
+Runtime: 91 ms, faster than 49.05% of JavaScript online submissions for Insertion Sort List.
+Memory Usage: 52.68 MB, less than 85.55% of JavaScript online submissions for Insertion Sort List.
 */
 var insertionSortList = function (head) {
   if (head == null) return head;
