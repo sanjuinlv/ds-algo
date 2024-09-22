@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/find-minimum-in-rotated-sorted-array
+Type: Medium
+
 Suppose an array of length n sorted in ascending order is rotated between
  1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become:
 
@@ -44,6 +47,7 @@ Constraints:
 Approach: Binary Search
 Time: O(LogN)
 Space: O(1)
+
 Runtime: 56 ms, faster than 98.29% of JavaScript online submissions for Find Minimum in Rotated Sorted Array.
 Memory Usage: 42.6 MB, less than 7.25% of JavaScript online submissions for Find Minimum in Rotated Sorted Array.
 */
@@ -65,13 +69,10 @@ var findMin = function (nums) {
     // if the mid elements value is greater than the 0th element this means
     // the least value is still somewhere to the right as we are still dealing with elements
     // greater than nums[0]
-    if (nums[mid] > nums[0]) {
-      left = mid + 1;
-    } else {
-      // if nums[0] is greater than the mid value then this means the smallest value is
-      // somewhere to the left
-      right = mid;
-    }
+    if (nums[mid] > nums[0]) left = mid + 1;
+    // if nums[0] is greater than the mid value then this means the smallest value is
+    // somewhere to the left
+    else right = mid;
   }
   return nums[left];
 };

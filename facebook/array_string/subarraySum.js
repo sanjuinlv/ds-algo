@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/subarray-sum-equals-k/
+Type: Medium
+
 Given an array of integers nums and an integer k, return the total number of continuous 
 subarrays whose sum equals to k.
 
@@ -64,14 +67,11 @@ var subarraySum = function (nums, k) {
   return count;
 };
 
-// Using hashmap
-// Time complexity: O(N)
-// Space complexity: O(N)
 /* 
-Runtime: 112 ms, faster than 69.93% of JavaScript online submissions for Subarray Sum Equals K.
-Memory Usage: 46 MB, less than 12.75% of JavaScript online submissions for Subarray Sum Equals K.
-*/
-/* 
+Using hashmap
+Time complexity: O(N)
+Space complexity: O(N)
+
 The idea behind this approach is as follows: If the cumulative sum(represented by sum[i] for 
 sum upto ith index) upto two indices is the same, the sum of the elements lying in between those 
 indices is zero. Extending the same thought further, if the cumulative sum upto two indices, say i and j 
@@ -86,18 +86,23 @@ Further, for every sum encountered, we also determine the number of times the su
 since it will determine the number of times a subarray with sum kk has occured upto the current index. 
 We increment the count by the same amount.
 After the complete array has been traversed, the count gives the required result
+
+Runtime: 66 ms, faster than 90.02% of JavaScript online submissions for Subarray Sum Equals K.
+Memory Usage: 60.12 MB, less than 38.34% of JavaScript online submissions for Subarray Sum Equals K.
+
+Explanations:
+https://www.youtube.com/watch?v=xvNwoz-ufXA&ab_channel=takeUforward
+https://www.youtube.com/watch?v=fFVZt-6sgyo&ab_channel=NeetCode
 */
 var subarraySum = function (nums, k) {
-  const N = nums.length;
-  let count = 0,
-    sum = 0;
   const countMap = new Map();
-  for (let i = 0; i < N; i++) {
-    sum += nums[i];
-    if (sum == k) count++;
-    if (countMap.has(sum - k)) {
-      count += countMap.get(sum - k);
-    }
+  let sum = 0;
+  let count = 0
+  //base condition
+  countMap.set(0, 1);
+  for (const num of nums) {
+    sum += num;
+    if (countMap.has(sum - k)) count += countMap.get(sum - k);
     countMap.set(sum, (countMap.get(sum) || 0) + 1);
   }
   return count;

@@ -69,3 +69,6 @@ function countingSort(arr) {
   }
   return sortedArray;
 }
+
+let arr = [3,6,9,1]
+countingSort(arr);

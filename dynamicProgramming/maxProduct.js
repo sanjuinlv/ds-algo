@@ -1,6 +1,8 @@
 /* 
-Given an integer array nums, find a contiguous non-empty subarray within
- the array that has the largest product, and return the product.
+https://leetcode.com/problems/maximum-product-subarray/
+Type: Medium
+
+Given an integer array nums, find a contiguous non-empty subarray within the array that has the largest product, and return the product.
 The test cases are generated so that the answer will fit in a 32-bit integer.
 
 A subarray is a contiguous subsequence of the array.
@@ -15,6 +17,7 @@ Input: nums = [-2,0,-1]
 Output: 0
 Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
 */
+
 /**
  * @param {number[]} nums
  * @return {number}
@@ -23,33 +26,6 @@ Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
 Approach: Top-Down
 
 */
-//maxProduct([2,3,-2,4])
-//maxProduct([-2,0,-1])
-// Fails for [2,3,-2,-6,4]
-var maxProduct = function (nums) {
-  const N = nums.length;
-  const memo = new Array(N).fill(-1);
-  let maxProd = Number.NEGATIVE_INFINITY;
-  memo[0] = nums[0];
-  const dp = (i) => {
-    if (memo[i] == -1) {
-      const prevMax = dp(i - 1);
-      const currProduct = prevMax * nums[i];
-      console.log(`prevMax: ${prevMax}, currProduct: ${currProduct}`);
-      if (currProduct > prevMax) {
-        memo[i] = currProduct;
-        maxProd = Math.max(currProduct, maxProd);
-      } else {
-        memo[i] = nums[i];
-      }
-      console.log(`maxProd: ${maxProd}`);
-    }
-    return memo[i];
-  };
-  dp(N - 1);
-  return maxProd;
-};
-
 /* 
 Approach: Brute force
 Time: O(N^2)
@@ -77,19 +53,18 @@ Approach: Dynamic Programming
 Time: O(N)
 Space: O(1)
 
-Runtime: 88 ms, faster than 61.13% of JavaScript online submissions for Maximum Product Subarray.
-Memory Usage: 42.5 MB, less than 54.15% of JavaScript online submissions for Maximum Product Subarray.
-[2,3,-2,-6,4,0,1,2,8,9] - PASS
- */
+Runtime: 60 ms, faster than 45.87% of JavaScript online submissions for Maximum Product Subarray.
+Memory Usage: 49.66 MB, less than 59.41% of JavaScript online submissions for Maximum Product Subarray.
+*/
 var maxProduct = function (nums) {
-  let curr_max = nums[0];
-  let curr_min = nums[0];
-  let maxProd = curr_max;
+  let localMax = nums[0];
+  let localMin = localMax;
+  let globalMax = localMax;
   for (let i = 1; i < nums.length; i++) {
-    let temp = Math.max(nums[i], nums[i] * curr_max, nums[i] * curr_min);
-    curr_min = Math.min(nums[i], nums[i] * curr_max, nums[i] * curr_min);
-    curr_max = temp;
-    maxProd = Math.max(maxProd, curr_max);
+    let temp = localMin;
+    localMin = Math.min(nums[i], nums[i] * localMin, nums[i] * localMax);
+    localMax = Math.max(nums[i], nums[i] * temp, nums[i] * localMax);
+    globalMax = Math.max(globalMax, localMax);
   }
-  return maxProd;
+  return globalMax;
 };

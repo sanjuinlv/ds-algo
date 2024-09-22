@@ -135,35 +135,29 @@ var search = function (nums, target) {
 /* 
 Approach II: One pass binary search
 
-Runtime: 72 ms, faster than 96.40% of JavaScript online submissions for Search in Rotated Sorted Array.
-Memory Usage: 38.9 MB, less than 43.96% of JavaScript online submissions for Search in Rotated Sorted Array.
+Runtime: 55 ms, faster than 43.11% of JavaScript online submissions for Search in Rotated Sorted Array.
+Memory Usage: 49.30 MB, less than 13.42% of JavaScript online submissions for Search in Rotated Sorted Array.
 */
 var search = function (nums, target) {
   let left = 0;
   let right = nums.length - 1;
   while (left <= right) {
-    //mid
-    const mid = parseInt(left + (right - left) / 2);
+    const mid = left + Math.floor((right - left) / 2);
     if (nums[mid] === target) return mid;
     //if mid is greater than left then this part is not rotated
     if (nums[mid] >= nums[left]) {
       //the number is between the sorted array
-      if (target >= nums[left] && target < nums[mid]) {
-        right = mid - 1;
-      } else {
-        //look in other half
-        left = mid + 1;
-      }
+      if (nums[left] <= target && target < nums[mid]) right = mid - 1;
+      //look in other half
+      else left = mid + 1;
     } else {
-      //mid < nums[left] implies rotation index is between 0 and mid.
+      //nums[mid] < nums[left] implies rotation index is between 0 and mid.
       //It implies that sub-array from mid to end is not rotated
       //check if target is between mid and end
-      if (target > nums[mid] && target <= nums[right]) {
-        left = mid + 1;
-      } else {
-        right = mid - 1;
-      }
+      if (nums[mid] < target && target <= nums[right]) left = mid + 1;
+      else right = mid - 1;
     }
   }
   return -1;
 };
+

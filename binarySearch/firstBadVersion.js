@@ -1,4 +1,5 @@
 /*
+https://leetcode.com/problems/first-bad-version
 Type: Easy
 
 You are a product manager and currently leading a team to develop a new product. 
@@ -25,10 +26,12 @@ Example 2:
 Input: n = 1, bad = 1
 Output: 1
 
+Constraints:
+ - 1 <= bad <= n <= 2^31 - 1
  */
 /**
  * Definition for isBadVersion()
- * 
+ *
  * @param {integer} version number
  * @return {boolean} whether the version is bad
  * isBadVersion = function(version) {
@@ -42,51 +45,42 @@ Output: 1
  */
 /* 
 Approach: Using Binary Search (Recursive)
-Runtime: 72 ms, faster than 87.67% of JavaScript online submissions for First Bad Version.
-Memory Usage: 38.8 MB, less than 5.15% of JavaScript online submissions for First Bad Version.
+Runtime: 48 ms, faster than 68.63% of JavaScript online submissions for First Bad Version.
+Memory Usage: 48.95 MB, less than 22.01% of JavaScript online submissions for First Bad Version.
 */
-var solution = function(isBadVersion) {
-    /**
-     * @param {integer} n Total versions
-     * @return {integer} The first bad version
-     */
-    return function(n) {
-        let badVersionNo;
-        const helper = (low, high) => {
-            if (low > high) return;
-            const middle = low + parseInt((high-low) / 2);
-            badVersion = isBadVersion(middle);
-            // if bad version, then find the middle of left half and check again
-            if (badVersion){
-                badVersionNo = middle;
-                helper(low, middle - 1);
-            } else {
-                // if false, then find the middle from right half and check again
-                helper(middle + 1, high);
-            }
-        }
-        helper(1, n);
-        return badVersionNo;
+var solution = function (isBadVersion) {
+  /**
+   * @param {integer} n Total versions
+   * @return {integer} The first bad version
+   */
+  return function (n) {
+    const helper = (left, right) => {
+      if (left >= right) return right;
+      const mid = left + parseInt((right - left) / 2);
+      if (isBadVersion(mid)) return helper(left, mid);
+      else return helper(mid + 1, right);
     };
+    return helper(1, n);
+  };
 };
 /* 
 Iterative: Binary search
-Runtime: 80 ms, faster than 38.51% of JavaScript online submissions for First Bad Version.
-Memory Usage: 38.2 MB, less than 75.69% of JavaScript online submissions for First Bad Version.
+Runtime: 46 ms, faster than 78.74% of JavaScript online submissions for First Bad Version.
+Memory Usage: 48.79 MB, less than 49.10% of JavaScript online submissions for First Bad Version.
 */
-var solution = function(isBadVersion) {
-    return function(n) {
-        let left = 1;
-        let right = n;
-        while (left < right) {
-            let mid = left + Math.floor((right - left ) / 2);
-            if (isBadVersion(mid)){
-                right = mid;
-            } else {
-                left = mid + 1;
-            }
-        }
-        // left will be equal to right when reach this line
-        return left; 
-    };
+var solution = function (isBadVersion) {
+  /**
+   * @param {integer} n Total versions
+   * @return {integer} The first bad version
+   */
+  return function (n) {
+    let left = 1;
+    let right = n;
+    while (left < right) {
+      const mid = left + parseInt((right - left) / 2);
+      if (isBadVersion(mid)) right = mid;
+      else left = mid + 1;
+    }
+    return right;
+  };
 };

@@ -128,3 +128,11 @@ var topKFrequent = function (nums, k) {
   return result;
 };
 
+/* 
+Approach III: using quick select
+Time: O(N) in average case, O(N^2) in worst case
+Space: O(N) to store hashmap and unique elements
+
+*/
+//TODO: Implementaiton
+

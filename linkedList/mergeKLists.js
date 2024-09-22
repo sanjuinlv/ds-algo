@@ -1,4 +1,43 @@
 /* 
+https://leetcode.com/problems/merge-k-sorted-lists/description/
+Type: Hard
+
+You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+
+Merge all the linked-lists into one sorted linked-list and return it.
+
+Example 1:
+
+Input: lists = [[1,4,5],[1,3,4],[2,6]]
+Output: [1,1,2,3,4,4,5,6]
+Explanation: The linked-lists are:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+merging them into one sorted list:
+1->1->2->3->4->4->5->6
+
+Example 2:
+
+Input: lists = []
+Output: []
+Example 3:
+
+Input: lists = [[]]
+Output: []
+
+Constraints:
+ - k == lists.length
+ - 0 <= k <= 104
+ - 0 <= lists[i].length <= 500
+ - -10^4 <= lists[i][j] <= 10^4
+ - lists[i] is sorted in ascending order.
+ - The sum of lists[i].length will not exceed 104.
+
+*/
+/* 
 Approach: Merge list one by one
 Time: O(kN): where k is the number of linked lists.
  - We can merge two sorted linked list in O(n) time where n is the total number of
@@ -45,11 +84,11 @@ var mergeKLists = function (lists) {
 };
 
 /* 
-Approach: Divide And Conquer
+Approach II: Divide And Conquer Merge Sort
 Time: O(N logK) where k is number of linked list
 Space: O(k) - stack size
-Runtime: 114 ms, faster than 79.89% of JavaScript online submissions for Merge k Sorted Lists.
-Memory Usage: 47.4 MB, less than 69.98% of JavaScript online submissions for Merge k Sorted Lists.
+Runtime: 75 ms, faster than 90.40% of JavaScript online submissions for Merge k Sorted Lists.
+Memory Usage: 55.52 MB, less than 57.60% of JavaScript online submissions for Merge k Sorted Lists.
 */
 var mergeKLists = function (lists) {
   const N = lists.length;
@@ -69,21 +108,22 @@ var mergeKLists = function (lists) {
       }
       curr = curr.next;
     }
-    curr.next = l1 === null ? l2 : l1;
+    curr.next = l1 == null ? l2 : l1;
     return dummy.next;
   };
 
-  const mergeDivideAndConquer = (lists, lo, hi) => {
-    //crossed
-    if (lo > hi) return null;
-    //size == 1
-    if (lo === hi) return lists[lo]; //left-leaning
+  const mergeDivideAndConquer = (list, lo, hi) => {
+    if (lo > hi) return hi;
+    if (lo == hi) return lists[lo]; //left-leaning
     const mid = lo + parseInt((hi - lo) / 2);
+    //sort left
     const left = mergeDivideAndConquer(lists, lo, mid);
+    //sort right
     const right = mergeDivideAndConquer(lists, mid + 1, hi);
+    //merge two parts
     return mergeTwoLists(left, right);
   };
-  return mergeDivideAndConquer(lists, 0, lists.length - 1);
+  return mergeDivideAndConquer(lists, 0, N - 1);
 };
 
 /* 

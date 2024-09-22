@@ -39,14 +39,11 @@ var mySqrt = function (x) {
   let left = 2;
   let right = parseInt(x / 2);
   while (left <= right) {
-    const mid = left + parseInt((right - left) / 2);
-    const prod = mid * mid;
-    if (prod == x) return mid;
-    else if (prod > x) {
-      right = mid - 1;
-    } else {
-      left = mid + 1;
-    }
+    mid = left + parseInt((right - left) / 2);
+    const sqr = mid * mid;
+    if (sqr == x) return mid;
+    if (sqr < x) left = mid + 1;
+    else right = mid - 1;
   }
   return right;
 };

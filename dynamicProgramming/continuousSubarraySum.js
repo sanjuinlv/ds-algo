@@ -1,21 +1,39 @@
 /* 
-Given a list of non-negative numbers and a target integer k, write a function to check 
-if the array has a continuous subarray of size at least two (2) that sums up to a multiple of k, 
-that is, sums up to n*k where n is also an integer.
+https://leetcode.com/problems/continuous-subarray-sum/description/
+Type: Medium
+
+Given an integer array nums and an integer k, return true if nums has a good subarray or false otherwise.
+
+A good subarray is a subarray where:
+
+ - its length is at least two, and
+ - the sum of the elements of the subarray is a multiple of k.
+
+Note that:
+ - A subarray is a contiguous part of the array.
+ - An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
 
 Example 1:
-Input: [23, 2, 4, 6, 7],  k=6
-Output: True
-Explanation: Because [2, 4] is a continuous subarray of size 2 and sums up to 6.
+  Input: [23, 2, 4, 6, 7],  k=6
+  Output: True
+  Explanation: Because [2, 4] is a continuous subarray of size 2 and sums up to 6.
 
 Example 2:
-Input: [23, 2, 6, 4, 7],  k=6
-Output: True
-Explanation: Because [23, 2, 6, 4, 7] is an continuous subarray of size 5 and sums up to 42.
+  Input: [23, 2, 6, 4, 7],  k=6
+  Output: True
+  Explanation: Because [23, 2, 6, 4, 7] is an continuous subarray of size 5 and sums up to 42.
+
+Example 3:
+
+Input: nums = [23,2,6,4,7], k = 13
+Output: false
 
 Constraint: 
-    - The length of the array won't exceed 10,000.
-    - You may assume the sum of all the numbers is in the range of a signed 32-bit integer.
+ - 1 <= nums.length <= 10^5
+ - 0 <= nums[i] <= 10^9
+ - 0 <= sum(nums[i]) <= 2^31 - 1
+ - 1 <= k <= 2^31 - 1
+
 */
 /**
  * @param {number[]} nums
@@ -72,6 +90,12 @@ var checkSubarraySum = function (nums, k) {
 
 /*
 Approach:  Brute Force
+One brute force approach for this problem can be to find out the sum of all subarrays
+of the array and check if there exists a subarray with a sum divisible by k. Since the
+number of subarrays in an array of size n is n * (n - 1) / 2, the time complexity to
+calculate all possible subarrays is O(n^2), and calculating the sum for each subarray 
+takes O(n). Therefore, the total time complexity is O(n^3), which will give a Time Limit Exceeded judgment.
+
 Time Complexity: O(N^3)
 Space Complexity: O(1)
 
@@ -147,7 +171,6 @@ Approach: Using HashMap
 Time Complexity: O(N)
 Space Complexity: O(N)
 
-
 Intuition for the solution is as below:
 c(i,j) = c(0,j) - c(0,i-1) (j > i) -> now let's take mod of both sides
 c(i,j) % k = (c(0,j) - c(0,i-1)) % k -> we know that the result is a multiple of k hence its remainder is going to be 0
@@ -158,25 +181,21 @@ If we're standing on c(0,j) % k we have to find if there has already been such a
 number. If yes, then the relation works and we have found 2 such numbers.
 We're left to check that the interval length is >= 2.
 
-Runtime: 149 ms, faster than 55.34% of JavaScript online submissions for Continuous Subarray Sum.
-Memory Usage: 57.4 MB, less than 63.24% of JavaScript online submissions for Continuous Subarray Sum.
-
+Runtime: 103 ms, faster than 83.07% of JavaScript online submissions for Continuous Subarray Sum.
+Memory Usage: 79.59 MB, less than 6.35% of JavaScript online submissions for Continuous Subarray Sum.
 */
 var checkSubarraySum = function (nums, k) {
-  let N = nums.length;
   const prefixModMap = new Map();
-  //base case handling
+  //base case handling, to ensure we have minimum of length two when we do i-j
   prefixModMap.set(0, -1);
   let prefixModSum = 0;
-  for (let i = 0; i < N; i++) {
+  for (let i = 0; i < nums.length; i++) {
     prefixModSum += nums[i];
-    if (k !== 0) prefixModSum = prefixModSum % k;
+    prefixModSum = prefixModSum % k;
     if (prefixModMap.has(prefixModSum)) {
-      //since we need min two size length, check if the found pos and curr pos has diff of 2
+      //since we need min two size length, check if the found index and curr index has diff of 2
       if (i - prefixModMap.get(prefixModSum) > 1) return true;
-    } else {
-      prefixModMap.set(prefixModSum, i);
-    }
+    } else prefixModMap.set(prefixModSum, i);
   }
   return false;
 };

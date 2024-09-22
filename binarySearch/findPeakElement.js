@@ -1,4 +1,7 @@
 /* 
+https://leetcode.com/problems/find-peak-element
+Type: Medium
+
 A peak element is an element that is strictly greater than its neighbors.
 Given an integer array nums, find a peak element, and return its index. 
 If the array contains multiple peaks, return the index to any of the peaks.
@@ -16,9 +19,9 @@ Output: 5
 Explanation: Your function can return either index number 1 where the peak element is 2, or index number 5 where the peak element is 6.
 
 Constraints:
-1 <= nums.length <= 1000
--231 <= nums[i] <= 231 - 1
-nums[i] != nums[i + 1] for all valid i.
+ - 1 <= nums.length <= 1000
+ - -2^31 <= nums[i] <= 2^31 - 1
+ - nums[i] != nums[i + 1] for all valid i.
 
 */
 /**
@@ -70,15 +73,22 @@ We again, need not compare nums[i] with nums[i-1]. This is because, we could rea
 as the current element only when the check nums[i] > nums[i + 1] failed for the previous 
 (i-1)th element, indicating that nums[i-1] < nums[i]. Thus, we are able to identify the 
 peak element correctly in this case as well.
+
+Time: O(N)
+Space: O(1)
+
+Runtime: 51 ms Beats 60.14%
+Memory: 48.87 MB Beats 67.81%
 */
 var findPeakElement = function (nums) {
   const N = nums.length;
   for (let i = 0; i < N - 1; i++) {
-    //nums[i] > nums[i+1]
     if (nums[i] > nums[i + 1]) {
       return i;
     }
   }
+  //if none of N-2 elements satisfy condition nums[i] > nums[i+1],
+  //that means last element is peak
   return N - 1;
 };
 
@@ -112,24 +122,19 @@ Approach III: Iterative Binary Search
 Time Complexity: O(log N)
 Space Complexity: O(1) (recursive call stack)
 
-Runtime: 80 ms, faster than 58.62% of JavaScript online submissions for Find Peak Element.
-Memory Usage: 38.8 MB, less than 35.34% of JavaScript online submissions for Find Peak Element.
+Runtime: 51 ms, faster than 60.14% of JavaScript online submissions for Find Peak Element.
+Memory Usage: 49.48 MB, less than 8.49% of JavaScript online submissions for Find Peak Element.
 */
 var findPeakElement = function (nums) {
   const N = nums.length;
-  let lo = 0,
-    hi = N - 1;
+  let lo = 0;
+  let hi = N - 1;
   while (lo < hi) {
     const mid = lo + parseInt((hi - lo) / 2);
-    //mid is on descending slope
-    if (nums[mid] > nums[mid + 1]) {
-      //the peak must be on left side
-      hi = mid;
-    } else {
-      //mid is on ascending slope
-      //the peak must be on right side
-      lo = mid + 1;
-    }
+    //mid is on descending slope. the peak must be on left side
+    if (nums[mid] > nums[mid + 1]) hi = mid;
+    //mid is on ascending slope. The peak must be on right side
+    else lo = mid + 1;
   }
   return lo;
 };
