@@ -1,5 +1,7 @@
 /* 
+50
 https://leetcode.com/problems/powx-n/
+Type: Medium
 
 Implement pow(x, n), which calculates x raised to the power n (i.e. x^n).
 
@@ -60,19 +62,16 @@ Thus we need at most O(logn) computations to get the result.
 Space: O(logN), For each computation, we need to store the result of x ^ {n / 2}.
 We need to do the computation for O(logn) times, so the space complexity is O(logn).
 
-Runtime: 80 ms, faster than 79.70% of JavaScript online submissions for Pow(x, n).
-Memory Usage: 38.8 MB, less than 66.39% of JavaScript online submissions for Pow(x, n).
+Runtime: 52 ms, faster than 63.26% of JavaScript online submissions for Pow(x, n).
+Memory Usage: 49.08 MB, less than 38.89% of JavaScript online submissions for Pow(x, n).
 */
 var myPow = function (x, n) {
   const fastPow = (x, n) => {
     if (n == 0) return 1;
     if (n == 1) return x;
-    const half = fastPow(x, Math.floor(n / 2));
-    if (n % 2 == 0) {
-      return half * half;
-    } else {
-      return half * half * x;
-    }
+    const half = fastPow(x, parseInt(n / 2));
+    if (n % 2 == 0) return half * half;
+    else return half * half * x;
   };
   if (n < 0) {
     n = -n;
@@ -84,8 +83,8 @@ var myPow = function (x, n) {
 /* 
 Approach 3: Fast Power Algorithm Iterative
  
-Runtime: 76 ms, faster than 92.35% of JavaScript online submissions for Pow(x, n).
-Memory Usage: 38.9 MB, less than 67.33% of JavaScript online submissions for Pow(x, n).
+Runtime: 44 ms, faster than 93.47% of JavaScript online submissions for Pow(x, n).
+Memory Usage: 49.28 MB, less than 16.60% of JavaScript online submissions for Pow(x, n).
 */
 var myPow = function (x, n) {
   let result = 1;
@@ -104,22 +103,22 @@ var myPow = function (x, n) {
 
 //only for postive numbers
 // Recursive
-var pow = function (a, b) {
-  if (b == 0) return 1;
-  let half = pow(a, Math.floor(b / 2));
+var pow = function (x, n) {
+  if (n == 0) return 1;
+  let half = pow(x, Math.floor(n / 2));
   result = half * half;
-  if (b % 2 === 1) result *= a;
+  if (n % 2 === 1) result *= x;
   return result;
 };
 
 // Iterative
-var pow = function (a, b) {
-  if (b == 0) return 1;
+var pow = function (x, n) {
+  if (n == 0) return 1;
   let result = 1;
-  while (b > 0) {
-    if (b % 2 === 1) result *= a;
-    a = a * a;
-    b = Math.floor(b / 2);
+  while (n > 0) {
+    if (n % 2 === 1) result *= x;
+    x = x * x;
+    n = Math.floor(n / 2);
   }
   return result;
 };

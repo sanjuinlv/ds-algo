@@ -56,38 +56,30 @@ var intersect = function (nums1, nums2) {
 
 //with fix
 /* 
-Appproach 1: Using hashtable
+Appproach 1: Using Map
 Since the element should appear same number of times we need to check the count as well
 in both array. For this purpose we need to use map with count of items instead of Set.
 Time complexity: O(n + m), where m & n are the length of the array
 Space complexity: O(min(n,m)), for map
 
-Runtime: 80 ms, faster than 80.75% of JavaScript online submissions for Intersection of Two Arrays II.
-Memory Usage: 41 MB, less than 17.95% of JavaScript online submissions for Intersection of Two Arrays II.
+Runtime: 63 ms, faster than 30.42% of JavaScript online submissions for Intersection of Two Arrays II.
+Memory Usage: 51.32 MB, less than 38.87% of JavaScript online submissions for Intersection of Two Arrays II.
 */
 var intersect = function (nums1, nums2) {
-  // if nums1 is larger than nums2 then swap the array,
-  // this will save us space when one input is very large
-  if (nums1.length > nums2.length) {
-    return intersect(nums2, nums1);
+  if (nums1.length < nums2.length) return intersect(nums2, nums1);
+  const countMap = new Map();
+  for (const num of nums1) {
+    countMap.set(num, (countMap.get(num) || 0) + 1);
   }
-  const map = new Map();
-  const intersection = [];
-  for (let i = 0; i < nums1.length; i++) {
-    map.set(nums1[i], (map.get(nums1[i]) || 0) + 1);
-  }
-  for (let i = 0; i < nums2.length; i++) {
-    if (map.has(nums2[i])) {
-      if (map.get(nums2[i]) > 0) {
-        //we can also use the nums1 array to store the value and return the range, to save the space
-        intersection.push(nums2[i]);
-        map.set(nums2[i], map.get(nums2[i]) - 1);
-      }
+  const result = [];
+  for (const num of nums2) {
+    if (countMap.has(num) && countMap.get(num)) {
+      result.push(num);
+      countMap.set(num, countMap.get(num) - 1);
     }
   }
-  return intersection;
+  return result;
 };
-
 /* 
 Approach: HashMap (without using aurxilary array)
 Runtime: 119 ms, faster than 19.37% of JavaScript online submissions for Intersection of Two Arrays II.
@@ -119,10 +111,8 @@ var intersect = function (nums1, nums2) {
 Appproach 2: Sorting
 Sort the arrays and traverse both and compare the items
 use one of the array to copy the data
-
-nums1 = [61,24,20,58,95,53,17,32,45,85,70,20,83,62,35,89,5,95,12,86,58,77,30,64,46,13,5,92,67,40,20,38,31,18,89,85,7,30,67,34,62,35,47,98,3,41,53,26,66,40,54,44,57,46,70,60,4,63,82,42,65,59,17,98,29,72,1,96,82,66,98,6,92,31,43,81,88,60,10,55,66,82,0,79,11,81]
-nums2 = [5,25,4,39,57,49,93,79,7,8,49,89,2,7,73,88,45,15,34,92,84,38,85,34,16,6,99,0,2,36,68,52,73,50,77,44,61,48]
-output:   [0,4,5,6,7,34,38,44,45,57,61,77,79,85,88,89,92]
+Time: O(NlogN + MLogM)
+space: O(N + M) in the worst case when all elements of array are different
 
 Runtime: 80 ms, faster than 80.75% of JavaScript online submissions for Intersection of Two Arrays II.
 Memory Usage: 39.2 MB, less than 71.43% of JavaScript online submissions for Intersection of Two Arrays II.
@@ -130,18 +120,15 @@ Memory Usage: 39.2 MB, less than 71.43% of JavaScript online submissions for Int
 var intersect = function (nums1, nums2) {
   nums1 = nums1.sort((a, b) => a - b);
   nums2 = nums2.sort((a, b) => a - b);
-  let i = 0,
-    j = 0,
-    k = 0;
+  let i = 0;
+  let j = 0;
+  let k = 0;
   while (i < nums1.length && j < nums2.length) {
     if (nums1[i] == nums2[j]) {
       nums1[k++] = nums1[i];
       i++, j++;
-    } else if (nums1[i] < nums2[j]) {
-      i++;
-    } else {
-      j++;
-    }
+    } else if (nums1[i] < nums2[j]) i++;
+    else j++;
   }
   return nums1.slice(0, k);
 };

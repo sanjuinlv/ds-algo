@@ -1,5 +1,7 @@
 /*
 https://leetcode.com/problems/k-closest-points-to-origin/
+Type: Medium
+
 Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane and an integer k, return the k closest points to the origin (0, 0).
 
 The distance between two points on the X-Y plane is the Euclidean distance (i.e., √(x1 - x2)2 + (y1 - y2)2).
@@ -83,8 +85,8 @@ Time: O(N LogK) Adding to/removing from the heap (or priority queue) only takes 
  the size of the heap is capped at k elements.
 Space: O(k) The heap (or priority queue) will contain at most k elements.
 
-Runtime: 325 ms, faster than 42.40% of JavaScript online submissions for K Closest Points to Origin.
-Memory Usage: 61.5 MB, less than 30.93% of JavaScript online submissions for K Closest Points to Origin.
+Runtime: 207 ms, faster than 47.56% of JavaScript online submissions for K Closest Points to Origin.
+Memory Usage: 64.13 MB, less than 68.89% of JavaScript online submissions for K Closest Points to Origin.
 */
 var kClosest = function (points, k) {
   const maxPQ = new MaxPriorityQueue({
@@ -101,6 +103,34 @@ var kClosest = function (points, k) {
     if (maxPQ.size() > k) maxPQ.dequeue();
   }
   return maxPQ.toArray();
+};
+
+// PQ: Add only when the incoming point is smaller than PQ max element
+var kClosest = function (points, k) {
+  const maxHeap = new MaxPriorityQueue({
+    compare: (a, b) => {
+      return (
+        Math.sqrt(b[0] * b[0] + b[1] * b[1]) -
+        Math.sqrt(a[0] * a[0] + a[1] * a[1])
+      );
+    },
+  });
+  for (const point of points) {
+    //if heap size is less than k then add it
+    if (maxHeap.size() < k) maxHeap.enqueue(point);
+    else {
+      const front = maxHeap.front();
+      // if the heap's top element is farther than this point then add this to Q
+      if (
+        Math.sqrt(front[0] * front[0] + front[1] * front[1]) >
+        Math.sqrt(point[0] * point[0] + point[1] * point[1])
+      ) {
+        maxHeap.dequeue();
+        maxHeap.enqueue(point);
+      }
+    }
+  }
+  return maxHeap.toArray();
 };
 
 /* 

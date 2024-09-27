@@ -1,8 +1,9 @@
 /* 
 https://leetcode.com/problems/find-k-closest-elements/
+Type: Medium
 
 Given a sorted integer array arr, two integers k and x, return the k closest integers
- to x in the array. The result should also be sorted in ascending order.
+to x in the array. The result should also be sorted in ascending order.
 
 An integer a is closer to x than an integer b if:
 
@@ -10,20 +11,18 @@ An integer a is closer to x than an integer b if:
 |a - x| == |b - x| and a < b
 
 Example 1:
+  Input: arr = [1,2,3,4,5], k = 4, x = 3
+  Output: [1,2,3,4]
 
-Input: arr = [1,2,3,4,5], k = 4, x = 3
-Output: [1,2,3,4]
 Example 2:
-
-Input: arr = [1,2,3,4,5], k = 4, x = -1
-Output: [1,2,3,4]
+  Input: arr = [1,2,3,4,5], k = 4, x = -1
+  Output: [1,2,3,4]
 
 Constraints:
-
-1 <= k <= arr.length
-1 <= arr.length <= 10^4
-arr is sorted in ascending order.
--10^4 <= arr[i], x <= 10^4
+ - 1 <= k <= arr.length
+ - 1 <= arr.length <= 10^4
+ - arr is sorted in ascending order.
+ - -10^4 <= arr[i], x <= 10^4
 */
 /**
  * @param {number[]} arr
@@ -40,7 +39,7 @@ Runtime: 176 ms, faster than 14.37% of JavaScript online submissions for Find K 
 Memory Usage: 49.1 MB, less than 40.11% of JavaScript online submissions for Find K Closest Elements.
 */
 var findClosestElements = function (arr, k, x) {
-  //custom sort
+  //custom sort by distant from x
   arr.sort((a, b) => Math.abs(x - a) - Math.abs(x - b));
   //consider only k elements
   const result = arr.slice(0, k);
@@ -63,11 +62,8 @@ var findClosestElements = function (arr, k, x) {
   //do binary search
   while (left < right) {
     const mid = Math.floor((right + left) / 2);
-    if (arr[mid] >= x) {
-      right = mid;
-    } else {
-      left = mid + 1;
-    }
+    if (arr[mid] >= x) right = mid;
+    else left = mid + 1;
   }
   console.log(`left: ${left}, right: ${right}`);
   //set up sliding window bound
@@ -83,11 +79,9 @@ var findClosestElements = function (arr, k, x) {
     if (
       right === arr.length ||
       Math.abs(arr[left] - x) <= Math.abs(arr[right] - x)
-    ) {
+    )
       left--;
-    } else {
-      right++;
-    }
+    else right++;
   }
   //build the result
   return arr.slice(left + 1, right);
@@ -109,24 +103,40 @@ is closer to x, then move the left pointer.
 
 Time: O(Log(N-k) + K), Binary search + substring
 Space: O(1)
-Runtime: 107 ms, faster than 83.24% of JavaScript online submissions for Find K Closest Elements.
-Memory Usage: 48.4 MB, less than 55.31% of JavaScript online submissions for Find K Closest Elements.
+Runtime: 90 ms, faster than 24.36% of JavaScript online submissions for Find K Closest Elements.
+Memory Usage: 55.10 MB, less than 84.51% of JavaScript online submissions for Find K Closest Elements.
 */
 var findClosestElements = function (arr, k, x) {
   //binary search bounds
   let left = 0;
-  //If there needs to be k elements, then the left bound's upper limit is arr.length - k,
+  // If there needs to be k elements, then the left bound's upper limit is arr.length - k,
   // because if it were any further to the right, you would run out of elements to include
   // in the final answer.
   let right = arr.length - k;
   while (left < right) {
     const mid = Math.floor((right + left) / 2);
-    if (x - arr[mid] <= arr[mid + 1] - x) {
+    //if distance of x-A[mid] is less or equal to A[mid+k]-x, we contract right window 
+    //as element will not be closet to x on right side
+    if (x - arr[mid] <= arr[mid + k] - x) {
       right = mid;
     } else {
+      // If x - arr[mid] is greater than arr[mid + k] - x, it means arr[mid] is farther
+      // from x than arr[mid + k]. So, move the left pointer to mid + 1.
       left = mid + 1;
     }
   }
   //build the result
   return arr.slice(left, left + k);
 };
+
+/* 
+Approach II: Priority Queue
+
+*/
+var findClosestElements = function (arr, k, x) {
+  const minPQ = new MinPriorityQueue({
+    compare: (a, b) => {
+      return a - b.count;
+    },
+  });
+}
