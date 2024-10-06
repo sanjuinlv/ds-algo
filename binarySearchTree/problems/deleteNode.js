@@ -1,6 +1,10 @@
 /* 
+450. Delete Node in a BST
+https://leetcode.com/problems/delete-node-in-a-bst/
+Type: Medium
+
 Given a root node reference of a BST and a key, delete the node with the given key in the BST.
- Return the root node reference (possibly updated) of the BST.
+Return the root node reference (possibly updated) of the BST.
 
 Basically, the deletion can be divided into two stages:
 
@@ -8,20 +12,20 @@ Search for a node to remove.
 If the node is found, delete the node.
 
 Example 1:
-Input: root = [5,3,6,2,4,null,7], key = 3
-Output: [5,4,6,2,null,null,7]
-Explanation: Given key to delete is 3. So we find the node with value 3 and delete it.
-One valid answer is [5,4,6,2,null,null,7], shown in the above BST.
-Please notice that another valid answer is [5,2,6,null,4,null,7] and it's also accepted.
+  Input: root = [5,3,6,2,4,null,7], key = 3
+  Output: [5,4,6,2,null,null,7]
+  Explanation: Given key to delete is 3. So we find the node with value 3 and delete it.
+  One valid answer is [5,4,6,2,null,null,7], shown in the above BST.
+  Please notice that another valid answer is [5,2,6,null,4,null,7] and it's also accepted.
 
 Example 2:
-Input: root = [5,3,6,2,4,null,7], key = 0
-Output: [5,3,6,2,4,null,7]
-Explanation: The tree does not contain a node with value = 0.
+  Input: root = [5,3,6,2,4,null,7], key = 0
+  Output: [5,3,6,2,4,null,7]
+  Explanation: The tree does not contain a node with value = 0.
 
 Example 3:
-Input: root = [], key = 0
-Output: []
+  Input: root = [], key = 0
+  Output: []
 
 */
 /**
@@ -38,8 +42,8 @@ Output: []
  * @return {TreeNode}
  */
 /* 
-Runtime: 125 ms, faster than 52.94% of JavaScript online submissions for Delete Node in a BST.
-Memory Usage: 51.9 MB, less than 7.35% of JavaScript online submissions for Delete Node in a BST.
+Runtime: 75 ms, faster than 87.61% of JavaScript online submissions for Delete Node in a BST.
+Memory Usage: 59.08 MB, less than 68.59% of JavaScript online submissions for Delete Node in a BST.
 */
 var deleteNode = function (root, key) {
   const findMin = (node) => {
@@ -47,7 +51,14 @@ var deleteNode = function (root, key) {
     if (node.left === null) return node;
     return findMin(node.left);
   };
-
+  //Iterative findMin
+  // const findMin = (node) => {
+  //   while (node.left != null) {
+  //     node = node.left;
+  //   }
+  //   return node;
+  // };
+  
   const deleteMin = (node) => {
     if (node.left == null) return node.right;
     node.left = deleteMin(node.left);

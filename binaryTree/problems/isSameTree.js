@@ -1,8 +1,11 @@
 /* 
+100. Same Tree
+https://leetcode.com/problems/same-tree
+Type: Easy
+
 Given the roots of two binary trees p and q, write a function to check if they are the same or not.
 
-Two binary trees are considered the same if they are structurally identical,
- and the nodes have the same value.
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
     1       
    / \
   2   3
@@ -30,67 +33,34 @@ Time: O(N)
 Space: O(log(N)) in the best case of completely balanced tree and O(N) in the worst case 
 of completely unbalanced tree, to keep a recursion stack.
 
-Runtime: 66 ms, faster than 76.36% of JavaScript online submissions for Same Tree.
-Memory Usage: 42.6 MB, less than 35.21% of JavaScript online submissions for Same Tree.
+Runtime: 61 ms Beats 13.46%
+Memory Usage: 49.03 MB Beats 69.58%
 */
 var isSameTree = function (p, q) {
-  const isSame = (node1, node2) => {
-    if (node1 == null && node2 == null) return true;
-    if (node1 == null || node2 == null) return false;
-    if (node1.val != node2.val) return false;
-    return isSame(node1.left, node2.left) && isSame(node1.right, node2.right);
-  };
-  return isSame(p, q);
+  if (p == null && q == null) return true;
+  if (p == null || q == null) return false;
+  if (p.val !== q.val) return false;
+  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
 };
 
 /*
-Approach: Iterative (Stack-DFS)
+Approach II: Iterative (Stack-DFS)
 Time: O(N)
-Space: O(log(N)) in the best case of completely balanced tree and O(N) in the worst case
- of completely unbalanced tree, to keep a stack.
+Space: O(log(N)) in the best case of completely balanced tree and O(N) in the worst case of completely unbalanced tree, to keep a stack.
 
-Runtime: 64 ms, faster than 83.78% of JavaScript online submissions for Same Tree.
-Memory Usage: 42.1 MB, less than 77.05% of JavaScript online submissions for Sam
+Runtime: 48 ms Beats 80.64%
+Memory Usage: 48.99 MB Beats 78.85%
  */
 var isSameTree = function (p, q) {
-  const stack1 = [];
-  const stack2 = [];
-  stack1.push(p);
-  stack2.push(q);
-  while (stack1.length && stack2.length) {
-    p = stack1.pop();
-    q = stack2.pop();
-    if (p === null && q === null) continue;
-    if (p === null || q === null) return false;
-    if (p.val != q.val) return false;
-    stack1.push(p.right);
-    stack1.push(p.left);
-    stack2.push(q.right);
-    stack2.push(q.left);
-  }
-  return true;
-};
-
-/* 
-Approach: Iterative (Stack-DFS)
-Using single stack
-Runtime: 64 ms, faster than 83.47% of JavaScript online submissions for Same Tree.
-Memory Usage: 42.7 MB, less than 19.96% of JavaScript online submissions for Same Tree.
-*/
-var isSameTree = function (p, q) {
   const stack = [];
-  stack.push(p);
-  stack.push(q);
+  stack.push([p, q]);
   while (stack.length) {
-    p = stack.pop();
-    q = stack.pop();
-    if (p === null && q === null) continue;
-    if (p === null || q === null) return false;
-    if (p.val != q.val) return false;
-    stack.push(p.right);
-    stack.push(q.right);
-    stack.push(p.left);
-    stack.push(q.left);
+    const [p, q] = stack.pop();
+    if (p == null && q == null) continue;
+    if (p == null || q == null) return false;
+    if (p.val !== q.val) return false;
+    stack.push([p.left, q.left]);
+    stack.push([p.right, q.right]);
   }
   return true;
 };

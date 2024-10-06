@@ -1,10 +1,10 @@
 /* 
-https://leetcode.com/explore/learn/card/introduction-to-data-structure-binary-search-tree/143/appendix-height-balanced-bst/1015/
+108. Convert Sorted Array to Binary Search Tree
+https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/
+Type: Easy
 
-Given an integer array nums where the elements are sorted in ascending order, convert it to a
- height-balanced binary search tree.
-A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every
- node never differs by more than one.
+Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree.
+A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
  
 Example 1:
 Input: nums = [-10,-3,0,5,9]
@@ -17,9 +17,9 @@ Output: [3,1]
 Explanation: [1,null,3] and [3,1] are both height-balanced BSTs.
 
 Constraints:
-1 <= nums.length <= 10^4
--10^4 <= nums[i] <= 10^4
-nums is sorted in a strictly increasing order.
+ - 1 <= nums.length <= 10^4
+ - -10^4 <= nums[i] <= 10^4
+ - nums is sorted in a strictly increasing order.
 
 */
 /**
@@ -38,8 +38,9 @@ nums is sorted in a strictly increasing order.
 Approach: Recursive (Pre-order)
 Time: O(N) since we visit each node exactly once
 Space: O(Log N) The recursion stack requires O(logN) space because the tree is height-balanced.
-Runtime: 92 ms, faster than 56.70% of JavaScript online submissions for Convert Sorted Array to Binary Search Tree.
-Memory Usage: 44.9 MB, less than 27.38% of JavaScript online submissions for Convert Sorted Array to Binary Search Tree.
+
+Runtime: 67 ms Beats 51.99%
+Memory Usage: 53.22 MB Beats 14.82%
  */
 var sortedArrayToBST = function (nums) {
   const arrayToBST = (nums, low, high) => {

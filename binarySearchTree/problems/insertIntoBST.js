@@ -1,4 +1,8 @@
 /* 
+701. Insert into a Binary Search Tree
+https://leetcode.com/problems/insert-into-a-binary-search-tree
+Type: Medium
+
 You are given the root node of a binary search tree (BST) and a value to insert into the tree. 
 Return the root node of the BST after the insertion. It is guaranteed that the new value does not
 exist in the original BST.
@@ -6,7 +10,19 @@ Notice that there may exist multiple valid ways for the insertion, as long as th
 after insertion. You can return any of them.
 
 Example 2:
-
+      4
+     / \
+    2   7   
+   / \ 
+  1   3   
+O/P:
+      5
+     / \
+    2   7
+   / \ 
+  1   3
+       \    
+        4  
 Input: root = [40,20,60,10,30,50,70], val = 25
 Output: [40,20,60,10,30,50,70,null,null,25]
 
@@ -40,8 +56,11 @@ Constraints:
  */
 /* 
 Approach 1: Recursive
-Runtime: 200 ms, faster than 10.55% of JavaScript online submissions for Insert into a Binary Search Tree.
-Memory Usage: 52.8 MB, less than 47.69% of JavaScript online submissions for Insert into a Binary Search Tree.
+Time: O(H)
+Space: O(H)
+
+Runtime: 85 ms, faster than 95.10% of JavaScript online submissions for Insert into a Binary Search Tree.
+Memory Usage: 58.94 MB, less than 43.26% of JavaScript online submissions for Insert into a Binary Search Tree.
 */
 var insertIntoBST = function (root, val) {
   if (root === null) return new TreeNode(val);
@@ -51,9 +70,12 @@ var insertIntoBST = function (root, val) {
 };
 
 /* 
-Approach 1: Iterative
-Runtime: 171 ms, faster than 28.03% of JavaScript online submissions for Insert into a Binary Search Tree.
-Memory Usage: 53.1 MB, less than 34.97% of JavaScript online submissions for Insert into a Binary Search Tree.
+Approach 2: Iterative
+Time: O(H)
+Space: O(1)
+
+Runtime: 92 ms, faster than 77.81% of JavaScript online submissions for Insert into a Binary Search Tree.
+Memory Usage: 59.50 MB, less than 9.69% of JavaScript online submissions for Insert into a Binary Search Tree.
 */
 
 var insertIntoBST = function (root, val) {

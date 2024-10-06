@@ -1,19 +1,38 @@
 /* 
+145. Binary Tree Postorder Traversal
+https://leetcode.com/problems/binary-tree-postorder-traversal/description/
+Type: Medium 
+
 Given the root of a binary tree, return the postorder traversal of its nodes' values.
 
-Type: Medium
-
+Example 1
+  1 
+    \
+    2
+    /
+  3  
 Input: root = [1,null,2,3]
 Output: [3,2,1]
 
+Example 2:
+      1
+    /   \
+   2     3
+  / \     \ 
+ 4   5     8
+    / \    /
+   6   7  9
+Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
+Output: [4,6,7,5,2,9,8,3,1]
+
+Example 3:
 Input: root = []
 Output: []
 
+Example 4:
 Input: root = [1]
 Output: [1]
 
-Input: root = [1,2,3,4,5,6,7]
-Output: [4,5,2,6,7,3,1]
 */
 
 /**

@@ -1,9 +1,11 @@
 /* 
+235. Lowest Common Ancestor of a Binary Search Tree
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree
+TYpe: Medium
+
 Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
 
-According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between
-two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node
-to be a descendant of itself).”
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
 
 Example 1:
 Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
@@ -20,11 +22,12 @@ Example 3:
 Input: root = [2,1], p = 2, q = 1
 Output: 2
 
-The number of nodes in the tree is in the range [2, 10^5].
--10^9 <= Node.val <= 10^9
-All Node.val are unique.
-p != q
-p and q will exist in the BST.
+Constraint: 
+ - The number of nodes in the tree is in the range [2, 10^5].
+ - -10^9 <= Node.val <= 10^9
+ - All Node.val are unique.
+ - p != q
+ - p and q will exist in the BST.
 */
 
 /**
@@ -60,24 +63,20 @@ var lowestCommonAncestor = function (root, p, q) {
 Approach II: Recursive (using BST property)
 Time: O(N) worst case tree height will be N
 Space: O(N) for skewed BST tree
-Runtime: 101 ms, faster than 62.88% of JavaScript online submissions for Lowest Common Ancestor of a Binary Search Tree.
-Memory Usage: 52.4 MB, less than 38.00% of JavaScript online submissions for Lowest Common Ancestor of a Binary Search Tree.
+
+Runtime: 77 ms Beats 24.94%
+Memory Usage: 59.31 MB Beats 36.49%
 */
-// case I: p is less than root and q is greater than root
-// case II: p is less than root and q is less than root
-// case III: p is greater than root and q is greater than root
-// case IV: p is greater than root and q is less than root
 var lowestCommonAncestor = function (root, p, q) {
-  if (root === null) return null;
-  //   if (root === p || root === q) return root;
-  //both nodes(p, q) are at right side of the tree
-  if (p.val > root.val && q.val > root.val) {
-    //both nodes (p, q) are at left side of the tree
-    return lowestCommonAncestor(root.right, p, q);
-  } else if (p.val < root.val && q.val < root.val) {
-    //p & q are left side of the current node
+  if (root == null) return null;
+  //both node p & q are at left side of the tree
+  if (p.val < root.val && q.val < root.val) {
     return lowestCommonAncestor(root.left, p, q);
+  } else if (p.val > root.val && q.val > root.val) {
+    //both nodes p & q are in right side of the tree
+    return lowestCommonAncestor(root.right, p, q);
   } else {
+    //p and q is in left and right side of the tree, so root will be LCA
     return root;
   }
 };
@@ -87,8 +86,9 @@ Approach III: Iterative
 Time: O(N) worst case tree height will be N
 Space: O(1) 
 Note: We don't need to use stack for this
-Runtime: 96 ms, faster than 70.59% of JavaScript online submissions for Lowest Common Ancestor of a Binary Search Tree.
-Memory Usage: 51.9 MB, less than 89.89% of JavaScript online submissions for Lowest Common Ancestor of a Binary Search Tree.
+
+Runtime: 83 ms Beats 7.96%
+Memory Usage: 59.21 MB Beats 44.20%
 */
 var lowestCommonAncestor = function (root, p, q) {
   if (root === null) return null;

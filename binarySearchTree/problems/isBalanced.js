@@ -1,4 +1,8 @@
 /* 
+110. Balanced Binary Tree
+https://leetcode.com/problems/balanced-binary-tree/
+Type: Easy
+
 Given a binary tree, determine if it is height-balanced.
 For this problem, a height-balanced binary tree is defined as:
 a binary tree in which the left and right subtrees of every node differ in height by no more than 1.
@@ -48,8 +52,9 @@ Approach: Bottom Up Recursive
 Time: O(N),  For every subtree, we compute its height in constant time as well as compare 
 the height of its children
 Space: O(N), the recursion stack
-Runtime: 123 ms, faster than 23.42% of JavaScript online submissions for Balanced Binary Tree.
-Memory Usage: 46.7 MB, less than 94.59% of JavaScript online submissions for Balanced Binary Tree.
+
+Runtime: 74 ms Beats 14.41%
+Memory Usage: 54.43 MB Beats 39.97%
 */
 var isBalanced = function (root) {
   if (root == null) return true;
@@ -65,6 +70,26 @@ var isBalanced = function (root) {
   };
   findDepth(root);
   return result;
+};
+
+/*
+Cleaner Bottom up approach
+Runtime: 54 ms Beats 93.86%
+Memory: 53.95 MB Beats 79.29%
+ */
+var isBalanced = function (root) {
+  if (root == null) return true;
+  let result = true;
+  const helper = (node) => {
+    if (node == null) return 0;
+    const leftHeight = helper(node.left);
+    if (leftHeight == -1) return -1;
+    const rightHeight = helper(node.right);
+    if (rightHeight == -1) return -1;
+    if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+    return 1 + Math.max(leftHeight, rightHeight);
+  };
+  return helper(root) != -1;
 };
 
 /* 

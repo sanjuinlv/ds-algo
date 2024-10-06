@@ -1,4 +1,5 @@
 /* 
+104. Maximum Depth of Binary Tree
 https://leetcode.com/problems/maximum-depth-of-binary-tree/
 Type: Easy
 
@@ -42,28 +43,27 @@ Output: 1
  * @return {number}
  */
 /* 
-Recursive Approach: Bottom-up
+Approach I : Bottom-up
 Time: O(N), where N is the number of nodes
 Space: O(N) in worst case when tree is unbalanced, O(Log N) for balanced tree
-Runtime: 124 ms, faster than 5.37% of JavaScript online submissions for Maximum Depth of Binary Tree.
-Memory Usage: 41.5 MB, less than 56.15% of JavaScript online submissions for Maximum Depth of Binary Tree.
+
+Runtime: 59 ms Beats 62.54%
+Memory Usage: 52.20 MB Beats 27.71%
 */
 var maxDepth = function (root) {
   if (root == null) return 0;
-  let depth = 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
-  return depth;
+  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
 };
 
 /* 
-Recursive Approach: top-down
+Approach II: top-down
 Time: O(N), where N is the number of nodes
 Space: O(N) in worst case when tree is unbalanced, O(Log N) for balanced tree
 
-Runtime: 92 ms, faster than 42.83% of JavaScript online submissions for Maximum Depth of Binary Tree.
-Memory Usage: 41.7 MB, less than 26.60% of JavaScript online submissions for Maximum Depth of Binary Tree.
+Runtime: 54 ms Beats 85.08%
+Memory Usage: 52.02 MB Beats 34.07%
 */
 var maxDepth = function (root) {
-  if (root == null) return 0;
   let answer = 0;
   const helper = (node, depth) => {
     if (node == null) return;
@@ -79,11 +79,37 @@ var maxDepth = function (root) {
 };
 
 /* 
-Approach II: Iterative (level order traversal) 
+Approach III: Iterative
 Time Complexity: O(N)
 Space Complexity: O(w), where w is width of the tree
-Runtime: 112 ms, faster than 5.37% of JavaScript online submissions for Maximum Depth of Binary Tree.
-Memory Usage: 42 MB, less than 15.58% of JavaScript online submissions for Maximum Depth of Binary Tree.
+
+Runtime: 55 ms Beats 81.52%
+Memory: 54.77 MB Beats 5.22%
+*/
+var maxDepth = function (root) {
+  let answer = 0;
+  let stack = [];
+  stack.push([root, 1]);
+  while (stack.length) {
+    const [node, depth] = stack.pop();
+    if (node == null) continue;
+    if (node.left == null && node.right == null) {
+      answer = Math.max(answer, depth);
+    } else {
+      stack.push([node.left, 1 + depth]);
+      stack.push([node.right, 1 + depth]);
+    }
+  }
+  return answer;
+};
+
+/* 
+Approach III: Iterative (level order traversal) 
+Time Complexity: O(N)
+Space Complexity: O(w), where w is width of the tree
+
+Runtime: 58 ms Beats 67.23%
+Memory Usage: 52.04 MB Beats 34.07%
 */
 var maxDepth = function (root) {
   if (root == null) return 0;
