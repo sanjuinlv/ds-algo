@@ -67,49 +67,6 @@ var threeSum = function (nums) {
   return result;
 };
 
-// With hint
-// generates duplicate
-/*
-[[-1, 1, 0],[0, 1, -1],[1, 0, -1],[2, -1, -1]]
-*/
-var threeSum = function (nums) {
-  const N = nums.length;
-  const K = 0;
-  const result = [];
-  // x + y + z = K
-  //create a new array with K-A[i] (K-z)
-  const Z = [nums.length];
-  for (let i = 0; i < N; i++) {
-    Z[i] = K - nums[i];
-  }
-  console.log(`Z: ${Z}`);
-  // perform two sum
-  const seen = new Set();
-  for (let i = 0; i < N; i++) {
-    if (seen.has(Z[i])) continue;
-    const map = new Map();
-    for (let j = 0; j < N; j++) {
-      console.log(`i: ${i}, j: ${j}`);
-      if (i == j) continue;
-      const compliment = Z[i] - nums[j];
-      console.log(`compliment: ${compliment}`);
-      if (map.has(compliment)) {
-        console.log(`compliment: ${compliment} found in map`);
-        console.log(
-          `3 sum found for: i:${i}, j:${j}, k:${map.get(compliment)}`
-        );
-        result.push([nums[i], nums[j], nums[map.get(compliment)]]);
-        seen.add(Z[i]);
-        console.log(`updated result: ${result}`);
-        break;
-      }
-      map.set(nums[j], j);
-    }
-  }
-  console.log(`result: ${result}`);
-  return result;
-};
-
 // Solution reference
 /* 
 Approach I: Two pointers
@@ -121,8 +78,8 @@ total complexity: O(NlogN+ N^2) = O(N^2)
 
 Space complexity: O(logN) to O(N) based on sorting algorithm 
 
-Runtime: 136 ms, faster than 96.49% of JavaScript online submissions for 3Sum.
-Memory Usage: 48.8 MB, less than 6.20% of JavaScript online submissions for 3Sum.
+Runtime: 170 ms, faster than 36.41% of JavaScript online submissions for 3Sum.
+Memory Usage: 65.84 MB, less than 36.59% of JavaScript online submissions for 3Sum.
 */
 var threeSum = function (nums) {
   const twoSumSorted = (nums, i, result) => {
@@ -165,6 +122,9 @@ Sorting Array: O(NLogN)
 twoSum is O(N) and we call it N times so its O(N ^ 2)
 total complexity: O(NlogN + N ^ 2) = O(N ^ 2)
 Space complexity: O(N) for hashset
+
+Runtime: 468 ms Beats 13.19%
+Memory: 64.73 MB Beats 80.91%
 */
 
 var threeSum = function (nums) {
@@ -190,84 +150,12 @@ var threeSum = function (nums) {
   //If the current value is greater than zero, break from the loop. Remaining values cannot sum to zero.
   for (let i = 0; i < nums.length && nums[i] <= 0; i++) {
     //If the current value is the same as the one before, skip it.
-    if (i == 0 || nums[i] != nums[i - 1]) {
-      twoSum(nums, i, result);
-    }
+    if (i > 0 && nums[i] == nums[i - 1]) continue;
+    twoSum(nums, i, result);
   }
   return result;
 };
 
-// Approach 3: "No Sort"
-// nums = [-1,0,1,2,-1,-4]
-// This solution produces the duplicate result.
-// Java has easy way to declare the result as Set and store the value as sorted values so that duplicates are removed
-/* 
-0: (3) [-1, 0, 1]
-1: (3) [-1, -1, 2]
-2: (3) [-1, 0, 1]
-*/
-var threeSum = function (nums) {
-  const N = nums.length;
-  const result = [];
-  // checks if we are not re-visiting the same number again
-  const dups = new Set();
-  const seen = new Map();
-  //If the current value is greater than zero, break from the loop. Remaining values cannot sum to zero.
-  for (let i = 0; i < nums.length; i++) {
-    //If the current value is the same as the one before, skip it.
-    console.log(`i: ${i}`);
-    if (dups.has(nums[i])) continue;
-    dups.add(nums[i]);
-    for (let j = i + 1; j < nums.length; j++) {
-      // a + b + c = 0 => a + b = - c;
-      // we are getting c from index i (nums[i]). So we need to solve the two sum for a+b and target as -c
-      // so a = -c - b, i.e, a = -nums[i] - nums[j];
-      console.log(`i: ${i}, j: ${j}`);
-      const compliment = -nums[i] - nums[j];
-      console.log(`compliment: ${compliment}`);
-      if (seen.has(compliment) && seen.get(compliment) == i) {
-        result.push([nums[i], nums[j], compliment].sort());
-        console.log(`result: ${result}`);
-      }
-      seen.set(nums[j], i);
-      console.log(seen);
-    }
-    console.log(`dup sets`);
-    console.log(dups);
-  }
-  console.log(`final result: ${result}`);
-  return result;
-};
-
-/* 
-Brute Force:
-Time Complexity: O(N ^ 3)
-Space Complexity: O(logN) to O(N) based on sorting algorithm 
-
-threeSum([-1,0,1,2,-1,-4]) - PASS
-threeSum([-1,0,1,2,2,-1,-4])
-threeSum([]) - PASS
-threeSum([0]) - PASS
-*/
-var threeSum = function (nums) {
-  const result = [];
-  const N = nums.length;
-  const target = 0;
-  nums.sort();
-  for (let i = 0; i <= N - 3; i++) {
-    if (nums[i] == nums[i - 1]) continue;
-    for (let j = i + 1; j <= N - 2; j++) {
-      for (let k = j + 1; k <= N - 1; k++) {
-        if (nums[i] + nums[j] + nums[k] == target) {
-          result.push([nums[i], nums[j], nums[k]]);
-        }
-      }
-    }
-  }
-  return result;
-};
-
-//14/03/2022
 /* 
 Runtime: 531 ms, faster than 24.16% of JavaScript online submissions for 3Sum.
 Memory Usage: 59.8 MB, less than 19.28% of JavaScript online submissions for 3Sum.
