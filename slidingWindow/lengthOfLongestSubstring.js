@@ -116,17 +116,18 @@ var lengthOfLongestSubstring = function (s) {
   if (N == 0) return 0;
   const charMap = new Map();
   let maxLength = 0;
-  let left = (right = 0);
-  while (right < N) {
-    charMap.set(s[right], (charMap.get(s[right]) || 0) + 1);
-    while (charMap.get(s[right]) > 1) {
+  let i = 0;
+  let j = 0;
+  while (j < N) {
+    charMap.set(s[j], (charMap.get(s[j]) || 0) + 1);
+    while (charMap.get(s[j]) > 1) {
       //keep removing the character from window before right,
       //until we cross the duplicate character
-      charMap.set(s[left], charMap.get(s[left]) - 1);
-      left++;
+      charMap.set(s[i], charMap.get(s[i]) - 1);
+      i++;
     }
-    maxLength = Math.max(maxLength, right - left + 1);
-    right++;
+    maxLength = Math.max(maxLength, j - i + 1);
+    j++;
   }
   return maxLength;
 };
@@ -181,3 +182,34 @@ var lengthOfLongestSubstring = function (s) {
   }
   return Math.max(maxLength, j - i);
 };
+
+/* 
+Using Variable length tenplate for Sliding Window
+Runtime: 83 ms Beats 61.66%
+Memory: 54.79 MB Beats 48.18%
+*/
+var lengthOfLongestSubstring = function (s) {
+  const N = s.length;
+  if (N == 0) return 0;
+  const charMap = new Map();
+  let i = 0;
+  let j = 0;
+  let maxLength = 0;
+  while (j < N) {
+    charMap.set(s[j], (charMap.get(s[j]) || 0) + 1);
+    //if map char count is less than the window size then remove elements
+    //from left until map char count is same as window size
+    while (charMap.size < j - i + 1) {
+      const charOut = s[i];
+      if (charMap.has(charOut)) {
+        charMap.set(charOut, charMap.get(charOut) - 1);
+        if (charMap.get(charOut) == 0) charMap.delete(charOut);
+      }
+      i++;
+    }
+    if (charMap.size == j - i + 1) maxLength = Math.max(maxLength, j - i + 1);
+    j++;
+  }
+  return maxLength;
+};
+

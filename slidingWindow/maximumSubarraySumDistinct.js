@@ -39,4 +39,36 @@ Constraints:
  * @param {number} k
  * @return {number}
  */
-var maximumSubarraySum = function (nums, k) {};
+/* 
+Approach : Sliding Window
+Time: O(N)
+Space: O(K)
+
+Runtime: 131 ms Beats 64.42%
+Memory: 79.20 MB Beats 39.10%
+*/
+var maximumSubarraySum = function (nums, k) {
+  const N = nums.length;
+  let i = 0;
+  let j = 0;
+  let maxSum = 0;
+  let currSum = 0;
+  let numMap = new Map();
+  while (j < N) {
+    currSum += nums[j];
+    numMap.set(nums[j], (numMap.get(nums[j]) || 0) + 1);
+    if (j - i + 1 == k) {
+      //update maxLength
+      if (numMap.size == k) maxSum = Math.max(maxSum, currSum);
+      const d = nums[i];
+      //remove the first element of the window
+      currSum -= d;
+      numMap.set(d, numMap.get(d) - 1);
+      //update the map count
+      if (numMap.get(d) == 0) numMap.delete(d);
+      i++;
+    }
+    j++;
+  }
+  return maxSum;
+};

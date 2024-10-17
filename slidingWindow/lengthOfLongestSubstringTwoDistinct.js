@@ -1,9 +1,9 @@
 /*
+159. Longest Substring with At Most Two Distinct Characters
 https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters
 Category - Medium
 
-Given a string s, return the length of the longest substring that contains at most
-two distinct characters.
+Given a string s, return the length of the longest substring that contains at most two distinct characters.
 
 Example 1:
 
