@@ -1,97 +1,94 @@
-/*
-tri = new Trie();
-tri.insert("sell") 
-tri.insert("shells") 
-tri.insert("by");
-tri.insert("the");
- */
 /* 
-Runtime: 208 ms, faster than 72.01% of JavaScript online submissions for Implement Trie (Prefix Tree).
-Memory Usage: 59.9 MB, less than 23.36% of JavaScript online submissions for Implement Trie (Prefix Tree).
+208. Implement Trie (Prefix Tree)
+https://leetcode.com/problems/implement-trie-prefix-tree
+Type: Medium
+A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
+
+Implement the Trie class:
+
+ - Trie() Initializes the trie object.
+ - void insert(String word) Inserts the string word into the trie.
+ - boolean search(String word) Returns true if the string word is in the trie (i.e., was inserted before), and false otherwise.
+ - boolean startsWith(String prefix) Returns true if there is a previously inserted string word that has the prefix prefix, and false otherwise.
+ 
+Example 1:
+Input
+["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
+[[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
+Output
+[null, null, true, false, true, null, true]
+
+Explanation
+Trie trie = new Trie();
+trie.insert("apple");
+trie.search("apple");   // return True
+trie.search("app");     // return False
+trie.startsWith("app"); // return True
+trie.insert("app");
+trie.search("app");     // return True
+ 
+Constraints:
+ - 1 <= word.length, prefix.length <= 2000
+ - word and prefix consist only of lowercase English letters.
+ - At most 3 * 10^4 calls in total will be made to insert, search, and startsWith.
+
 */
-function Trie() {
-  this.root = new Node();
-
-  function Node() {
-    this.children = new Map();
-    this.isWord = false;
-  }
-
-  /**
-   * Inserts a word into the trie.
-   * @param {string} word
-   * @return {void}
-   */
-  this.insert = function (word) {
-    let curr = this.root;
-    for (let i = 0; i < word.length; i++) {
-      const c = word[i];
-      if (!curr.children.has(c)) {
-        //child node doesn't exist for this character so create new node
-        curr.children.set(c, new Node());
-      }
-      //move to current character node
-      curr = curr.children.get(c);
-    }
-    //reached end of the word so mark this node as true
-    curr.isWord = true;
-  };
-
-  this.insertRecursive = function (word) {
-    if (word == null) return;
-    this.root = this.insertNode(this.root, word, 0);
-  };
-
-  this.insertNode = function (node, word, d) {
-    console.log(`d: ${d}`);
-    console.log(`node: ${JSON.stringify(node)}`);
-    // if node is null create new node
-    if (!node) node = new Node();
-    //reached at the end of word length
-    if (d == word.length) {
-      node.isWord = true;
-      return node;
-    }
-    const c = word[d]; //char at index d
-    console.log(`c: ${c}`);
-    if (!node.children.has(c)) node.children.set(c, new Node());
-    let childNode = node.children.get(c);
-    childNode = this.insertNode(childNode, word, d + 1);
-    return node;
-  };
-
-  /**
-   * Returns if the word is in the trie.
-   * @param {string} word
-   * @return {boolean}
-   */
-  this.search = function (word) {
-    let curr = this.root;
-    for (let i = 0; i < word.length; i++) {
-      const c = word[i];
-      if (!curr.children.has(c)) return false;
-      curr = curr.children.get(c);
-    }
-    return curr.isWord;
-  };
-
-  /**
-   * Returns if there is any word in the trie that starts with the given prefix.
-   * @param {string} prefix
-   * @return {boolean}
-   */
-  this.startsWith = function (prefix) {
-    let curr = this.root;
-    for (let i = 0; i < prefix.length; i++) {
-      const c = prefix[i];
-      if (!curr.children.has(c)) return false;
-      curr = curr.children.get(c);
-    }
-    return true;
-  };
+/*
+Runtime: 54 ms Beats 100.00%
+Memory: 71.29 MB Beats 28.92%
+ */
+function Node() {
+  this.children = new Map();
+  this.isWord = false;
 }
 
-//Re-try (15/May-2022)
+var Trie = function () {
+  this.root = new Node();
+};
+
+/**
+ * @param {string} word
+ * @return {void}
+ */
+Trie.prototype.insert = function (word) {
+  let curr = this.root;
+  for (let c of word) {
+    //child node doesn't exist for this character so create new node
+    if (!curr.children.has(c)) curr.children.set(c, new Node());
+    curr = curr.children.get(c);
+  }
+  //reached end of the word so mark this node as true
+  curr.isWord = true;
+};
+
+/**
+ * @param {string} word
+ * @return {boolean}
+ */
+Trie.prototype.search = function (word) {
+  let curr = this.root;
+  for (let c of word) {
+    if (!curr.children.has(c)) return false;
+    curr = curr.children.get(c);
+  }
+  return curr.isWord;
+};
+
+/**
+ * @param {string} prefix
+ * @return {boolean} Returns true if there is a previously inserted string
+ *  word that has the prefix `prefix`, and false otherwise.
+ */
+Trie.prototype.startsWith = function (prefix) {
+  let curr = this.root;
+  for (let c of prefix) {
+    if (!curr.children.has(c)) return false;
+    curr = curr.children.get(c);
+  }
+  return true;
+};
+
+//using function syntax with recursive methods
 function Trie() {
   this.root = new Node();
 

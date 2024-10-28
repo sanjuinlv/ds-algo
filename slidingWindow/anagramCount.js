@@ -120,7 +120,6 @@ class Solution {
     let j = 0;
     let result = 0;
     while (j < N) {
-      //calculation
       const char = txt[j];
       if (patCharCount.has(char)) {
         //if char fount in 'pat' then reduce the char count, marking it as found

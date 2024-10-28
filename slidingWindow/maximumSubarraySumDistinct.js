@@ -60,12 +60,12 @@ var maximumSubarraySum = function (nums, k) {
     if (j - i + 1 == k) {
       //update maxLength
       if (numMap.size == k) maxSum = Math.max(maxSum, currSum);
-      const d = nums[i];
+      const outNum = nums[i];
       //remove the first element of the window
-      currSum -= d;
-      numMap.set(d, numMap.get(d) - 1);
+      currSum -= outNum;
+      numMap.set(outNum, numMap.get(outNum) - 1);
       //update the map count
-      if (numMap.get(d) == 0) numMap.delete(d);
+      if (numMap.get(outNum) == 0) numMap.delete(outNum);
       i++;
     }
     j++;

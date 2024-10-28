@@ -41,7 +41,7 @@ Constraints:
  */
 /* 
 Approach : Sliding Window
-Time: O(N)
+Time: O(S+T)
 Space: O(K), where K is size of t
 
 Runetime: 92 ms Beats 42.70%

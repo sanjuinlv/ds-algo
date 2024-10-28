@@ -1,6 +1,5 @@
 /*
 Implement strStr().
-
 https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
 Type: Easy
 
@@ -39,7 +38,7 @@ haystack = "aaaaa", needle = "bba"          - PASS
 haystack = "aabba", needle = "ba"           - PASS
 haystack = "", needle = ""                  - PASS
 
-Approach 1: 
+Approach 1: Brute Force
 Time complexity: O((n-m)*m), n is length of haystack and m is length of needle
 Space complexity: O(1)
 Runtime: 58 ms, faster than 26.08% of JavaScript online submissions for Implement strStr().
@@ -107,9 +106,7 @@ var strStr = function (haystack, needle) {
 };
 /* 
 Approach 3: Rabin Karp: Constant Time Slice
-*/
 
-/* 
 Runtime: 84 ms Beats 5.02%
 Memory: 38.84 MB Beats 100.00%
 */

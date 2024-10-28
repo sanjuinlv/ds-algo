@@ -1,4 +1,8 @@
 /* 
+212. Word Search II
+https://leetcode.com/problems/word-search-ii/description/
+Type: Hard
+
 Given an m x n board of characters and a list of strings words, return all words on the board.
 Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.
 
@@ -114,77 +118,67 @@ var findWords = function (board, words) {
 };
 
 /* 
-
-*/
-/* 
-Using trie with optimization.
+Approach : Trie with optimization.
 i) No extra space required for storing the visited board letter
 ii) not performing the prefix search again and again. Only node is enough to navigate. 
 iii) Storing the word at node so that we can get the word immediately
 
-Runtime: 420 ms, faster than 81.27% of JavaScript online submissions for Word Search II.
-Memory Usage: 41 MB, less than 60.70% of JavaScript online submissions for Word Search II.
+Runtime: 627 ms Beats 81.53%
+Memory: 52.97 MB Beats 73.36%
 */
 var findWords = function (board, words) {
+  const rows = board.length;
+  const cols = board[0].length;
+
   this.root = new Node();
-  const rows = board.length,
-    columns = board[0].length;
 
   function Node() {
     this.children = new Map();
     this.word = null;
   }
 
-  this.insert = function (word) {
+  this.insert = (word) => {
     let curr = this.root;
-    for (const c of word) {
-      if (!curr.children.has(c)) {
-        curr.children.set(c, new Node());
-      }
+    for (let c of word) {
+      if (!curr.children.has(c)) curr.children.set(c, new Node());
       curr = curr.children.get(c);
     }
     curr.word = word;
   };
 
-  this.dfs = function (i, j, node, result) {
-    if (i < 0 || j < 0 || i >= rows || j >= columns || board[i][j] == "#")
-      return;
-    //   console.log(`i: ${i}, j: ${j}, c: ${board[i][j]}`)
-    const childNode = node.children.get(board[i][j]);
-    if (!childNode) return;
+  const backtrack = (i, j, node) => {
+    //validate i, j and see if borad is already visisted
+    if (i < 0 || j < 0 || i >= rows || j >= cols || board[i][j] == "#") return;
+    let char = board[i][j];
+    //check if any path matches in the trie
+    const childNode = node.children.get(char);
+    if (!childNode) return; //there won't be any further path match so return
     if (childNode.word != null) {
-      // found word
       result.push(childNode.word);
       //avoid duplicate value
       childNode.word = null;
     }
-    const letter = board[i][j];
-    //by setting "#", we avoid visiting this again from neighbors  (dfs)
+    //insert into trie
     board[i][j] = "#";
-    //same row, next column
-    this.dfs(i, j + 1, childNode, result);
-    //same row, prev column
-    this.dfs(i, j - 1, childNode, result);
-    //prev row, same column
-    this.dfs(i - 1, j, childNode, result);
-    //next row, same column
-    this.dfs(i + 1, j, childNode, result);
-    //restore the letter, so that it can be used to make another word from neighboring letter
-    board[i][j] = letter;
+    //go in all directions
+    backtrack(i, j + 1, childNode);
+    backtrack(i, j - 1, childNode);
+    backtrack(i + 1, j, childNode);
+    backtrack(i - 1, j, childNode);
+    //re-store the boarad character
+    board[i][j] = char;
   };
 
   //1. create trie from words dictionary
   for (const word of words) {
-    this.insert(word);
+    if (this.insert(word)) result.push(word);
   }
-
+  //check if words are present in tries
   const result = [];
   //2. backtrack for all combination from board letters
   for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < columns; j++) {
-      if (this.root.children.has(board[i][j])) {
-        this.dfs(i, j, this.root, result);
-      }
+    for (j = 0; j < cols; j++) {
+      backtrack(i, j, this.root);
     }
   }
   return result;

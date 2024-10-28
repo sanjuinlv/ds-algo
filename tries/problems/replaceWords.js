@@ -1,4 +1,8 @@
 /* 
+648. Replace Words
+https://leetcode.com/problems/replace-words/description/
+Type: Medium
+
 In English, we have a concept called root, which can be followed by some other word to 
 form another longer word - let's call this word successor. For example, when the root 
 "an" is followed by the successor word "other", we can form a new word "another".
@@ -71,8 +75,65 @@ var replaceWords = function (dictionary, sentence) {
     }
     return resultStr;
 }
+
+/*
+Approach I: Trie
+Let d be the number of words in the dictionary, s be the number of words in the sentence, and w be the average length of each word.
+
+Time Complexity: O(d * w + s * w)
+Creating the Trie takes O(d * w). Creating the data structure that stores the words in the sentence takes O(s * w).
+The loop in the shortestRoot function runs once for each letter in the word. If a corresponding prefix is found, it creates one substring, which takes O(w). Therefore, the time complexity of finding the shortest root is O(w).
+The main loop calls the shortestRoot function once for each word in the sentence, so it takes O(s * w).
+
+Converting the result to a string takes O(s * w).
+
+Therefore, the overall time complexity is O(d * w +2 * s * w), which we can simplify to O(d * w + s * w).
+
+Space Complexity: O(d * w + s * w)
+The Trie may store up to O(d * w) nodes. The data structure that stores the words in the sentence uses O(s * w) space.
+
+Runtime: 46 ms Beats 98.48%
+Memory: 71.78 MB Beats 15.15%
+ */
+var replaceWords = function (dictionary, sentence) {
+  function Node() {
+    this.children = new Map();
+    this.isWord = false;
+  }
+  //root of Trie
+  this.root = new Node();
+  this.insert = (word) => {
+    let curr = this.root;
+    for (const c of word) {
+      if (!curr.children.has(c)) curr.children.set(c, new Node());
+      curr = curr.children.get(c);
+    }
+    curr.isWord = true;
+  };
+  this.findPrefix = (word) => {
+    let curr = this.root;
+    for (let i = 0; i < word.length; i++) {
+      const c = word[i];
+      curr = curr.children.get(c);
+      if (curr == null) return null;
+      if (curr.isWord) return word.slice(0, i + 1);
+    }
+    return null;
+  };
+  //build trie from the dictionary
+  for (const word of dictionary) this.insert(word);
+  //create array from sentence
+  const words = sentence.split(" ");
+  //for each word find the shortest match and replace if found
+  for (let i = 0; i < words.length; i++) {
+    const prefix = this.findPrefix(words[i]);
+    if (prefix != null) words[i] = prefix;
+  }
+  return words.join(" ");
+};
+
 /* 
-Approach II: Trie
+Trie with recursive methods
 Time Complexity: O(N), where N is the length of the sentence. 
 Every query of a word is in linear time.
 Space Complexity: O(N), the size of our trie.
