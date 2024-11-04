@@ -1,5 +1,7 @@
 /* 
+73. Set Matrix Zeroes
 https://leetcode.com/problems/set-matrix-zeroes/
+Type: Medium
 
 Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
 You must do it in place.
@@ -9,6 +11,9 @@ Input: matrix = [[1,1,1],[1,0,1],[1,1,1]]
 Output: [[1,0,1],[0,0,0],[1,0,1]]
 
 Example 2:
+|0, 1, 2, 0 |
+|3, 4, 5, 2 | =>
+|1, 3, 1, 5 |
 Input: matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
 Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
 
@@ -25,10 +30,11 @@ n == matrix[0].length
  * @return {void} Do not return anything, modify matrix in-place instead.
  */
 /* 
-Time: O(M*N*(M+N))
+Approach I
+Time: O(M * N * (M + N))
 Space: O(1)
-Runtime: 121 ms, faster than 44.83% of JavaScript online submissions for Set Matrix Zeroes.
-Memory Usage: 45.3 MB, less than 27.22% of JavaScript online submissions for Set Matrix Zeroes.
+Runtime: 6 ms Beats 23.39%
+Memory Usage: 53.92 MB Beats 26.10%
 */
 var setZeroes = function (matrix) {
   const rows = matrix.length;
@@ -37,37 +43,64 @@ var setZeroes = function (matrix) {
     //update row
     for (let col = 0; col < cols; col++) {
       //if there is already '0' then ignore it
-      if (matrix[i][col] !== 0) matrix[i][col] = "x";
+      if (matrix[i][col] != 0) matrix[i][col] = "x";
     }
     //update column
     for (let row = 0; row < rows; row++) {
       //if there is already '0' then ignore it
-      if (matrix[row][j] !== 0) matrix[row][j] = "x";
+      if (matrix[row][j] != 0) matrix[row][j] = "x";
     }
   };
-  for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[0].length; j++) {
+  //1: mark the row+colm of a matching cell with '0'
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
       if (matrix[i][j] == 0) {
         setRowAndColumn(i, j);
       }
     }
   }
-  //replace 'x' with zeros
-  for (let i = 0; i < matrix.length; i++) {
-    for (let j = 0; j < matrix[0].length; j++) {
-      if (matrix[i][j] == "x") {
-        matrix[i][j] = 0;
-      }
+  //2. replace x with zero
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (matrix[i][j] == "x") matrix[i][j] = 0;
     }
   }
 };
 
+/*
+Approach II: Additonal Memory Approach
+Time: O(M * N)
+Space: O(M + N)
+
+Runtime: 2 ms Beats 67.80%
+Memory: 53.13 MB Beats 77.41%
+ */
+var setZeroes = function (matrix) {
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  const rowSet = new Set();
+  const colSet = new Set();
+  // Mark row and col that needs to be made zero
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (matrix[i][j] == 0) {
+        rowSet.add(i);
+        colSet.add(j);
+      }
+    }
+  }
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (rowSet.has(i) || colSet.has(j)) matrix[i][j] = 0;
+    }
+  }
+};
 /* 
-Approach: Space (Optimized)
-Time: O(M*N)
+Approach II: Space (Optimized)
+Time: O(M * N)
 Space: O(1)
-Runtime: 86 ms, faster than 90.80% of JavaScript online submissions for Set Matrix Zeroes.
-Memory Usage: 45.2 MB, less than 33.81% of JavaScript online submissions for Set Matrix Zeroes.
+Runtime: 4 ms Beats 36.00%
+Memory Usage: 53.22 MB Beats 72.07%
 */
 var setZeroes = function (matrix) {
   const rows = matrix.length;
@@ -76,49 +109,36 @@ var setZeroes = function (matrix) {
   let firstRow = false;
   //flag to find if there is any zero in first col
   let firstCol = false;
-
+  //set firts row and column for matching zeros
   for (let i = 0; i < rows; i++) {
-    if (matrix[i][0] == 0) {
-      firstCol = true;
-      break;
-    }
-  }
-
-  for (let j = 0; j < cols; j++) {
-    if (matrix[0][j] == 0) {
-      firstRow = true;
-      break;
-    }
-  }
-
-  //find and set zeros to m[i][j] => m[i][0]= m[j][0] =0
-  for (let i = 1; i < rows; i++) {
-    for (let j = 1; j < cols; j++) {
+    for (let j = 0; j < cols; j++) {
       if (matrix[i][j] == 0) {
+        if (i == 0) firstRow = true;
+        if (j == 0) firstCol = true;
+        // set this row and first column to '0'
         matrix[i][0] = 0;
+        // set this col and first row to '0'
         matrix[0][j] = 0;
       }
     }
   }
-
-  //set zeros
+  //set row and columns to zeros for found cell with 0
   for (let i = 1; i < rows; i++) {
     for (let j = 1; j < cols; j++) {
-      if (matrix[i][0] === 0 || matrix[0][j] === 0) {
-        matrix[i][j] = 0;
-      }
+        //if either of 0th row or 0th col of this cell i,j is '0' then set this cell as '0'
+      if (matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
     }
   }
-
-  if (firstCol) {
-    for (let i = 0; i < rows; i++) {
-      matrix[i][0] = 0;
-    }
-  }
-
+  //set first row's columsn to zero
   if (firstRow) {
     for (let j = 0; j < cols; j++) {
       matrix[0][j] = 0;
+    }
+  }
+  //set first colum's rows to zero
+  if (firstCol) {
+    for (let i = 0; i < rows; i++) {
+      matrix[i][0] = 0;
     }
   }
 };
