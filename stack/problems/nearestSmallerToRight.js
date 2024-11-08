@@ -2,7 +2,7 @@
 function nearestSmallerToRight(nums) {
   const stack = [];
   const N = nums.length;
-  const result = new Array(N).fill(-1);
+  const result = new Array(N).fill(-1); 
   const top = (A) => A[A.length - 1];
   stack.push(nums[N - 1]);
   result[N - 1] = -1;

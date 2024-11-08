@@ -1,4 +1,8 @@
 /* 
+17. Letter Combinations of a Phone Number
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+Type: Medium
+
 Given a string containing digits from 2-9 inclusive, return all possible letter 
 combinations that the number could represent. Return the answer in any order.
 A mapping of digit to letters (just like on the telephone buttons) is given below.
@@ -33,8 +37,48 @@ Constraint:
  * @return {string[]}
  */
 
+/* 
+Approach I: Backtracking
+Time: O(4^N * N) - where N is the length of digits. Note that 4 in this expression is referring to the maximum value length in the hash map, and not to the length of the input.
+Space: O(N) - where N is the length of digits
+Not counting space used for the output, the extra space we use relative to input size is the space occupied by the recursion call stack. It will only go as deep as the number of digits in the input since whenever we reach that depth, we backtrack.
+
+Runtime: 0 ms Beats 100.00% 
+Memory: 49.08 MB Beats 38.63%
+*/
+var letterCombinations = function (digits) {
+  const N = digits.length;
+  if (N == 0) return [];
+  const phone = {
+    2: "abc",
+    3: "def",
+    4: "ghi",
+    5: "jkl",
+    6: "mno",
+    7: "pqrs",
+    8: "tuv",
+    9: "wxyz",
+  };
+  const backtrack = (path, i) => {
+    //base case
+    if (i == N) {
+      result.push(path);
+      return;
+    }
+    const digit = digits[i];
+    const combination = phone[digit];
+    for (let c of combination) {
+      backtrack(path + c, i + 1);
+    }
+  };
+  const result = [];
+  backtrack("", 0);
+  return result;
+};
+
+
 /*
-Approach I: Iterative (using queue)
+Approach II: Iterative (using queue)
 Runtime: 76 ms, faster than 71.58% of JavaScript online submissions for Letter Combinations of a Phone Number.
 Memory Usage: 38.5 MB, less than 71.53% of JavaScript online submissions for Letter Combinations of a Phone Number.
  */
@@ -66,75 +110,5 @@ var letterCombinations = function (digits) {
       }
     }
   }
-  return result;
-};
-
-/*
-Approach II: DFS + backtracking 
- */
-var letterCombinations = function (digits) {
-  const phone = {
-    2: "abc",
-    3: "def",
-    4: "ghi",
-    5: "jkl",
-    6: "mno",
-    7: "pqrs",
-    8: "tuv",
-    9: "wxyz",
-  };
-  const dfs = (nextDigits, path) => {
-    //we are done with all digits, add the current combination to the result and return
-    if (nextDigits.length == 0) {
-      result.push(path);
-      return;
-    }
-    //if there are still digits to to check
-    //iterate over all letters which map to next available digits
-    const letters = phone[nextDigits[0]];
-    for (let i = 0; i < letters.length; i++) {
-      //combine this letter with current combination and check for rest of letters
-      dfs(nextDigits.slice(1, nextDigits.length), `${path}${letters[i]}`);
-    }
-  };
-  const result = [];
-  if (digits.length) {
-    dfs(digits, "");
-  }
-  return result;
-};
-
-//30-May-2022
-/* 
-Approach II: DFS + Backtracking
-Runtime: 98 ms, faster than 16.55% of JavaScript online submissions for Letter Combinations of a Phone Number.
-Memory Usage: 42.1 MB, less than 48.16% of JavaScript online submissions for Letter Combinations of a Phone Number.
-*/
-var letterCombinations = function (digits) {
-  if (digits.length == 0) return [];
-  const phone = {
-    2: "abc",
-    3: "def",
-    4: "ghi",
-    5: "jkl",
-    6: "mno",
-    7: "pqrs",
-    8: "tuv",
-    9: "wxyz",
-  };
-  const backtrack = (digits, index, path) => {
-    //we reached end of the
-    if (index == digits.length) {
-      if (path.length) result.push(path);
-      return;
-    }
-    const combination = phone[digits[index]];
-    //try with all combination
-    for (let i = 0; i < combination.length; i++) {
-      backtrack(digits, index + 1, `${path}${combination[i]}`);
-    }
-  };
-  const result = [];
-  backtrack(digits, 0, "");
   return result;
 };

@@ -1,5 +1,7 @@
-/* 
+/*
+22. Generate Parentheses
 https://leetcode.com/problems/generate-parentheses/
+Tyep: Medium
 
 Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
 
@@ -39,28 +41,32 @@ as described above, and using O(n) space to store the sequence.
 
 Runtime: 134 ms, faster than 7.48% of JavaScript online submissions for Generate Parentheses.
 Memory Usage: 42.2 MB, less than 92.62% of JavaScript online submissions for Generate Parentheses.
- */
+
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 50.92 MB Beats 22.81%
+*/
 var generateParenthesis = function (n) {
-  if (n === 0) return [];
   const result = [];
-  const backtrack = (path, leftCount, rightCount) => {
-    //base case
-    if (leftCount === n && rightCount === n) {
-      result.push(path);
+  const backtrack = (str, lCount, rCount) => {
+    if (lCount === n && rCount === n) {
+      result.push(str);
       return;
     }
-    if (leftCount < n) {
-      backtrack(`${path}(`, leftCount + 1, rightCount);
+    //every time we have two choices to make, i.e., "(" or ")"
+    // we only add "(" if all not all counts are added, i.e, n
+    if (lCount != n) {
+      backtrack(str + "(", lCount + 1, rCount);
     }
-    if (leftCount > 0 && rightCount < n && rightCount < leftCount) {
-      backtrack(`${path})`, leftCount, rightCount + 1);
+    //Add ")" only when it is less than left braces count to have valid parentheses
+    if (rCount < lCount) {
+      backtrack(str + ")", lCount, rCount + 1);
     }
   };
-  backtrack("", 0, 0);
+  backtrack("(", 1, 0);
   return result;
 };
 
-// minor changes for right parenthesis count check
+// II: starting with empty string
 /*
 Runtime: 114 ms, faster than 14.93% of JavaScript online submissions for Generate Parentheses.
 Memory Usage: 42.2 MB, less than 95.89% of JavaScript online submissions for Generate Parentheses.
