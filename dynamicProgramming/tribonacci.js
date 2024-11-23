@@ -1,4 +1,5 @@
 /*
+1137. N-th Tribonacci Number
 https://leetcode.com/problems/n-th-tribonacci-number/
 Category - Easy
 
@@ -12,12 +13,12 @@ Given n, return the value of Tn.
  * @return {number}
  */
 /* 
-Approach 1: Bottom-up
+Approach 1: Recursion with Memoization (Top-Down)
 Time: O(N)
 Space: O(N)
 
-Runtime: 77 ms, faster than 63.56% of JavaScript online submissions for N-th Tribonacci Number.
-Memory Usage: 41.7 MB, less than 43.11% of JavaScript online submissions for N-th Tribonacci Number.
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 48.84 MB Beats 42.67%
 */
 var tribonacci = function (n) {
   const memo = new Array(n + 1).fill(-1);

@@ -1,4 +1,5 @@
 /* 
+740. Delete and Earn
 https://leetcode.com/problems/delete-and-earn/
 Category - Medium
 
@@ -38,72 +39,74 @@ Constraint:
 
 /*
 Approach - Top Down
-Time: O(N)
-Space: O(N)
+Time: O(N + k) 
+To populate points, we need to iterate through nums once, which costs O(N) time. Then, we call maxPoints(maxNumber). This call will repeatedly call maxPoints until we get down to our base cases. Because of cache, already solved sub-problems will only cost O(1) time. Since maxNumber = k, we will solve k unique sub-problems so, this recursion will cost O(k) time. Our final time complexity is O(N+k).
 
-Runtime: 91 ms, faster than 69.03% of JavaScript online submissions for Delete and Earn.
-Memory Usage: 46.5 MB, less than 13.83% of JavaScript online submissions for Delete and Earn.
+Space: O(N + k)
+The extra space we use is the hash table points, the recursion call stack needed to find maxPoints(maxNumber), and the hash table cache.
+
+Runtime: 7 ms Beats 82.86%
+Memory Usage: 54.89 MB Beats 13.92%
 */
 var deleteAndEarn = function (nums) {
-  const N = nums.length;
-  let maxNumber = 0;
-  const numCountMap = new Map();
   const points = new Map();
-  //create map of number and number * count,
-  // e.g., [2,2,2,3,3,3,3] => {2: 6, 3: 12}
-  for (let i = 0; i < N; i++) {
-    numCountMap.set(nums[i], (numCountMap.get(nums[i]) || 0) + nums[i]);
-    maxNumber = Math.max(maxNumber, nums[i]);
+  const memo = new Map();
+  let maxNumber = 0;
+  for (let num of nums) {
+    //create map of number and number * count
+    points.set(num, (points.get(num) || 0) + num);
+    //keep recording the max number found so far
+    maxNumber = Math.max(maxNumber, num);
   }
   //base cases
   //the max gain we can get from 0 is always 0
-  points.set(0, 0);
+  memo.set(0, 0);
   //we know that if we arrived at 1, it means that we must not have taken 2,
   //and because 1 times any quantity will be greater than or equal to the number
   //of points we can get from taking 0, we should always take 1 (if there are any).
-  points.set(1, numCountMap.get(1) || 0);
-  const dp = (num) => {
-    if (points.has(num)) return points.get(num);
-    const gain = numCountMap.get(num) || 0;
-    //recurrence relation
-    totalGain = Math.max(gain + dp(num - 2), dp(num - 1));
-    points.set(num, totalGain);
-    return totalGain;
+  memo.set(1, points.get(1) || 0);
+  const maxPoints = (x) => {
+    if (!memo.has(x)) {
+      const gain = points.get(x) || 0;
+      const notDeleted = maxPoints(x - 1);
+      const deleted = gain + maxPoints(x - 2);
+      memo.set(x, Math.max(deleted, notDeleted));
+    }
+    return memo.get(x);
   };
-  return dp(maxNumber);
+  return maxPoints(maxNumber);
 };
+
 
 /*
 Approach - Bottom up
 Time: O(N)
-Space: O(N+k) - O(N) space required by Map and O(k) required by dp (max points)
-Runtime: 87 ms, faster than 73.14% of JavaScript online submissions for Delete and Earn.
-Memory Usage: 45.3 MB, less than 26.17% of JavaScript online submissions for Delete and Earn.
- */
-var deleteAndEarn = function (nums) {
-  const N = nums.length;
-  let maxNumber = Number.MIN_VALUE;
-  const numCountMap = new Map();
-  //creat map of number and number * count,
-  // e.g., [2,2,2,3,3,3,3] => {2: 6, 3: 12}
-  for (let i = 0; i < N; i++) {
-    numCountMap.set(nums[i], (numCountMap.get(nums[i]) || 0) + nums[i]);
-    maxNumber = Math.max(maxNumber, nums[i]);
-  }
-  const dp = new Array(maxNumber);
+Space: O(N + k) - O(N) space required by Map and O(k) required by dp (max points)
 
-  //base case
-  dp[0] = 0;
-  dp[1] = numCountMap.get(1) || 0;
-  for (i = 2; i <= maxNumber; i++) {
-    const gain = numCountMap.get(i) || 0;
-    dp[i] = Math.max(gain + dp[i - 2], dp[i - 1]);
+Runtime: 11 ms Beats 64.29%
+Memory Usage: 53.28 MB Beats 43.81%
+*/
+var deleteAndEarn = function (nums) {
+  const points = new Map();
+  let maxNumber = 0;
+  for (let num of nums) {
+    //create map of number and number * count
+    points.set(num, (points.get(num) || 0) + num);
+    //keep recording the max number found so far
+    maxNumber = Math.max(maxNumber, num);
   }
-  return dp[maxNumber];
+  const maxPoints = new Array(maxNumber + 1).fill(0);
+  //Base case
+  maxPoints[1] = points.get(1) || 0;
+  for (let i = 2; i <= maxNumber; i++) {
+    const gain = points.get(i) || 0;
+    maxPoints[i] = Math.max(maxPoints[i - 1], maxPoints[i - 2] + gain);
+  }
+  return maxPoints[maxNumber];
 };
 
 /* 
-Approach - Bottom up
+Approach - Bottom-Up costance space
 Time: O(N)
 Space: O(N) - The O(N) space required by Map
 

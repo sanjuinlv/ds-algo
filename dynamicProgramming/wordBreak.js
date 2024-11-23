@@ -32,111 +32,6 @@ Approach I: Brute force
 Fails for 
 s = "catsanddog", wordDict = ["cats", "dog", "sand", "and", "cat"]
  */
-var wordBreak = function (s, wordDict) {
-  const wordSet = new Set();
-  const N = s.length;
-  let matchedLength = 0;
-  wordDict.forEach((word) => wordSet.add(word));
-  for (k = 1; k <= N; k++) {
-    let i = 0;
-    while (i <= N - k) {
-      let j = i + k;
-      console.log(`i: ${i}, j: ${j}`);
-      const word = s.substring(i, j);
-      // console.log(`word: ${word}`);
-      if (wordSet.has(word)) {
-        matchedLength += k;
-        console.log(`matched word: ${word}, matchedLength: ${matchedLength}`);
-        if (matchedLength > N) return false;
-        i += k;
-        //if a word match is found then jump the i by match size
-        if (matchedLength == N) {
-          console.log(`toal match found`);
-          return true;
-        }
-      } else {
-        i++;
-      }
-    }
-  }
-  console.log(`final matchedLength: ${matchedLength}`);
-  return matchedLength == N;
-};
-/*
-Approach II: Brute force (Check from max length strings)
-Fails for 
-s = "catsandydogi", wordDict = ["cats", "dogi", "sandy", "and", "cat"]
- */
-var wordBreak = function (s, wordDict) {
-  const wordSet = new Set();
-  const N = s.length;
-  let matchedLength = 0;
-  wordDict.forEach((word) => wordSet.add(word));
-  for (k = N; k >= 0; k--) {
-    let i = 0;
-    while (i <= N - k) {
-      let j = i + k;
-      console.log(`i: ${i}, j: ${j}`);
-      const word = s.substring(i, j);
-      console.log(`word: ${word}`);
-      if (wordSet.has(word)) {
-        matchedLength += k;
-        console.log(`matched word: ${word}, matchedLength: ${matchedLength}`);
-        if (matchedLength > N) return false;
-        i += k;
-        //if a word match is found then jump the i by match size
-        if (matchedLength == N) {
-          console.log(`toal match found`);
-          return true;
-        }
-      } else {
-        i++;
-      }
-    }
-  }
-  console.log(`final matchedLength: ${matchedLength}`);
-  return matchedLength == N;
-};
-
-var wordBreak = function (s, wordDict) {
-  let matchCount = 0;
-  let N = s.length;
-  for (let word of wordDict) {
-    console.log(`dictionary word: ${word}`);
-    let wordLength = word.length;
-    let dictWordCharMatchCount = 0;
-    let dictCharPos = 0;
-    for (let char of s) {
-      console.log(
-        `char: ${char}, j: ${dictCharPos}, wordChar: ${word[dictCharPos]}`
-      );
-      //charcter matches with dictionary word char
-      if (char == word[dictCharPos]) {
-        dictWordCharMatchCount++;
-        dictCharPos++;
-        console.log(`count: ${dictWordCharMatchCount}`);
-        //whole word from dictionary matches
-        if (dictWordCharMatchCount == wordLength) {
-          matchCount += dictWordCharMatchCount;
-          console.log(`matchCount: ${matchCount}`);
-          if (matchCount == N) return true;
-          if (matchCount > N) return false;
-          dictCharPos = 0;
-          matchCount = 0;
-        }
-      } else {
-        //reset counter
-        dictWordCharMatchCount = 0;
-        //start over again for dictionar word from begining
-        dictCharPos = 0;
-      }
-    }
-  }
-  return matchCount == N;
-};
-
-// Using Solution reference
-
 /* 
 Approach 1: Brute Force (Recursion & backtracking)
 Time Complexity: O(2^N): Given a string of length n, there are n + 1 ways to split it
@@ -171,36 +66,39 @@ Approach 2: Recursion with memoization
 Time Complexity: O(N^3): N(for recursion) X N(for for loop) X N (for substring)
 Space Complexity: O(N). The depth of the recursion tree can go upto n.
 
-Runtime: 84 ms, faster than 78.49% of JavaScript online submissions for Word Break.
-Memory Usage: 40.8 MB, less than 34.08% of JavaScript online submissions for Word Break.
-
+Runtime: 7 ms Beats 54.37%
+Memory Usage: 51.41 MB Beats 47.90%
 */
 var wordBreak = function (s, wordDict) {
-  const wordDictSet = new Set(wordDict);
+  const dict = new Set(wordDict);
   const N = s.length;
   const memo = new Array(N);
-  function backtrack(start) {
+  const backtrack = (start) => {
     //we reached at the end of string
     if (start == N) return true;
-    if (memo[start] != null) {
-      return memo[start];
-    }
+    //check if we have already solved this problem
+    if (memo[start] != null) return memo[start];
     //check for other combination
     for (let end = start + 1; end <= N; end++) {
-      if (wordDictSet.has(s.substring(start, end)) && backtrack(end)) {
+      const curr = s.substring(start, end);
+      if (dict.has(curr) && backtrack(end)) {
         return (memo[start] = true);
       }
     }
     return (memo[start] = false);
-  }
+  };
   return backtrack(0);
 };
 
 /* 
 Approach 3: Breadth Search
-Time Complexity: O(N^3): For every starting index, the search can continue till the 
-end of the given string.
-Space Complexity: O(N). The depth of the recursion tree can go upto n.
+given n length of s, m length of wordDict and k as average length of dict word.
+Time Complexity: O(N^3 + m * k): 
+There are O(n) nodes. Because of seen, we never visit a node more than once. At each node, we iterate over the nodes in front of the current node, of which there are O(n). For each node end, we create a substring, which also costs O(n).
+Therefore, handling a node costs O(n^2), so the BFS could cost up to O(n^3). Finally, we also spent O(m*k) to create the set words.
+
+Space Complexity: O(N + m * k). 
+We use O(n) space for queue and seen. We use O(m*k) space for the set words
 
 Runtime: 84 ms, faster than 78.49% of JavaScript online submissions for Word Break.
 Memory Usage: 40.1 MB, less than 76.31% of JavaScript online submissions for Word Break.
@@ -231,7 +129,33 @@ var wordBreak = function (s, wordDict) {
 };
 
 /* 
-Approach 4: Using Dynamic Programming
+BFS II
+Runtime: 11 ms Beats 26.02% 
+Memory: 50.60 MB Beats 90.36%
+*/
+var wordBreak = function (s, wordDict) {
+  const dict = new Set(wordDict);
+  const N = s.length;
+  const seen = new Set();
+  const queue = [0];
+  while (queue.length) {
+    const start = queue.shift();
+    //we reached end of the string
+    if (start == N) return true;
+    for (let end = start + 1; end <= N; end++) {
+      //if we have already visited this then word break exist, try with next index
+      if (seen.has(end)) continue;
+      if (dict.has(s.substring(start, end))) {
+        queue.push(end);
+        seen.add(end);
+      }
+    }
+  }
+  return false;
+};
+
+/* 
+Approach 4: Using Dynamic Programming (Bottom Up)
 We make use of dp array of size n+1, where n is the length of the given string. 
 We also use two index pointers i and j, where i refers to the length of the substring (s') 
 considered currently starting from the beginning, and j refers to the index partitioning 
@@ -249,70 +173,26 @@ otherwise as false.
 
 Time complexity: O(N^3)
 Space complexity: O(N)
+
+Runtime: 9 ms Beats 37.25%
+Memory: 50.50 MB Beats 92.27%
 */
 var wordBreak = function (s, wordDict) {
-  const wordDictSet = new Set();
-  wordDict.forEach((word) => wordDictSet.add(word));
-  let dp = new Array(s.length + 1).fill(false);
+  const wordDictSet = new Set(wordDict);
+  const N = s.length;
+  const dp = new Array(N + 1).fill(false);
+  //base case;
   dp[0] = true;
-  //i is substring length
-  for (let i = 1; i <= s.length; i++) {
-    for (j = 0; j < i; j++) {
-      console.log(`substring from j: ${j}, i:${i} is: ${s.substring(j, i)}`);
+  //try with all length of the string
+  for (let i = 1; i <= N; i++) {
+    for (let j = 0; j < i; j++) {
+      // console.log(`substring from j: ${j} to i:${i}`, s.substring(j, i));
       if (dp[j] && wordDictSet.has(s.substring(j, i))) {
         dp[i] = true;
       }
     }
   }
-  console.log(dp);
-  return dp[s.length];
-};
-
-//30/03/2022
-/* 
-Approach: Recursion 
-
-*/
-var wordBreak = function (s, wordDict) {
-  const wordSet = new Set(wordDict);
-  const N = s.length;
-  const backtrack = (start) => {
-    console.log(`start: ${start}`);
-    if (start == N) return true;
-    for (let end = start + 1; end <= N; end++) {
-      const str = s.substring(start, end);
-      console.log(`start: ${start}, end: ${end}, str: ${str}`);
-      if (wordSet.has(str) && backtrack(end)) {
-        return true;
-      }
-    }
-    return false;
-  };
-  return backtrack(0);
-};
-
-/* 
-Approach: Recursion with Memoization
-Time: O(N^3): Size of recursion tree can go up to n^2.
-Space: O(N)The depth of recursion tree can go up to n.
-*/
-var wordBreak = function (s, wordDict) {
-  const wordSet = new Set(wordDict);
-  const N = s.length;
-  const memo = new Array(N).fill(null);
-  const backtrack = (start) => {
-    if (start == N) return true;
-    if (memo[start] != null) return memo[start];
-    for (let end = start + 1; end <= N; end++) {
-      if (wordSet.has(s.substring(start, end)) && backtrack(end)) {
-        memo[start] = true;
-        return memo[start];
-      }
-    }
-    memo[start] = false;
-    return memo[start];
-  };
-  return backtrack(0);
+  return dp[N];
 };
 
 /*

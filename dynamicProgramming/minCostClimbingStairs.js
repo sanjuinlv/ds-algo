@@ -1,4 +1,5 @@
 /**
+746. Min Cost Climbing Stairs
 https://leetcode.com/problems/min-cost-climbing-stairs/
 Category - Easy
 
@@ -34,10 +35,10 @@ Constraints:
 Approach: Top-down (Recursion with memo)
 Time: O(N)
 Space: O(N) (Stack size)
-Runtime: 79 ms, faster than 77.85% of JavaScript online submissions for Min Cost Climbing Stairs.
-Memory Usage: 42.8 MB, less than 69.42% of JavaScript online submissions for Min Cost Climbing Stairs.
-*/
 
+Runtime: 1 ms Beats 78.81%
+Memory: 50.88 MB Beats 28.47%
+*/
 var minCostClimbingStairs = function (cost) {
   const N = cost.length;
   const memo = new Array(N).fill(-1);
@@ -57,8 +58,9 @@ var minCostClimbingStairs = function (cost) {
 Approach: Bottom up (Iterative)
 Time: O(N)
 Space: O(N)
-Runtime: 94 ms, faster than 55.73% of JavaScript online submissions for Min Cost Climbing Stairs.
-Memory Usage: 43 MB, less than 62.91% of JavaScript online submissions for Min Cost Climbing Stairs.
+
+Runtime: 1 ms Beats 78.81%
+Memory Usage: 50.67 MB Beats 43.85%
 */
 var minCostClimbingStairs = function (cost) {
   const N = cost.length;
@@ -76,8 +78,9 @@ var minCostClimbingStairs = function (cost) {
 Approach: Bottom up (Constant space)
 Time: O(N)
 Space: O(1)
-Runtime: 64 ms, faster than 95.91% of JavaScript online submissions for Min Cost Climbing Stairs.
-Memory Usage: 42.8 MB, less than 45.58% of JavaScript online submissions for Min Cost Climbing Stairs.
+
+Runtime: 2 ms Beats 57.62%
+Memory Usage: 50.66 MB Beats 43.85%
 */
 var minCostClimbingStairs = function (cost) {
   const N = cost.length;

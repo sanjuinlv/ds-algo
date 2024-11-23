@@ -1,5 +1,6 @@
 /* 
-https://leetcode.com/problems/house-robber/solution/
+198. House Robber
+https://leetcode.com/problems/house-robber
 Category - Medium
 
 You are a professional robber planning to rob houses along a street. 
@@ -14,17 +15,17 @@ Example 1:
 Input: nums = [1,2,3,1]
 Output: 4
 Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).
-             Total amount you can rob = 1 + 3 = 4.
+Total amount you can rob = 1 + 3 = 4.
 
 Example 1:
 Input: nums = [2,7,9,3,1]
 Output: 12
 Explanation: Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (money = 1).
-             Total amount you can rob = 2 + 9 + 1 = 12.
+Total amount you can rob = 2 + 9 + 1 = 12.
 
 Constraint:             
-    0 <= nums.length <= 100
-    0 <= nums[i] <= 400             
+  - 0 <= nums.length <= 100
+  - 0 <= nums[i] <= 400             
 */
 /**
  * @param {number[]} nums
@@ -78,6 +79,24 @@ var rob = function (nums) {
       memo[i] = Math.max(nums[i] + dp(i - 2), dp(i - 1));
     }
     return memo[i];
+  };
+  return dp(N - 1);
+};
+/* 
+Using Map
+Runtime: 0 ms Beats 100.00%
+Memory: 49.34 MB Beats 7.27%
+*/
+var rob = function (nums) {
+  const N = nums.length;
+  const memo = new Map();
+  const dp = (n) => {
+    if (n == 0) return nums[0];
+    if (n == 1) return Math.max(nums[0], nums[1]);
+    if (!memo.has(n)) {
+      memo.set(n, Math.max(dp(n - 2) + nums[n], dp(n - 1)));
+    }
+    return memo.get(n);
   };
   return dp(N - 1);
 };

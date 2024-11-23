@@ -1,4 +1,5 @@
 /*
+337. House Robber III
 https://leetcode.com/problems/house-robber-iii
 Category - Medium
 
@@ -42,27 +43,30 @@ Explanation: Maximum amount of money the thief can rob = 4 + 5 = 9.
  * @return {number}
  */
 /* 
-Recursion (Top Down)
+Recursion 
 Time: O(N)
-SPace: O(N)
-Runtime: 120 ms, faster than 41.32% of JavaScript online submissions for House Robber III.
-Memory Usage: 46.6 MB, less than 92.98% of JavaScript online submissions for House Robber III.
+Space: O(N)
+
+Runtime: 2 ms Beats 72.29%
+Memory Usage: 53.44 MB Beats 86.58%
 */
 var rob = function (root) {
+  //create array of nodes using in-order traversal
   const helper = (node) => {
+    //the first index indicate robbed and 2nd no_robbed
     if (node == null) return [0, 0];
     const leftProfit = helper(node.left);
     const rightProfit = helper(node.right);
-    //if we rob this node, then we can only rob the children of left and right node
-    const robNode = node.val + leftProfit[1] + rightProfit[1];
+    //if we rob this node then we can only rob children of left and right node
+    //leftProfit[1] and rightProfit[1] indicates robbing children of left and right child node
+    const rob = node.val + leftProfit[1] + rightProfit[1];
     //if we don't rob this node, then we following choices:
     //we rob left node or its children to gain max amount, and
     //we rob right node or its children to gain max amount
-    const notRobNode = Math.max(
+    const notRob =
       Math.max(leftProfit[0], leftProfit[1]) +
-        Math.max(rightProfit[0], rightProfit[1])
-    );
-    return [robNode, notRobNode];
+      Math.max(rightProfit[0], rightProfit[1]);
+    return [rob, notRob];
   };
   const result = helper(root);
   return Math.max(result[0], result[1]);

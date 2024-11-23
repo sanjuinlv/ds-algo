@@ -38,8 +38,8 @@ Approach: Top Down
 Time: O(N)
 Space: O(N)
 
-Runtime: 67 ms, faster than 85.71% of JavaScript online submissions for House Robber II.
-Memory Usage: 42.4 MB, less than 15.74% of JavaScript online submissions for House Robber II.
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 48.88 MB Beats 60.89%
 */
 var rob = function (nums) {
   const N = nums.length;
@@ -63,25 +63,27 @@ var rob = function (nums) {
 
 /* 
 Approach: Bottom-Up
+
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 48.79 MB Beats 71.90%
 */
 var rob = function (nums) {
   const N = nums.length;
   if (N == 1) return nums[0];
-
-  const dp = (nums, start, end) => {
+  
+  const dp = (start, end) => {
     if (start == end) return nums[start];
     let first = nums[start];
-    let second = Math.max(nums[start], nums[start + 1]);
+    let second = Math.max(first, nums[start + 1]);
     for (let i = start + 2; i <= end; i++) {
-      let third = Math.max(nums[i] + first, second);
+      const third = Math.max(nums[i] + first, second);
       first = second;
       second = third;
     }
     return second;
   };
 
-  const rob1 = dp(nums, 0, N - 2);
-  const rob2 = dp(nums, 1, N - 1);
-
+  const rob1 = dp(0, N - 2);
+  const rob2 = dp(1, N - 1);
   return Math.max(rob1, rob2);
 };

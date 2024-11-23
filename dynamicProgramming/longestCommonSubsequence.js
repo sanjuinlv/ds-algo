@@ -1,4 +1,5 @@
 /* 
+1143. Longest Common Subsequence
 https://leetcode.com/problems/longest-common-subsequence/
 Category - Medium
 
@@ -34,6 +35,7 @@ Constraints:
 1 <= text1.length, text2.length <= 1000
 text1 and text2 consist of only lowercase English characters.
 */
+
 // Time complexity: 2^(M*N) (due to recursion)
 /* 
 Approach I: Recursion (Top Down without memoization)
@@ -60,29 +62,30 @@ var longestCommonSubsequence = function (text1, text2) {
 Approach II: Tow Down (Memoization)
 Time: O(M*N)
 Space: O(M*N)
-Runtime: 168 ms, faster than 38.52% of JavaScript online submissions for Longest Common Subsequence.
-Memory Usage: 52.8 MB, less than 72.66% of JavaScript online submissions for Longest Common Subsequence.
+
+Runtime: 80 ms Beats 35.05%
+Memory: 71.78 MB Beats 84.40%
 */
 var longestCommonSubsequence = function (text1, text2) {
   const m = text1.length;
   const n = text2.length;
   if (m > n) return longestCommonSubsequence(text2, text1);
-  // Make the memo big enough to hold the cases where the pointers
-  // go over the edges of the strings.
-  const memo = [...Array(m + 1)].map((x) => Array(n + 1).fill(-1));
-  const LCS = (i, j) => {
+  const memo = [...Array(m)].map((x) => new Array(n));
+  const LCA = (i, j) => {
     //base case
     // if we reached till end of the array then return 0
-    if (i >= m || j >= n) return 0;
-    if (memo[i][j] !== -1) return memo[i][j];
-    if (text1[i] === text2[j]) {
-      memo[i][j] = 1 + LCS(i + 1, j + 1);
+    if (i == m || j == n) return 0;
+    if (memo[i][j] != null) return memo[i][j];
+    //match found
+    if (text1[i] == text2[j]) {
+      memo[i][j] = 1 + LCA(i + 1, j + 1);
     } else {
-      memo[i][j] = Math.max(LCS(i + 1, j), LCS(i, j + 1));
+      //try with first string next character and 2nd string same character
+      memo[i][j] = Math.max(LCA(i + 1, j), LCA(i, j + 1));
     }
     return memo[i][j];
   };
-  return LCS(0, 0);
+  return LCA(0, 0);
 };
 
 /* 
@@ -94,17 +97,37 @@ Runtime: 116 ms, faster than 78.31% of JavaScript online submissions for Longest
 Memory Usage: 52.9 MB, less than 63.58% of JavaScript online submissions for Longest Common Subsequence.
 */
 var longestCommonSubsequence = function (text1, text2) {
-  const n = text1.length;
-  const m = text2.length;
-  const dp = [...Array(n + 1)].map((x) => Array(m + 1).fill(0));
-  for (let i = n - 1; i >= 0; i--) {
-    for (let j = m - 1; j >= 0; j--) {
-      if (text1[i] === text2[j]) {
-        dp[i][j] = 1 + dp[i + 1][j + 1];
-      } else {
-        dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
-      }
+  const m = text1.length;
+  const n = text2.length;
+  const dp = [...Array(m + 1)].map((x) => new Array(n + 1).fill(0));
+  for (let i = m - 1; i >= 0; i--) {
+    for (let j = n - 1; j >= 0; j--) {
+      if (text1[i] == text2[j]) dp[i][j] = 1 + dp[i + 1][j + 1];
+      else dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
     }
   }
   return dp[0][0];
+};
+
+/* 
+Bottom up: Starting from begining
+Good explanation from Abdul Bari: https://www.youtube.com/watch?v=sSno9rV8Rhg
+
+Runtime: 60 ms Beats 68.39%
+Memory: 79.23 MB Beats 13.98%
+*/
+var longestCommonSubsequence = function (text1, text2) {
+  const m = text1.length;
+  const n = text2.length;
+  const dp = [...Array(m + 1)].map((x) => new Array(n + 1).fill(0));
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      //catch point is we need to compare i-1 and j-1th character of string
+      //as we have taken extra 1 grid size, so we need to do -1 character index
+      //i.e., The cell dp[i][j] represents the length of the longest common subsequence of substrings text1[0...i-1] and text2[0...j-1]      
+      if (text1[i - 1] == text2[j - 1]) dp[i][j] = 1 + dp[i - 1][j - 1];
+      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m][n];
 };

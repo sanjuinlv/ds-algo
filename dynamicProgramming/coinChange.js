@@ -34,47 +34,26 @@ Constraint:
  * @return {number}
  */
 /* 
-Approach: Recursion
-Will fail for input: [2,5,29], amount = 21
-O/P =-1, expected: 6
-*/
-var coinChange = function (coins, amount) {
-  const N = coins.length;
-  coins.sort((a, b) => b - a);
-  console.log(coins);
-  let count = 0;
-  const dp = (i, count, amtCollected) => {
-    console.log(`i:: ${i}, count: ${count}, amtCollected:${amtCollected}`);
-    // base case
-    if (amtCollected === amount) return count;
-    if (i === N) return -1;
-    while (amtCollected + coins[i] <= amount) {
-      amtCollected += coins[i];
-      count++;
-    }
-    return dp(++i, count, amtCollected);
-  };
-  return dp(0, count, 0);
-  //   return count;
-};
-
-//Solution Reference
-/* 
 Approach I : Recursion
 */
 var coinChange = function (coins, amount) {
-  const dp = (coins, remain) => {
+  const dp = (remain) => {
+    //no change can be made from this combination
     if (remain < 0) return -1;
-    if (remain === 0) return 0;
-    let minCount = Number.MAX_VALUE;
+    //we don't need any changes for amount 0
+    if (remain == 0) return 0;
+    //min coins for this amount
+    let minCoins = Number.MAX_VALUE;
     for (let coin of coins) {
-      const count = dp(coins, remain - coin);
+      const count = dp(remain - coin);
+      //we did not find any solution so continue with other option
       if (count == -1) continue;
-      minCount = Math.min(minCount, count + 1);
+      //total change will be current count + 1 for this remain amount
+      minCoins = Math.min(minCoins, count + 1);
     }
-    return minCount === Number.MAX_VALUE ? -1 : minCount;
+    return minCoins == Number.MAX_VALUE ? -1 : minCoins;
   };
-  return dp(coins, amount);
+  return dp(amount);
 };
 
 /* 
@@ -85,25 +64,31 @@ tree of the algorithm has height of S and the algorithm solves only S subproblem
 caches precalculated solutions in a table. Each subproblem is computed with nn iterations, 
 one by coin denomination. Therefore there is O(S*n) time complexity
 Space: O(S), where SS is the amount to change We use extra space for the memoization table
+
+Runtime: 62 ms Beats 36.30% 
+Memory: 54.57 MB Beats 70.96%
 */
 var coinChange = function (coins, amount) {
-  const memo = new Array(coins.length).fill(null);
-
-  const dp = (coins, remain) => {
+  const memo = new Array(amount + 1);
+  const dp = (remain) => {
+    //no change can be made from this combination
     if (remain < 0) return -1;
-    if (remain === 0) return 0;
+    //we don't need any changes for amount 0
+    if (remain == 0) return 0;
     if (memo[remain] != null) return memo[remain];
-    let minCount = Number.MAX_VALUE;
+    //min coins for this amount
+    let minCoins = Number.MAX_VALUE;
     for (let coin of coins) {
-      const count = dp(coins, remain - coin);
+      const count = dp(remain - coin);
+      //we did not find any solution so continue with other option
       if (count == -1) continue;
-      minCount = Math.min(minCount, count + 1);
+      //total change will be current count + 1 for this remain amount
+      minCoins = Math.min(minCoins, count + 1);
     }
-    memo[remain] = minCount === Number.MAX_VALUE ? -1 : minCount;
+    memo[remain] = minCoins == Number.MAX_VALUE ? -1 : minCoins;
     return memo[remain];
   };
-
-  return dp(coins, amount);
+  return dp(amount);
 };
 
 /*
@@ -114,8 +99,8 @@ caches precalculated solutions in a table. Each subproblem is computed with nn i
 one by coin denomination. Therefore there is O(S*n) time complexity
 Space: O(S), where SS is the amount to change We use extra space for the memoization table
 
-Runtime: 112 ms, faster than 90.10% of JavaScript online submissions for Coin Change.
-Memory Usage: 45.9 MB, less than 86.25% of JavaScript online submissions for Coin Change.
+Runtime: 46 ms Beats 52.53%
+Memory Usage: 55.38 MB Beats 47.52%
  */
 var coinChange = function (coins, amount) {
   const max = amount + 1;

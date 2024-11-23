@@ -1,4 +1,5 @@
 /**
+221. Maximal Square
 https://leetcode.com/problems/maximal-square/solution/
 Category - Medium
 
@@ -41,41 +42,19 @@ matrix[i][j] is '0' or '1'.
 Approach: Dynamic Programming
 Time: O(M*N)
 Space: O(M*N)
+
+Runtime: 32 ms Beats 37.40%
+Memory: 60.31 MB Beats 23.84%
 */
 var maximalSquare = function (matrix) {
-  const rows = matrix.length;
-  const cols = matrix[0].length;
-  const dp = [...Array(rows + 1)].map((x) => Array(cols + 1).fill(0));
+  const m = matrix.length;
+  const n = matrix[0].length;
+  const dp = [...Array(m + 1)].map((x) => new Array(n + 1).fill(0));
   let maxSide = 0;
-  for (let i = 1; i <= rows; i++) {
-    for (j = 1; j <= cols; j++) {
-      if (matrix[i - 1][j - 1] === "1") {
-        dp[i][j] = Math.min(dp[i - 1][j], dp[i - 1][j], dp[i][j - 1]) + 1;
-      }
-      maxSide = Math.max(maxSide, dp[i][j]);
-    }
-  }
-  return maxSide * maxSide;
-};
-
-//21/03/2022
-/* 
-Approach: Dynamic Programming
-Time: O(mn)
-Space: O(mn)
-Runtime: 88 ms, faster than 91.45% of JavaScript online submissions for Maximal Square.
-Memory Usage: 47.9 MB, less than 47.25% of JavaScript online submissions for Maximal Square.
-
-*/
-var maximalSquare = function (matrix) {
-  const rows = matrix.length;
-  const cols = matrix[0].length;
-  const dp = [...Array(rows + 1)].map((x) => Array(cols + 1).fill(0));
-  let maxSide = 0;
-  for (let i = 1; i <= rows; i++) {
-    for (let j = 1; j <= cols; j++) {
-      if (matrix[i - 1][j - 1] === "1") {
-        dp[i][j] = Math.min(dp[i - 1][j], dp[i - 1][j - 1], dp[i][j - 1]) + 1;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (matrix[i - 1][j - 1] == "1") {
+        dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]);
         maxSide = Math.max(maxSide, dp[i][j]);
       }
     }
