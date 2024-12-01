@@ -1,4 +1,5 @@
 /*
+494. Target Sum
 https://leetcode.com/problems/target-sum/
 Category: Medium
 
@@ -38,9 +39,9 @@ Constraints:
  * @return {number}
  */
 /* 
-s1 + (-s2) = target
-s1 + s2 = arraySum
------------------
+s1 + (-s2) = target -- (1)
+s1 + s2 = arraySum ----(2)
+---------------------------
 2s1 = target + arraySum
 s1 = (target + arraySum) / 2 
 */
@@ -54,9 +55,9 @@ var findTargetSumWays = function (nums, target) {
   let noOfWays = 0;
   const dfs = (i, totalSum) => {
     if (i >= nums.length) {
-        if (totalSum == target) noOfWays++;
-        return;
-    } 
+      if (totalSum == target) noOfWays++;
+      return;
+    }
     dfs(i + 1, totalSum + nums[i]);
     dfs(i + 1, totalSum - nums[i]);
   };
@@ -69,61 +70,70 @@ Approach II : Dynamic programming (Top Down)
 Time: O(N * M), where M is sum of nums array
 Space: O(N * M)
 
-Runtime: 120 ms, faster than 92.95% of JavaScript online submissions for Target Sum.
-Memory Usage: 47.7 MB, less than 61.57% of JavaScript online submissions for Target Sum.
+Runtime: 14 ms Beats 89.63%
+Memory Usage: 54.72 MB Beats 52.59%
 */
 var findTargetSumWays = function (nums, target) {
   const N = nums.length;
-  let arraySum = 0;
-  nums.forEach((num) => (arraySum += num));
+  const arrSum = nums.reduce((sum, num) => sum + num, 0);
   //we set the colum size twice the total sum of array. E.g.,
   //if totalSum is 5 we can get sum ranging from -5 (all nums added with minus sign) to 5
   //so we need to store twice the number of variations.
-  const dp = [...Array(N)].map((x) => Array(2 * arraySum + 1).fill(-1));
-  const helper = (i, sum) => {
-    //reached at the end of array
-    if (i === N) {
-      return sum == target ? 1 : 0;
+  const memo = Array.from({ length: N + 1 }, () => Array(2 * arrSum + 1));
+  const helper = (i, totalSum) => {
+    //base case
+    if (i == N) {
+      return totalSum == target ? 1 : 0;
     }
     //Note: The factor of total has been added as an offset to the sum value to map
     // all the sums possible to positive integer range
-    const sumIndex = sum + arraySum;
-    if (dp[i][sumIndex] != -1) return dp[i][sumIndex];
-    //add this num
-    const addSumCount = helper(i + 1, sum + nums[i]);
-    //subtract this num
-    const substractSumCount = helper(i + 1, sum - nums[i]);
-    dp[i][sumIndex] = addSumCount + substractSumCount;
-    return dp[i][sumIndex];
+    const sumIndex = arrSum + totalSum;
+    if (memo[i][sumIndex] != null) return memo[i][sumIndex];
+    const addSumCount = helper(i + 1, totalSum + nums[i]);
+    const subtractSumCount = helper(i + 1, totalSum - nums[i]);
+    return (memo[i][sumIndex] = addSumCount + subtractSumCount);
   };
   return helper(0, 0);
 };
 
 /* 
 Approach II : Dynamic programming (Bottom Up)
+This is same problem as count of subset difference. 
+In this case we are changing the sign of number, i.e., '+' and '-'. So basically
+we are dividing the array in two subset, one with positive numbers and other with negative number.
+Let's assume S1 is subset with positive number and S2 is subset of negative numbers. Then we 
+need ot find S1 - S2 = target
+
+s1 + (-s2) = target -- (1)
+s1 + s2 = arraySum ----(2)
+---------------------------
+2s1 = target + arraySum
+s1 = (target + arraySum) / 2 
+
 Time: O(N * M), when is M is (target + arraySum)/2
 Space: O(N * M)
 
-Runtime: 116 ms, faster than 93.54% of JavaScript online submissions for Target Sum.
-Memory Usage: 45.5 MB, less than 62.51% of JavaScript online submissions for Target Sum.
+Runtime: 14 ms Beats 89.63%
+Memory Usage: 52.70 MB Beats 58.14%
 */
 var findTargetSumWays = function (nums, target) {
   const n = nums.length;
   //1. find array sum
-  let arraySum = 0;
-  nums.forEach((num) => (arraySum += num));
-  console.log(`arraySum: ${arraySum}`);
-  //the array sum be greater than target and sum of arraySum and target
+  const arraySum = nums.reduce((sum, num) => sum + num, 0);
+  //the array sum must be greater than target and sum of arraySum and target
   //should be divisible by 2 to find the subset sub
   if (arraySum < Math.abs(target) || (arraySum + target) % 2 != 0) return 0;
   //2. Subset sum which we need to find
-  const sum = Math.floor((target + arraySum) / 2);
-  const dp = [...Array(n + 1)].map((x) => Array(sum + 1).fill(0));
-  for (let i = 0; i <= n; i++) {
-    dp[i][0] = 1;
-  }
+  const sum = (target + arraySum) / 2;
+  const dp = [...Array(n + 1)].map((x) => Array(sum + 1));
+  //we cn always get target sum=0 for empty sub set
+  for (let i = 0; i <= n; i++) dp[i][0] = 1;
+  //for empty subset we can not get target sum > 0
+  for (let j = 1; j <= sum; j++) dp[0][j] = 0;
+
   for (let i = 1; i <= n; i++) {
     const curr = nums[i - 1];
+    //Note: value of j starts from 0
     for (let j = 0; j <= sum; j++) {
       if (curr <= j) {
         dp[i][j] = dp[i - 1][j - curr] + dp[i - 1][j];

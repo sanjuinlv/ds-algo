@@ -1,4 +1,5 @@
 /* 
+26. Remove Duplicates from Sorted Array
 https://leetcode.com/problems/remove-duplicates-from-sorted-array/
 Type: Easy
 
@@ -21,7 +22,6 @@ Output: 5, nums = [0,1,2,3,4]
 Explanation: Your function should return length = 5, with the first five elements of nums being modified to 0, 1, 2, 3, and 4 respectively. It doesn't matter what values are set beyond the returned length.
 
 Constraint:
-
  - 0 <= nums.length <= 3 * 10^4
  - -10^4 <= nums[i] <= 10^4
  - nums is sorted in ascending order.
@@ -31,58 +31,42 @@ Constraint:
  * @param {number[]} nums
  * @return {number}
  */
-// Runtime: 84 ms
-// Memory Usage: 39.1 MB
-// Your runtime beats 91.67 % of javascript submissions.
-// Your memory usage beats 62.92 % of javascript submissions.
-var removeDuplicates = function (nums) {
-    let i = 1;
-    let j = 1;
-    let prev = nums[0];
-    while (j < nums.length) {
-      if (nums[j] == prev) {
-        //until current is same as previous move the pointer
-        j++;
-      } else {
-        //swap with insert point i
-        nums[i++] = nums[j++];
-        //update previous to last swapped number
-        prev = nums[i-1];
-      }
-    }
-    return i;
-  };
-
-// Using only two pointers as solution given in leet code
 /*
-Runtime: 96 ms, faster than 59.88% of JavaScript online submissions for Remove Duplicates from Sorted Array.
-Memory Usage: 41 MB, less than 7.27% of JavaScript online submissions for Remove Duplicates from Sorted Array.
+Time: O(N)
+Space: O(1)
+
+Runtime: 1 ms Beats 63.55%
+Memory Usage: 51.62 MB Beats 92.40%
 */
-var removeDuplicates = function(nums) {
-    let i = 0;
-    for (let j = 0; j < nums.length; j++) {
-        if (nums[j] != nums[i]) {
-            nums[++i] = nums[j];
-        }
+var removeDuplicates = function (nums) {
+  let i = 0;
+  const N = nums.length;
+  for (let j = 0; j < N; j++) {
+    //if ith and jth pointer are not same then swap jth with i+1
+    if (nums[i] != nums[j]) {
+      nums[i + 1] = nums[j];
+      i++;
     }
-    return i + 1;
+  }
+  return i + 1;
 };
 
 /**
- * 2nd try
+ * Using while loop
  * @param {number[]} nums
  * @return {number}
  */
-var removeDuplicates = function(nums) {
-  let i = 0; j = 0; 
+var removeDuplicates = function (nums) {
+  let i = 0;
+  j = 0;
   const N = nums.length;
-  while(j < N && i< N){
-      //if ith and jth index items are same, move the j pointer
-      if (nums[i] != nums[j]){
-        nums[i+1] = nums[j];
-        i++;
-      }
-      j++
+  while (j < N && i < N) {
+    //if ith and jth index items are same, move the j pointer
+    if (nums[i] != nums[j]) {
+      nums[i + 1] = nums[j];
+      i++;
+    }
+    j++;
   }
-  return i+1;
+  return i + 1;
 };

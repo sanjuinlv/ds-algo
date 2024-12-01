@@ -1,14 +1,17 @@
 /* 
+https://www.geeksforgeeks.org/count-of-subsets-with-sum-equal-to-x/
+
 Given a set of positive integers and an integer k, check if there is any non-empty
 subset that sums to k.
 
-Input:
- 
-A = { 7, 3, 2, 5, 8 }
-k = 14
- 
-Output: Subset with the given sum exists
-Subset { 7, 2, 5 } sums to 14
+Input: arr[] = {1, 2, 3, 3}, X = 6 
+Output: 3 
+All the possible subsets are {1, 2, 3}, 
+{1, 2, 3} and {3, 3}
+
+
+Input: arr[] = {1, 1, 1, 1}, X = 1 
+Output: 4 
 
 */
 
@@ -46,8 +49,8 @@ function countOfSubsetSum(arr, k) {
   const memo = [...Array(n)].map((x) => Array(k + 1).fill(null));
   const helper = (i, remaining) => {
     //sum became 0, return true
-    if (remaining == 0) return true;
-    if (i < 0 || remaining < 0) return false;
+    if (remaining == 0) return 1;
+    if (i < 0 || remaining < 0) return 0;
     if (memo[i][remaining] !== null) return memo[i][remaining];
     // Case 1. Include the current item `arr[n]` in the subset and recur
     // for the remaining items `n-1` with the remaining total `k-arr[n]`
@@ -55,7 +58,7 @@ function countOfSubsetSum(arr, k) {
     // Case 2. Exclude the current item `arr[n]` from the subset and recur for
     // the remaining items `n-1`
     const exclude = helper(i - 1, remaining);
-    memo[i][remaining] = include || exclude;
+    memo[i][remaining] = include + exclude;
     return memo[i][remaining];
   };
   return helper(n - 1, k);
@@ -70,9 +73,7 @@ function countOfSubsetSum(arr, k) {
   const dp = [...Array(n + 1)].map((x) => Array(k + 1).fill(0));
   //we can get sum=0 for any combination of set by considering the empty set
   //so fill first column as 1
-  for (let i = 0; i <= n; i++) {
-    dp[i][0] = 1;
-  }
+  for (let i = 0; i <= n; i++) dp[i][0] = 1;
   //base case
   for (let i = 1; i <= n; i++) {
     // consider all sum from 1 to sum
