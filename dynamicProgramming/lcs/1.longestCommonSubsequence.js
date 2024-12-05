@@ -36,9 +36,68 @@ Constraints:
 text1 and text2 consist of only lowercase English characters.
 */
 
-// Time complexity: 2^(M*N) (due to recursion)
 /* 
-Approach I: Recursion (Top Down without memoization)
+Approach I: Recursion (top down)
+Time: 2^(M*N) (due to recursion)
+*/
+var longestCommonSubsequence = function (text1, text2) {
+  const m = text1.length;
+  const n = text2.length;
+  const LCS = (i, j) => {
+    //nothing left in either of the string
+    if (i == 0 || j == 0) return 0;
+    if (text1[i - 1] == text2[j - 1]) return 1 + LCS(i - 1, j - 1);
+    else return Math.max(LCS(i - 1, j), LCS(i, j - 1));
+  };
+  return LCS(m, n);
+};
+
+/* 
+Approach II: Recursion with memoization (top down)
+Time: O(M*N)
+Space: O(M*N)
+
+Runtime: 82 ms Beats 32.31%
+Memory: 75.88 MB Beats 42.24%
+*/
+var longestCommonSubsequence = function (text1, text2) {
+  const m = text1.length;
+  const n = text2.length;
+  const memo = Array.from({ length: m + 1 }, () => Array(n + 1));
+  const LCS = (i, j) => {
+    //nothing left in either of the string
+    if (i == 0 || j == 0) return 0;
+    if (memo[i][j] != null) return memo[i][j];
+    if (text1[i - 1] == text2[j - 1]) memo[i][j] = 1 + LCS(i - 1, j - 1);
+    else memo[i][j] = Math.max(LCS(i - 1, j), LCS(i, j - 1));
+    return memo[i][j];
+  };
+  return LCS(m, n);
+};
+
+/* 
+Approach III: Bottom up DP
+Time: O(M*N)
+Space: O(M*N)
+
+Runtime: 57 ms Beats 70.75%
+Memory: 75.71 MB Beats 43.38%
+*/
+var longestCommonSubsequence = function (text1, text2) {
+  const m = text1.length;
+  const n = text2.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (text1[i - 1] == text2[j - 1]) dp[i][j] = 1 + dp[i - 1][j - 1];
+      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m][n];
+};
+
+/* 
+Approach I: Recursion (bottom up)
 Time: 2^(M*N) (due to recursion)
 */
 var longestCommonSubsequence = function (text1, text2) {
@@ -56,36 +115,6 @@ var longestCommonSubsequence = function (text1, text2) {
     }
   };
   return LCS(0, 0);
-};
-
-/* 
-Approach II: Tow Down (Memoization)
-Time: O(M*N)
-Space: O(M*N)
-
-Runtime: 80 ms Beats 35.05%
-Memory: 71.78 MB Beats 84.40%
-*/
-var longestCommonSubsequence = function (text1, text2) {
-  const m = text1.length;
-  const n = text2.length;
-  if (m > n) return longestCommonSubsequence(text2, text1);
-  const memo = [...Array(m)].map((x) => new Array(n));
-  const LCA = (i, j) => {
-    //base case
-    // if we reached till end of the array then return 0
-    if (i == m || j == n) return 0;
-    if (memo[i][j] != null) return memo[i][j];
-    //match found
-    if (text1[i] == text2[j]) {
-      memo[i][j] = 1 + LCA(i + 1, j + 1);
-    } else {
-      //try with first string next character and 2nd string same character
-      memo[i][j] = Math.max(LCA(i + 1, j), LCA(i, j + 1));
-    }
-    return memo[i][j];
-  };
-  return LCA(0, 0);
 };
 
 /* 
@@ -107,27 +136,4 @@ var longestCommonSubsequence = function (text1, text2) {
     }
   }
   return dp[0][0];
-};
-
-/* 
-Bottom up: Starting from begining
-Good explanation from Abdul Bari: https://www.youtube.com/watch?v=sSno9rV8Rhg
-
-Runtime: 60 ms Beats 68.39%
-Memory: 79.23 MB Beats 13.98%
-*/
-var longestCommonSubsequence = function (text1, text2) {
-  const m = text1.length;
-  const n = text2.length;
-  const dp = [...Array(m + 1)].map((x) => new Array(n + 1).fill(0));
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      //catch point is we need to compare i-1 and j-1th character of string
-      //as we have taken extra 1 grid size, so we need to do -1 character index
-      //i.e., The cell dp[i][j] represents the length of the longest common subsequence of substrings text1[0...i-1] and text2[0...j-1]      
-      if (text1[i - 1] == text2[j - 1]) dp[i][j] = 1 + dp[i - 1][j - 1];
-      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-    }
-  }
-  return dp[m][n];
 };

@@ -1,4 +1,5 @@
 /* 
+322. Coin Change (Min coins)
 https://leetcode.com/problems/coin-change/
 Category - Medium
 
@@ -34,7 +35,62 @@ Constraint:
  * @return {number}
  */
 /* 
-Approach I : Recursion
+Approach I: Recrusive I
+*/
+var coinChange = function (coins, amount) {
+  const N = coins.length;
+  const helper = (i, sum) => {
+    if (i == 0 || sum < 0) return Number.MAX_VALUE;
+    if (sum == 0) return 0;
+    let count = -1;
+    //coin at current index is less than or equal to amount
+    if (coins[i - 1] <= sum) {
+      let doNotTakeCoin = 0 + helper(i - 1, sum);
+      let takeCoin = 1 + helper(i, sum - coins[i - 1]);
+      count = Math.min(takeCoin, doNotTakeCoin);
+    } else {
+      //coin at current index is greater than amount
+      let doNotTakeCoin = 0 + helper(i - 1, sum);
+      count = doNotTakeCoin;
+    }
+    return count;
+  };
+  const count = helper(N, amount);
+  return count == Number.MAX_VALUE - 1 ? -1 : count;
+};
+
+/* 
+Approach II: Recrusive II with Memoization 
+
+Runtime:149 ms Beats 14.36%
+Memory: 57.23 MB Beats 18.47% 
+*/
+var coinChange = function (coins, amount) {
+  const N = coins.length;
+  const memo = Array.from({ length: N + 1 }, () => Array(amount + 1));
+  const helper = (i, sum) => {
+    if (i == 0 || sum < 0) return Number.MAX_VALUE;
+    if (sum == 0) return 0;
+    if (memo[i][sum] != null) return memo[i][sum];
+    let count = -1;
+    //coin at current index is less than or equal to amount
+    if (coins[i - 1] <= sum) {
+      let doNotTakeCoin = 0 + helper(i - 1, sum);
+      let takeCoin = 1 + helper(i, sum - coins[i - 1]);
+      count = Math.min(takeCoin, doNotTakeCoin);
+    } else {
+      //coin at current index is greater than amount
+      let doNotTakeCoin = 0 + helper(i - 1, sum);
+      count = doNotTakeCoin;
+    }
+    return (memo[i][sum] = count);
+  };
+  const count = helper(N, amount);
+  return count == Number.MAX_VALUE - 1 ? -1 : count;
+};
+
+/* 
+Approach II : Recursion II
 */
 var coinChange = function (coins, amount) {
   const dp = (remain) => {
@@ -55,9 +111,8 @@ var coinChange = function (coins, amount) {
   };
   return dp(amount);
 };
-
 /* 
-Approach II: Dynamic Programming (Top Down) 
+Approach II: Dynamic Programming (Top Down) II
 
 Time: O(S*n), where S is the amount, n is denomination count. In the worst case the recursive 
 tree of the algorithm has height of S and the algorithm solves only S subproblems because it 
