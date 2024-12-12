@@ -1,0 +1,3 @@
+/*
+if two string a and b are given and optimal solution is asked then it might be LCS question
+*/

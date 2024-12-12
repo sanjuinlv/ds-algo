@@ -38,31 +38,16 @@ Constraints:
 1 <= cuts[i] <= n - 1
 All the integers in cuts array are distinct.
  */
-/**
- * @param {number} n
- * @param {number[]} cuts
- * @return {number}
- */
+/*
+Approach I: Recusrion 
+*/
 var minCost = function (n, cuts) {
-  const m = cuts.length;
-  //create length array
-  const length = [];
-  for (let i = 1; i <= n; i++) {
-    length[i - 1] = i;
-  }
-  const dp = [...Array(m + 1)].map((x) => Array(n + 1).fill(0));
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      //if current cut can fit
-      if (length[i - 1] <= j) {
-        dp[i][j] = Math.max(
-          cuts[i - 1] + dp[i - 1][j - length[i - 1]],
-          dp[i - 1][j]
-        );
-      } else {
-        dp[i][j] = dp[i - 1][j];
-      }
-    }
-  }
-  return dp[m][n];
+  const cutRod = (i, length) => {
+    //base case
+    if (i == 0) return;
+    //we can not cut rod anymore
+    if (length == 0) return 0;
+  };
+  return cutRod(cuts.length - 1, n);
 };
+

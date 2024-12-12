@@ -130,4 +130,22 @@ var isSubsequence = function (s, t) {
 
 /* 
 approach IV: Dynamic Programming
+Time: O(M * N)
+Space: O(M + N)
+
+Runtime: 13 ms Beats 6.62%
+Memory: 53.95 MB Beats 5.11%
 */
+var isSubsequence = function (s, t) {
+  const m = s.length;
+  const n = t.length;
+  const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  //find LCS
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (s[i - 1] == t[j - 1]) dp[i][j] = 1 + dp[i - 1][j - 1];
+      else dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m][n] == s.length;
+};
