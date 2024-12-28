@@ -1,4 +1,5 @@
 /* 
+300. Longest Increasing Subsequence
 https://leetcode.com/problems/longest-increasing-subsequence/
 Type: Medium
 
@@ -30,73 +31,81 @@ Constraint:
  * @return {number}
  */
 
-/* 
-Approach: Recursion
+/*
+Approach I: Recursion
+Time: O(2^N)
+Space: O(N) - Stack Depth
 */
 var lengthOfLIS = function (nums) {
   const N = nums.length;
-
-  const backtrack = (i, curr, count) => {
-    console.log(`i: ${i}, curr: ${curr}, count: ${count}`);
-    if (i == N) return count;
-    let longestLIS = 0;
-    for (let j = i + 1; j < N; j++) {
-      if (nums[j] > curr) {
-        const localLIS = backtrack(j, nums[j], count + 1);
-        console.log(`localLIS: ${localLIS}`);
-        longestLIS = Math.max(longestLIS, localLIS);
-      }
+  const LIS = (i, prevIdx) => {
+    //base case
+    //we reached end of the array
+    if (i == N) return 0;
+    //if we do no take the current element
+    let len = 0 + LIS(i + 1, prevIdx);
+    //if there is no element taken or curr element is greater than prev
+    if (prevIdx == -1 || nums[i] > nums[prevIdx]) {
+      const notTaken = 1 + LIS(i + 1, i);
+      len = Math.max(len, notTaken);
     }
-    return Math.max(longestLIS, count);
+    return len;
   };
-  return backtrack(-1, Number.NEGATIVE_INFINITY, 0);
+  return LIS(0, -1);
 };
 
-/* 
-Approach: Recursion with Memoization
-Fails for: [10,9,-2,-1,2,5,3,7,101,18,19]
+/*
+Approach I: Recursion
+Time: O(N * N)
+Space: O(N * N) - memo array
+
+Runtime: 1578 ms Beats 5.04%
+Memory Usage: 119.85 MB Beats 5.26%
 */
 var lengthOfLIS = function (nums) {
   const N = nums.length;
-  const memo = new Array(N).fill(null);
-
-  const backtrack = (i, curr, count) => {
-    console.log(`i: ${i}, curr: ${curr}, count: ${count}`);
-    if (i == N) return count;
-    if (memo[i] != null) return memo[i];
-
-    let longestLIS = 0;
-    for (let j = i + 1; j < N; j++) {
-      if (nums[j] > curr) {
-        const localLIS = backtrack(j, nums[j], count + 1);
-        console.log(`localLIS: ${localLIS}`);
-        memo[i] = Math.max(memo[i] ? memo[i] : 0, localLIS);
-      }
+  const LIS = (i, prevIdx) => {
+    //base case
+    //we reached end of the array
+    if (i == N) return 0;
+    //if we do no take the current element
+    let len = 0 + LIS(i + 1, prevIdx);
+    //if there is no element taken or curr element is greater than prev
+    if (prevIdx == -1 || nums[i] > nums[prevIdx]) {
+      const notTaken = 1 + LIS(i + 1, i);
+      len = Math.max(len, notTaken);
     }
-    return Math.max(memo[i], count);
+    return len;
   };
-  return backtrack(-1, Number.NEGATIVE_INFINITY, 0);
+  return LIS(0, -1);
 };
 
 /*
 Approach: Dynamic Programming
 Time: O(N^2)
 Space: O(N)
-Runtime: 207 ms, faster than 53.65% of JavaScript online submissions for Longest Increasing Subsequence.
-Memory Usage: 43.4 MB, less than 90.03% of JavaScript online submissions for Longest Increasing Subsequence.
+Solution video reference: https://www.youtube.com/watch?v=CE2b_-XfVDk
+
+Runtime: 93 ms Beats 31.36%
+Memory Usage: 50.70 MB Beats 78.47%
 */
 
 var lengthOfLIS = function (nums) {
-  const N = nums.length;
-  const dp = new Array(N).fill(1);
   let longest = 1;
+  const N = nums.length;
+  //Fill DP with 1 as each number has lenght min LIS of length 1
+  const dp = new Array(N).fill(1);
+  //try for each number
   for (let i = 1; i < N; i++) {
+    //start from begining for each i
     for (let j = 0; j < i; j++) {
+      // if nums at i is greater than at 'j' then current max length
+      // is last count + 1, or current count
       if (nums[i] > nums[j]) {
         dp[i] = Math.max(dp[i], dp[j] + 1);
+        longest = Math.max(longest, dp[i]);
       }
     }
-    longest = Math.max(longest, dp[i]);
   }
   return longest;
 };

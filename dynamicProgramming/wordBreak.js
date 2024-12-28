@@ -1,6 +1,9 @@
 /*
-Given a non-empty string s and a dictionary wordDict containing a list of non-empty
-words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+139. Word Break
+https://leetcode.com/problems/word-break/description/
+Type: Hard
+
+Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
 
 Note:
  - The same word in the dictionary may be reused multiple times in the segmentation.
@@ -45,6 +48,7 @@ Time Limit Exceeded for input:
 
 */
 var wordBreak = function (s, wordDict) {
+  //crete Set from word dictionary
   const wordDictSet = new Set(wordDict);
   const N = s.length;
   function backtrack(start) {
@@ -52,6 +56,7 @@ var wordBreak = function (s, wordDict) {
     if (start == N) return true;
     //check for other combination
     for (let end = start + 1; end <= N; end++) {
+      //check if string from start till end and from end is present in dictionary
       if (wordDictSet.has(s.substring(start, end)) && backtrack(end)) {
         return true;
       }
@@ -193,25 +198,4 @@ var wordBreak = function (s, wordDict) {
     }
   }
   return dp[N];
-};
-
-/*
-Dynamic Programming
- */
-var wordBreak = function (s, wordDict) {
-  const wordDictSet = new Set();
-  wordDict.forEach((word) => wordDictSet.add(word));
-  let dp = new Array(s.length + 1).fill(false);
-  dp[0] = true;
-  //i is substring length
-  for (let i = 1; i <= s.length; i++) {
-    for (j = 0; j < i; j++) {
-      console.log(`substring from j: ${j}, i:${i} is: ${s.substring(j, i)}`);
-      if (dp[j] && wordDictSet.has(s.substring(j, i))) {
-        dp[i] = true;
-      }
-    }
-  }
-  console.log(dp);
-  return dp[s.length];
 };

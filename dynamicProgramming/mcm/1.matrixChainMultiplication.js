@@ -37,7 +37,7 @@ class Solution {
       //if either i crosses j or there is only one matrix
       if (i >= j) return 0;
       let minProd = Infinity;
-      for (let k = i; k < j; k++) {
+      for (let k = i; k <= j - 1; k++) {
         const currCost =
           solve(i, k) + solve(k + 1, j) + arr[i - 1] * arr[k] * arr[j];
         minProd = Math.min(minProd, currCost);
@@ -90,11 +90,11 @@ class Solution {
     //length of matrix
     for (let l = 2; l < N; l++) {
       //start of matrix
-      for (let i = 1; i <= N - l ; i++) {
+      for (let i = 1; i <= N - l; i++) {
         //zero based
         let j = i + l - 1;
         dp[i][j] = Infinity;
-        for (let k = i; k < j; k++) {
+        for (let k = i; k <= j - 1; k++) {
           let currCost = dp[i][k] + dp[k + 1][j] + arr[i - 1] * arr[k] * arr[j];
           dp[i][j] = Math.min(dp[i][j], currCost);
         }

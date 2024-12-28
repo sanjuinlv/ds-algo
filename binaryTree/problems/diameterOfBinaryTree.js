@@ -1,4 +1,5 @@
 /* 
+543. Diameter of Binary Tree
 https://leetcode.com/problems/diameter-of-binary-tree/
 Type: Easy
 
@@ -41,9 +42,9 @@ between them.
 Approach: DFS (Bottom-up)
 Time: O(N)
 Space: O(N)
-Your runtime beats 80.81 % of javascript submissions.
-Runtime: 88 ms
-Memory Usage: 41.8 MB
+
+Runtime: 2 ms Beats 39.86%
+Memory Usage: 56.10 MB Beats 59.74%
 */
 var diameterOfBinaryTree = function (root) {
   let diameter = 0;
@@ -57,11 +58,15 @@ var diameterOfBinaryTree = function (root) {
     // max of current path or existing diameter
     diameter = Math.max(diameter, nodeDiameter);
     //for recursive call
-    return Math.max(leftDiameter, rightDiameter) + 1;
+    return 1 + Math.max(leftDiameter, rightDiameter);
   };
   findDiameter(root);
   return diameter;
 };
+
+/* 
+TODO: Iterative
+*/
 
 // var diameterOfBinaryTree = function (root) {
 //   let diameter = 0;
