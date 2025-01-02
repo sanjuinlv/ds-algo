@@ -119,9 +119,6 @@ Memory: 100.91 MB Beats 19.60%
 */
 var maxProfit = function (prices) {
   const N = prices.length;
-  const dp = Array.from({ length: N }, () =>
-    Array.from({ length: 3 }, () => Array(2).fill(0))
-  );
   const after = Array.from({ length: 3 }, () => Array(2).fill(0));
   let curr = Array.from({ length: 3 }, () => Array(2).fill(0));
 

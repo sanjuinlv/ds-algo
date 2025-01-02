@@ -1,4 +1,8 @@
 /*
+62. Unique Paths
+https://leetcode.com/problems/unique-paths/description/
+Type: Medium
+
 There is a robot on an m x n grid. The robot is initially located at the top-left corner
 (i.e., grid[0][0]). The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1]).
 The robot can only move either down or right at any point in time.
@@ -20,6 +24,8 @@ Explanation: From the top-left corner, there are a total of 3 ways to reach the 
 2. Down -> Down -> Right
 3. Down -> Right -> Down
 
+Constraints:
+ - 1 <= m, n <= 100
 */
 /**
  * @param {number} m
@@ -30,48 +36,66 @@ Explanation: From the top-left corner, there are a total of 3 ways to reach the 
 Approach: Recursion
 */
 var uniquePaths = function (m, n) {
-  let noOfPaths = 0;
-  const move = (row, col) => {
-    //reached at bottom right corner
-    if (col == n - 1) {
-      noOfPaths++;
-      return;
-    }
+  const move = (i, j) => {
+    //base case
+    if (i == m - 1 && j == n - 1) return 1;
+    let count = 0;
     //move down
-    if (row < m - 1) move(row + 1, col);
+    if (i + 1 < m) count = move(i + 1, j);
     //move right
-    if (col < n - 1) move(row, col + 1);
+    if (j + 1 < n) count += move(i, j + 1);
+    return count;
   };
-  move(0, 0);
-  return noOfPaths;
+  return move(0, 0);
 };
 
 /* 
-Approach: DP (Top Down)
-Runtime: 85 ms, faster than 50.32% of JavaScript online submissions for Unique Paths.
-Memory Usage: 42.5 MB, less than 38.68% of JavaScript online submissions for Unique Paths.
+Approach II: Recursion + memo
+Time: O(M*N)
+Space: O(M*N)
+
+Runtime: 1 ms Beats 49.66%
+Memory: 49.31 MB Beats 44.42%
 */
 var uniquePaths = function (m, n) {
-  let memo = [...Array(m)].map((x) => new Array(n).fill(-1));
-  const move = (row, col) => {
-    if (memo[row][col] !== -1) return memo[row][col];
-    //reached at bottom right corner
-    if (col == n - 1) {
-      return 1;
-    }
-    let noOfMove = 0;
+  const memo = Array.from({ length: m }, () => Array(n));
+  const countPaths = (i, j) => {
+    //base case
+    if (i == m - 1 && j == n - 1) return 1;
+    if (memo[i][j] != null) return memo[i][j];
+    let count = 0;
     //move down
-    if (row < m - 1) {
-      noOfMove += move(row + 1, col);
-    }
+    if (i + 1 < m) count = countPaths(i + 1, j);
     //move right
-    if (col < n - 1) {
-      noOfMove += move(row, col + 1);
-    }
-    memo[row][col] = noOfMove;
-    return memo[row][col];
+    if (j + 1 < n) count += countPaths(i, j + 1);
+    return (memo[i][j] = count);
   };
-  return move(0, 0);
+  return countPaths(0, 0);
+};
+
+/* 
+Tabulation
+
+Runtime: 1 ms Beats 49.66%
+Memory; 48.56 MB Beats 94.21%
+*/
+var uniquePaths = function (m, n) {
+  const dp = Array.from({ length: m }, () => Array(n).fill(0));
+  // Note: if we fill the dp with 1 then we don't need below base cases
+  // Initialize the base cases
+  // There's only one way to reach any cell in the last row or last column
+  for (let i = 0; i < m; i++) dp[i][n - 1] = 1; //last colum
+  for (let j = 0; j < n; j++) dp[m - 1][j] = 1; //last row
+
+  for (let i = m - 2; i >= 0; i--) {
+    for (let j = n - 2; j >= 0; j--) {
+      //move down
+      dp[i][j] = dp[i + 1][j];
+      //move right
+      dp[i][j] += dp[i][j + 1];
+    }
+  }
+  return dp[0][0];
 };
 
 /* 

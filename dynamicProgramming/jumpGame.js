@@ -1,4 +1,5 @@
 /* 
+55. Jump Game
 https://leetcode.com/problems/jump-game/
 Category - Medium
 
@@ -80,27 +81,28 @@ var canJump = function (nums) {
 
 //sol ref
 /* 
-Runtime: 805 ms, faster than 24.72% of JavaScript online submissions for Jump Game.
-Memory Usage: 48.9 MB, less than 21.54% of JavaScript online submissions for Jump Game.
+Runtime: 757 ms Beats 8.10%
+Memory Usage: 56.13 MB Beats 10.70%
 */
 var canJump = function (nums) {
   const N = nums.length;
-  const memo = new Array(N).fill(-1);
-  const jump = (index, nums) => {
-    if (index == N - 1) return true;
-    if (memo[index] !== -1) return memo[index];
-    const furthestJump = Math.min(index + nums[index], N - 1);
-    //try all combination from this no of jump
-    for (let nextPos = furthestJump; nextPos > index; nextPos--) {
-      if (jump(nextPos, nums)) {
-        memo[nextPos] = true;
+  const memo = new Array(N);
+  const jump = (i) => {
+    //base case
+    if (i == N - 1) return true;
+    if (memo[i] != null) return memo[i];
+    const maxJump = Math.min(nums[i] + i, N - 1);
+    //try for each jump length
+    for (let j = i + 1; j <= maxJump; j++) {
+      if (jump(j)) {
+        memo[i] = true;
         return true;
       }
     }
-    memo[index] = false;
-    return memo[index];
+    memo[i] = false;
+    return memo[i];
   };
-  return jump(0, nums);
+  return jump(0);
 };
 
 /*
@@ -108,24 +110,24 @@ Approach III: Bottom Up
 Time: O(N^2)
 Space: O(N)
 
-Runtime: 413 ms, faster than 26.16% of JavaScript online submissions for Jump Game.
-Memory Usage: 47.6 MB, less than 30.80% of JavaScript online submissions for Jump Game.
+Runtime: 123 ms Beats 15.70%
+Memory Usage: 55.48 MB Beats 13.00%
 
  */
 var canJump = function (nums) {
   const N = nums.length;
-  const memo = new Array(N).fill(false);
-  memo[N - 1] = true;
+  const dp = new Array(N).fill(false);
+  dp[N - 1] = true;
   for (let i = N - 2; i >= 0; i--) {
-    const furthestJump = Math.min(nums[i] + i, N - 1);
-    for (let j = i + 1; j <= furthestJump; j++) {
-      if (memo[j]) {
-        memo[i] = true;
+    const maxJump = Math.min(nums[i] + i, N - 1);
+    for (let j = i + 1; j <= maxJump; j++) {
+      if (dp[j]) {
+        dp[i] = true;
         break;
       }
     }
   }
-  return memo[0] === true;
+  return dp[0];
 };
 
 /*
