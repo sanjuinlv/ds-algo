@@ -1,4 +1,8 @@
 /* 
+253. Meeting Rooms II 
+https://leetcode.com/problems/meeting-rooms-ii
+Type: Medium
+
 Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], 
 return the minimum number of conference rooms required.
 
@@ -75,7 +79,7 @@ var minMeetingRooms = function (intervals) {
   minPQ.enqueue(intervals[0][1]);
   for (let i = 1; i < N; i++) {
     // If the room due to free up the earliest is free, assign that room to this meeting.
-    if (intervals[i][0] >= minPQ.front().element) {
+    if (intervals[i][0] >= minPQ.front().element) { 
       minPQ.dequeue();
     }
     // If a new room is to be assigned, then also we add to the heap,

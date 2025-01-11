@@ -1,4 +1,8 @@
 /* 
+56. Merge Intervals
+https://leetcode.com/problems/merge-intervals/
+Type: Medium
+
 Given an array of intervals where intervals[i] = [starti, endi], 
 merge all overlapping intervals, and return an array of the non-overlapping intervals 
 that cover all the intervals in the input.
@@ -14,14 +18,44 @@ Output: [[1,5]]
 Explanation: Intervals [1,4] and [4,5] are considered overlapping.
 
 Constraints: 
-    - 1 <= intervals.length <= 104
-    - intervals[i].length == 2
-    - 0 <= starti <= endi <= 104
+  - 1 <= intervals.length <= 10^4
+  - intervals[i].length == 2
+  - 0 <= starti <= endi <= 10^4
 */
 /**
  * @param {number[][]} intervals
  * @return {number[][]}
  */
+/* 
+Approach I: Sorting
+
+Time: O(NLogN)
+Space: O(LogN)
+
+Runtime: 4 ms Beats 98.96%
+Memory Usage: 57.89 MB Beats 86.30%
+*/
+var merge = function (intervals) {
+  const merged = [];
+  //sort interval's start time
+  intervals.sort((a, b) => a[0] - b[0]);
+  for (const interval of intervals) {
+    //if either merged array is empty or the end of the merged last
+    //interval's end is less than current interval's start
+    const mergedLength = merged.length;
+    if (mergedLength == 0 || merged[mergedLength - 1][1] < interval[0]) {
+      merged.push(interval);
+    } else {
+      //there is overlap, so merge the curr and prev interval's max end
+      merged[mergedLength - 1][1] = Math.max(
+        merged[mergedLength - 1][1],
+        interval[1]
+      );
+    }
+  }
+  return merged;
+};
+
 /* 
 Approach: Sorting
 Time Complexity: O(N Log N) (sorting O(N log N) and linear scan of O(N))
@@ -56,27 +90,6 @@ var merge = function (intervals) {
   }
   return [...map.values()];
 };
-//solution reference
-var merge = function (intervals) {
-  //sort the input
-  intervals.sort((int1, int2) => int1[0] - int2[0]);
-  const merged = [];
-  for (let interval of intervals) {
-    // if the list of merged interval is empty or if the current
-    // interval does not overlap with previous merge interval, just add it
-    if (merged.length == 0 || merged[merged.length - 1][1] < interval[0]) {
-      merged.push(interval);
-    } else {
-      //current inverval overlaps with prev merge interval
-      //i.e., curr interval's start is less than prev merge interval's end
-      merged[merged.length - 1][1] = Math.max(
-        merged[merged.length - 1][1],
-        interval[1]
-      );
-    }
-  }
-  return Array.from(merged);
-};
 
 //03-Apr-2022
 /* 
@@ -101,27 +114,3 @@ var merge = function (intervals) {
   return result;
 };
 
-/* 
-Little cleaner code
-Runtime: 187 ms, faster than 23.59% of JavaScript online submissions for Merge Intervals.
-Memory Usage: 48.9 MB, less than 72.99% of JavaScript online submissions for Merge Intervals.
-*/
-var merge = function (intervals) {
-  //sort interval by starting values
-  intervals.sort((a, b) => a[0] - b[0]);
-  const result = [];
-  for (const interval of intervals) {
-    const resultSize = result.length;
-    //result is empty or if the current interval does not overlap with previous interval
-    if (resultSize == 0 || result[resultSize - 1][1] < interval[0]) {
-      result.push(interval);
-    } else {
-      //there is overlap, so merge the curr and prev interval
-      result[resultSize - 1][1] = Math.max(
-        result[resultSize - 1][1],
-        interval[1]
-      );
-    }
-  }
-  return result;
-};

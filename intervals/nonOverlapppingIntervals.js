@@ -1,4 +1,8 @@
-/* 
+/*
+435. Non-overlapping Intervals
+https://leetcode.com/problems/non-overlapping-intervals/description/
+Type: Medium
+
 Given an array of intervals intervals where intervals[i] = [starti, endi], 
 return the minimum number of intervals you need to remove to make the rest of the 
 intervals non-overlapping.
@@ -19,14 +23,55 @@ Output: 0
 Explanation: You don't need to remove any of the intervals since they're already non-overlapping.
 
 Constraint: 
- - 1 <= intervals.length <= 105
+ - 1 <= intervals.length <= 10^5
  - intervals[i].length == 2
- - -5 * 104 <= starti < endi <= 5 * 104
+ - -5 * 104 <= starti < endi <= 5 * 10^4
 */
 /**
  * @param {number[][]} intervals
  * @return {number}
  */
+/* 
+Approach II
+Time: O(NlogN)
+Space: O(logN)
+
+Runtime: 71 ms Beats 80.46%
+Space: 81.74 MB Beats 9.45%
+*/
+var eraseOverlapIntervals = function (intervals) {
+  const N = intervals.length;
+  intervals.sort((a, b) => a[1] - b[1]);
+  let count = 1;
+  let lastEndTime = intervals[0][1];
+  //sort the intervals by end time
+  for (i = 1; i < N; i++) {
+    const interval = intervals[i];
+    if (interval[0] >= lastEndTime) {
+      count++;
+      lastEndTime = interval[1];
+    }
+  }
+  return N - count;
+};
+
+//above code starting from 0th index
+var eraseOverlapIntervals = function (intervals) {
+  const N = intervals.length;
+  intervals.sort((a, b) => a[1] - b[1]);
+  let count = 0;
+  let lastEndTime = -Infinity;
+  //sort the intervals by end time
+  for (i = 0; i < N; i++) {
+    const interval = intervals[i];
+    if (interval[0] >= lastEndTime) {
+      count++;
+      lastEndTime = interval[1];
+    }
+  }
+  return N - count;
+};
+
 /*
 Approach: Greedy, based on starting point
 Time: O(NLogN)

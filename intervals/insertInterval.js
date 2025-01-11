@@ -1,4 +1,8 @@
 /* 
+57. Insert Interval
+https://leetcode.com/problems/insert-interval/
+Type: Medium
+
 You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] 
 represent the start and the end of the ith interval and intervals is sorted in ascending
  order by starti. You are also given an interval newInterval = [start, end] that represents
@@ -32,6 +36,35 @@ Constraints:
  * @param {number[]} newInterval
  * @return {number[][]}
  */
+/* 
+Approach I: Greedy
+Time: O(N)
+Space: O(1), no additional space, excluding result array
+
+Runtime: 5 ms Beats 53.15%
+Memory: 53.58 MB Beats 83.21%
+*/
+var insert = function (intervals, newInterval) {
+  const N = intervals.length;
+  const result = [];
+  let i = 0;
+  //non-overlapping: add to the result array
+  while (i < N && intervals[i][1] < newInterval[0]) result.push(intervals[i++]);
+  //merge overlapping inntervals
+  while (i < N && intervals[i][0] <= newInterval[1]) {
+    //take min of the start
+    newInterval[0] = Math.min(intervals[i][0], newInterval[0]);
+    //take max of the end
+    newInterval[1] = Math.max(intervals[i][1], newInterval[1]);
+    i++;
+  }
+  //add the merged/updated new interval to the result array
+  result.push(newInterval);
+  //insert rest of the intervals
+  while (i < N) result.push(intervals[i++]);
+  return result;
+};
+
 /*
 Approach: Greedy
 Runtime: 100 ms, faster than 51.15% of JavaScript online submissions for Insert Interval.
