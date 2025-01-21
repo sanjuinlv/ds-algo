@@ -38,8 +38,37 @@ Constraints:
  * @param {number[][]} secondList
  * @return {number[][]}
  */
+
 /*
-Approach: Two pointers
+Approach I: Two pointers
+Time: O(N)
+Space: O(1)
+
+Runtime: 3 ms Beats 65.96%
+Memory Usage: 59.67 MB Beats 19.22%
+ */
+var intervalIntersection = function (firstList, secondList) {
+  const m = firstList.length;
+  const n = secondList.length;
+  let i = 0;
+  let j = 0;
+  const intersection = [];
+  while (i < m && j < n) {
+    const low = Math.max(firstList[i][0], secondList[j][0]);
+    const hi = Math.min(firstList[i][1], secondList[j][1]);
+    //is there intersection?
+    if (low <= hi) intersection.push([low, high]);
+    // Remove the interval with the smallest endpoint
+    //first interval end is less than second interval end so remove first
+    if (firstList[i][1] < secondList[j][1]) i++;
+    //second interval end is less than first interval end so remove second
+    else j++;
+  }
+  return intersection;
+};
+
+/*
+Approach II: Two pointers
 Time: O(N)
 Space: O(1)
 
@@ -85,29 +114,3 @@ var intervalIntersection = function (firstList, secondList) {
   return intersection;
 };
 
-//Solution reference (cleaner code)
-/*
-Runtime: 115 ms, faster than 84.68% of JavaScript online submissions for Interval List Intersections.
-Memory Usage: 48.6 MB, less than 61.09% of JavaScript online submissions for Interval List Intersections.
- */
-var intervalIntersection = function (firstList, secondList) {
-  let i = 0;
-  let j = 0;
-  const m = firstList.length;
-  const n = secondList.length;
-  const intersection = [];
-  while (i < m && j < n) {
-    const low = Math.max(firstList[i][0], secondList[j][0]);
-    const hi = Math.min(firstList[i][1], secondList[j][1]);
-    //is there intersection?
-    if (low <= hi) {
-      intersection.push([low, hi]);
-    }
-    // Remove the interval with the smallest endpoint
-    //first interval end is less than second interval end so remove first
-    if (firstList[i][1] < secondList[j][1]) i++;
-    //second interval end is less than first interval end so remove second
-    else j++;
-  }
-  return intersection;
-};
