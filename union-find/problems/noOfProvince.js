@@ -1,4 +1,8 @@
 /* 
+547. Number of Provinces
+https://leetcode.com/problems/number-of-provinces/description/
+Type: Medium
+
 There are n cities. Some of them are connected, while some are not. If city a is connected 
 directly with city b, and city b is connected directly with city c, then city a is connected
  indirectly with city c.
@@ -34,31 +38,33 @@ Approach I: Using UnionFind Rank with path compression
 Time: O(N^2*logN), N^2 for 2D array loop and logN for union
 Space: O(N)
 
-Runtime: 82 ms, faster than 75.35% of JavaScript online submissions for Number of Provinces.
-Memory Usage: 45.1 MB, less than 38.58% of JavaScript online submissions for Number of Provinces.
+Runtime: 13 ms Beats 18.31%
+Memory Usage: 53.20 MB Beats 26.37%
 */
-var findCircleNum = function (isConnected) {
-  this.N = isConnected.length;
-  this.root = new Array(this.N);
-  this.rank = new Array(this.N);
-  //disjoint component size
-  this.componentSize = this.N;
-
-  for (let i = 0; i < this.N; i++) {
-    this.root[i] = i;
-    this.rank[i] = 1;
+class RankUF {
+  constructor(N) {
+    this.root = new Array(N);
+    this.rank = new Array(N);
+    for (let i = 0; i < N; i++) {
+      this.root[i] = i;
+      this.rank[i] = 1;
+    }
   }
 
-  this.find = (p) => {
-    if (p === this.root[p]) return p;
+  find(p) {
+    if (p == this.root[p]) return p;
     return (this.root[p] = this.find(this.root[p]));
-  };
+  }
 
-  this.union = (p, q) => {
+  connected(p, q) {
+    return this.find(p) === this.find(q);
+  }
+
+  union(p, q) {
     const pRoot = this.find(p);
     const qRoot = this.find(q);
     if (pRoot == qRoot) return false;
-    //two points will be connected so reduce the disjoint component size
+    // make smaller root point to larger one
     if (this.rank[pRoot] > this.rank[qRoot]) {
       this.root[qRoot] = pRoot;
     } else if (this.rank[pRoot] < this.rank[qRoot]) {
@@ -70,46 +76,56 @@ var findCircleNum = function (isConnected) {
       this.rank[pRoot] += 1;
     }
     return true;
-  };
+  }
+}
 
+var findCircleNum = function (isConnected) {
+  const m = isConnected.length;
+  const n = isConnected[0].length;
+  const uf = new RankUF(m);
+  //disjoint component size
+  let componentSize = m;
   //build rank UF
-  for (let i = 0; i < this.N; i++) {
-    for (let j = 0; j < this.N; j++) {
-      if (i === j) continue;
-      if (isConnected[i][j] === 1 && this.union(i, j)) this.componentSize--;
+  for (let i = 0; i < m; i++) {
+    for (let j = i + 1; j < n; j++) {
+      if (i == j) continue; //we dont need to connect same city
+      if (isConnected[i][j] && uf.union(i, j)) componentSize--;
     }
   }
-  return this.componentSize;
+  return count;
 };
+
 /* 
 Approach II: DFS
 
 Time: O(N^2), The complete matrix of size N^2 is traversed.
 Space: O(N). visited array of size N is used.
 
-Runtime: 78 ms, faster than 81.53% of JavaScript online submissions for Number of Provinces.
-Memory Usage: 45 MB, less than 41.96% of JavaScript online submissions for Number of Provinces.
+Runtime: 1 ms Beats 93.16%
+Memory Usage: 51.12 MB Beats 79.59%
 */
 var findCircleNum = function (isConnected) {
-  const dfs = (i, M, visited) => {
-    for (let j = 0; j < M.length; j++) {
-      if (!visited[j] && M[i][j] === 1) {
-        visited[j] = true;
-        dfs(j, M, visited);
-      }
-    }
-  };
-
-  const visited = new Array(isConnected.length).fill(false);
-  let count = 0;
-  for (let i = 0; i < isConnected.length; i++) {
+  const N = isConnected.length;
+  let componentSize = 0;
+  const visited = new Array(N).fill(false);
+  for (let i = 0; i < N; i++) {
     if (!visited[i]) {
       dfs(i, isConnected, visited);
-      count++;
+      componentSize++;
     }
   }
-  return count;
+  return componentSize;
 };
+
+function dfs(v, arr, visited) {
+  visited[v] = true;
+  //check all neighbors of v
+  for (let w = 0; w < arr.length; w++) {
+    if (!visited[w] && arr[v][w] == 1) {
+      dfs(w, arr, visited);
+    }
+  }
+}
 
 /* 
 Approach III: BFS
@@ -117,58 +133,29 @@ Approach III: BFS
 Time: O(N^2), The complete matrix of size N^2 is traversed.
 Space: O(N). A queue and visited array of size N is used.
 
-Runtime: 120 ms, faster than 26.88% of JavaScript online submissions for Number of Provinces.
-Memory Usage: 44.7 MB, less than 63.15% of JavaScript online submissions for Number of Provinces.
+Runtime: 3 ms Beats 62.39%
+Memory Usage: 52.13 MB Beats 44.46%
 */
 var findCircleNum = function (isConnected) {
   const N = isConnected.length;
-  const visited = new Array(isConnected.length).fill(false);
-  let count = 0;
-  const Q = [];
+  let componentSize = 0;
+  const visited = new Array(N).fill(false);
+  const queue = [];
   for (let i = 0; i < N; i++) {
-    if (!visited[i]) {
-      Q.push(i);
-      while (Q.length) {
-        const s = Q.shift();
-        visited[s] = true;
-        for (let j = 0; j < N; j++) {
-          if (M[s][j] == 1 && !visited[j]) {
-            Q.push(j);
-          }
+    if (visited[i]) continue;
+    queue.push(i);
+    visited[i] = true;
+    while (queue.length) {
+      const i = queue.shift();
+      //check adjacent nodes
+      for (let j = 0; j < N; j++) {
+        if (!visited[j] && isConnected[i][j] == 1) {
+          queue.push(j);
+          visited[j] = true;
         }
       }
-      count++;
     }
+    componentSize++;
   }
-  return count;
-};
-
-/* 
-Approach III: BFS (With visited correction)
-
-Runtime: 78 ms, faster than 81.53% of JavaScript online submissions for Number of Provinces.
-Memory Usage: 44.4 MB, less than 82.77% of JavaScript online submissions for Number of Provinces.
-*/
-var findCircleNum = function (isConnected) {
-  const N = isConnected.length;
-  const visited = new Array(isConnected.length).fill(false);
-  let count = 0;
-  const Q = [];
-  for (let i = 0; i < N; i++) {
-    if (!visited[i]) {
-      visited[i] = true;
-      Q.push(i);
-      while (Q.length) {
-        const s = Q.shift();
-        for (let j = 0; j < N; j++) {
-          if (isConnected[s][j] == 1 && !visited[j]) {
-            visited[j] = true;
-            Q.push(j);
-          }
-        }
-      }
-      count++;
-    }
-  }
-  return count;
+  return componentSize;
 };

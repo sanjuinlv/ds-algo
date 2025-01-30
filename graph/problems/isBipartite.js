@@ -1,4 +1,8 @@
 /* 
+785. Is Graph Bipartite?
+https://leetcode.com/problems/is-graph-bipartite/description/
+Type: Medium
+
 Given an undirected graph, return true if and only if it is bipartite.
 
 Recall that a graph is bipartite if we can split its set of nodes into
@@ -50,36 +54,43 @@ Space complexity: O(N)
 
 /* 
 Approach I: DFS
-PASS - [[1,3],[0,2],[1,3],[0,2]]
-PASS - [[1,2,3],[0,2],[0,1,3],[0,2]]
-PASS - [[],[2,4,6],[1,4,8,9],[7,8],[1,2,8,9],[6,9],[1,5,7,8,9],[3,6,9],[2,3,4,6,9],[2,4,5,6,7,8]]
+Time: O(N + E), where N is the number of nodes in the graph, and E is the number of edges. 
+We explore each node once when we transform it from uncolored to colored, traversing all
+its edges in the process.
+Space: O(N), the space used to store the color/visited
 
-Runtime: 88 ms, faster than 67.13% of JavaScript online submissions for Is Graph Bipartite?.
-Memory Usage: 41.6 MB, less than 50.70% of JavaScript online submissions for Is Graph Bipartite?.
+Runtime: 1 ms Beats 91.59%
+Memory Usage: 50.03 MB Beats 100.00%
  */
 var isBipartite = function (graph) {
-  const marked = new Array(graph.length).fill(false);
-  const color = new Array(graph.length).fill(false);
-  const dfs = (graph, v) => {
-    marked[v] = true;
-    for (let w of graph[v]) {
-      if (!marked[w]) {
+  const N = graph.length;
+  const visited = new Array(N).fill(false);
+  const color = new Array(N).fill(false);
+  const dfs = (G, v, visited, color) => {
+    visited[v] = true;
+    //visit the neighbors
+    for (let w of G[v]) {
+      //neighbor is not yet visited
+      if (!visited[w]) {
+        //color this node opposite color of 'v' and perform dfs
         color[w] = !color[v];
-        if (!dfs(graph, w)) return false;
+        if (!dfs(G, w, visited, color)) return false;
+        //'v' and 'w' color is same so this graph can not be biPartite
       } else if (color[w] == color[v]) {
         return false;
       }
     }
     return true;
   };
-  //process each component one by one
-  for (let s = 0; s < graph.length; s++) {
-    if (!dfs(graph, s)) {
-      return false;
+
+  for (let s = 0; s < N; s++) {
+    if (!visited[s]) {
+      if (!dfs(graph, s, visited, color)) return false;
     }
   }
   return true;
 };
+
 
 /* 
 DFS: without using auxiliary array 'marked'

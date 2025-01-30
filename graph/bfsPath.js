@@ -27,7 +27,7 @@ function printPath(path) {
  */
 class BreadthFirstPath {
     constructor(G, s){
-        this.marked = new Array(G.vertices());
+        this.marked = new Array(G.vertices()).fill(false);
         this.edgeTo = new Array(G.vertices());
         this.s = s;
         this.bfs(G, s)
