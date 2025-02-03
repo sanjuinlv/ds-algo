@@ -143,3 +143,43 @@ var countComponents = function (n, edges) {
   }
   return componentCount;
 };
+
+/*
+DFS compact code
+
+Runtime: 5 ms Beats 91.73%
+Memory: 56.29 MB Beats 18.55%
+*/
+var countComponents = function (n, edges) {
+  this.adjacencyList = new Array(n);
+  this.visited = new Array(n).fill(false);
+
+  this.addEdge = (v, w) => {
+    this.adjacencyList[v].push(w);
+    this.adjacencyList[w].push(v);
+  };
+
+  this.dfs = (v) => {
+    this.visited[v] = true;
+    //check adjacent nodes
+    for (const w of this.adjacencyList[v]) {
+      if (!this.visited[w]) this.dfs(w);
+    }
+  };
+
+  //initialize adjacency list
+  for (let v = 0; v < n; v++) this.adjacencyList[v] = [];
+  //initialize the graph
+  for (const edge of edges) {
+    this.addEdge(edge[0], edge[1]);
+  }
+  let count = 0;
+  //perform dfs
+  for (let s = 0; s < n; s++) {
+    if (!this.visited[s]) {
+      this.dfs(s);
+      count++;
+    }
+  }
+  return count;
+};

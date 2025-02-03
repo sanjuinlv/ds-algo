@@ -1,5 +1,7 @@
 /* 
+277. Find the Celebrity
 https://leetcode.com/problems/find-the-celebrity/
+Type: Medium
 
 Suppose you are at a party with n people labeled from 0 to n - 1 and among them, 
 there may exist one celebrity. The definition of a celebrity is that all the other

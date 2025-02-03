@@ -1,4 +1,5 @@
 /* 
+1202. Smallest String With Swaps
 https://leetcode.com/problems/smallest-string-with-swaps/
 Category - Medium 
 
@@ -190,15 +191,17 @@ var smallestStringWithSwaps = function (s, pairs) {
 };
 
 /* 
-DFS II:
+DFS II: Using indices and char array in DFS 
 
-Runtime: 564 ms, faster than 38.65% of JavaScript online submissions for Smallest String With Swaps.
-Memory Usage: 114.7 MB, less than 16.56% of JavaScript online submissions for Smallest String With Swaps.
+Runtime: 185 ms Beats 25.64%
+Memory Usage: 94.62 MB Beats 16.66%
 */
 var smallestStringWithSwaps = function (s, pairs) {
   const N = s.length;
   //1. create adjacency list
-  const adj = [...Array(N)].map(() => []);
+  // const adj = [...Array(N)].map(() => []);
+  const adj = new Array();
+  for (let v = 0; v < N; v++) adj[v] = [];
   for (const pair of pairs) {
     const [v, w] = pair;
     adj[v].push(w);

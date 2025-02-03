@@ -1,4 +1,8 @@
 /* 
+1091. Shortest Path in Binary Matrix
+https://leetcode.com/problems/shortest-path-in-binary-matrix
+Type: Medium
+
 Given an n x n binary matrix grid, return the length of the shortest clear path in the matrix.
 If there is no clear path, return -1.
 

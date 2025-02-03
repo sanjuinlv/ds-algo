@@ -1,4 +1,5 @@
 /* 
+399. Evaluate Division
 https://leetcode.com/problems/evaluate-division/
 Category - Medium
 
@@ -94,6 +95,54 @@ var calcEquation = function (equations, values, queries) {
     else {
       result.push(dfs(v, w, 1));
     }
+  }
+  return result;
+};
+
+/*
+DFS II: Cleaner than above? 
+Runttime: 0 ms Beats 100.00%
+Memory: 48.48 MB Beats 95.65%
+ */
+var calcEquation = function (equations, values, queries) {
+  const N = equations.length;
+  const adjacencyList = new Map();
+  const addVertex = (v) => {
+    if (!adjacencyList.has(v)) adjacencyList.set(v, []);
+  };
+  const addEdge = (v, w, value) => {
+    addVertex(v);
+    addVertex(w);
+    adjacencyList.get(v).push([w, value]);
+    adjacencyList.get(w).push([v, 1 / value]);
+  };
+
+  //create adjaceny list
+  for (let i = 0; i < N; i++) {
+    const equation = equations[i];
+    const value = values[i];
+    addEdge(equation[0], equation[1], value);
+  }
+
+  const dfs = (v, t, pathVal, visisted) => {
+    if (v == t) return pathVal;
+    visisted[v] = true;
+    for (let adj of adjacencyList.get(v)) {
+      const [w, val] = adj;
+      if (!visisted[w]) {
+        const result = dfs(w, t, pathVal * val, visisted);
+        if (result != -1) return result;
+      }
+    }
+    return -1;
+  };
+
+  const result = [];
+  for (let query of queries) {
+    const [source, target] = query;
+    if (adjacencyList.has(source)) {
+      result.push(dfs(source, target, 1, new Set()));
+    } else result.push(-1);
   }
   return result;
 };

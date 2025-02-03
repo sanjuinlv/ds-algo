@@ -1,4 +1,8 @@
 /* 
+133. Clone Graph
+https://leetcode.com/problems/clone-graph/description/
+Type: Medium
+
 Given a reference of a node in a connected undirected graph.
 Return a deep copy (clone) of the graph.
 Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
@@ -42,8 +46,8 @@ Input: adjList = [[2],[1]]
 Output: [[2],[1]]
 */
 /**
- * // Definition for a Node.
- * function Node(val, neighbors) {
+ * // Definition for a _Node.
+ * function _Node(val, neighbors) {
  *    this.val = val === undefined ? 0 : val;
  *    this.neighbors = neighbors === undefined ? [] : neighbors;
  * };
@@ -59,21 +63,21 @@ Approach 1: BFS (Using Map for nodes)
 Time complexity: O(V + E), where V is no. of vertices and E is no. of Edges
 Space Complexity: O(V) (and also space occupied by Queue O(W), where W is width of Graph)
 
-Runtime: 76 ms, faster than 95.92% of JavaScript online submissions for Clone Graph.
-Memory Usage: 40.4 MB, less than 30.57% of JavaScript online submissions for Clone Graph.
+Runtime: 65 ms Beats 32.44%
+Memory Usage: 51.85 MB Beats 49.73%
 */
 var cloneGraph = function (node) {
   if (node == null) return node;
   const visited = new Map();
   const queue = [];
   queue.push(node);
-  visited.set(node, new Node(node.val));
+  visited.set(node, new _Node(node.val));
   while (queue.length) {
     const v = queue.shift();
-    for (let w of v.neighbors) {
+    for (const w of v.neighbors) {
       if (!visited.has(w)) {
         queue.push(w);
-        visited.set(w, new Node(w.val));
+        visited.set(w, new _Node(w.val));
       }
       visited.get(v).neighbors.push(visited.get(w));
     }
@@ -86,18 +90,16 @@ Approach 2: DFS (Using Map for nodes)
 Time complexity: O(V + E), where V is no. of vertices and E is no. of Edges
 Space: O(V), space required by visited map and recursion stack
 
-Runtime: 80 ms, faster than 84.97% of JavaScript online submissions for Clone Graph.
-Memory Usage: 40.1 MB, less than 71.85% of JavaScript online submissions for Clone Graph.
+Runtime: 64 ms Beats 37.21%
+Memory Usage: 52.18 MB Beats 27.61%
 */
 var cloneGraph = function (node) {
   if (node == null) return node;
   const visited = new Map();
   const dfs = (v) => {
-    visited.set(v, new Node(v.val));
-    for (let w of v.neighbors) {
-      if (!visited.has(w)) {
-        dfs(w);
-      }
+    visited.set(v, new _Node(v.val));
+    for (const w of v.neighbors) {
+      if (!visited.has(w)) dfs(w);
       visited.get(v).neighbors.push(visited.get(w));
     }
   };

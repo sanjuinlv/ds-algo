@@ -33,29 +33,29 @@ for(let v = 0; v < g.vertices(); v++){
 
 */
 class DirectedBFS {
-    constructor(G, s) {
-        this.marked = new Array(G.vertices());
-        this.count = 0;
-        this.s = s;
-        this.bfs(G, s);
-    }
+  constructor(G, s) {
+    this.marked = new Array(G.vertices());
+    this.count = 0;
+    this.s = s;
+    this.bfs(G, s);
+  }
 
-    bfs(G, s) {
-        this.marked[s] = true;
-        const queue = [];
-        queue.push(s);
-        while(queue.length){
-            let v = queue.shift();
-            for (let w of G.adjacent(v)) {
-                if (!this.marked[w]) {
-                    this.marked[w] = true;
-                    queue.push(w);
-                }
-            }
+  bfs(G, s) {
+    this.marked[s] = true;
+    const queue = [];
+    queue.push(s);
+    while (queue.length) {
+      let v = queue.shift();
+      for (let w of G.adjacent(v)) {
+        if (!this.marked[w]) {
+          this.marked[w] = true;
+          queue.push(w);
         }
+      }
     }
+  }
 
-    marked(v){
-        return this.marked[v];
-    }
+  marked(v) {
+    return this.marked[v];
+  }
 }

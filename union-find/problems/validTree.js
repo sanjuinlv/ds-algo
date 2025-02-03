@@ -154,7 +154,7 @@ var validTree = function (n, edges) {
   };
 
   const visited = new Set();
-  // We return true iff no cycles were detected,
-  // AND the entire graph has been reached.
+  // We return true if no cycles were detected,
+  // and the entire graph has been reached.
   return !hasCycle(graph, 0, 0) && visited.size == n;
 };
