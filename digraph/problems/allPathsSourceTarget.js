@@ -1,4 +1,8 @@
 /* 
+797. All Paths From Source to Target
+https://leetcode.com/problems/all-paths-from-source-to-target/
+Type: Medium
+
 Given a directed acyclic graph (DAG) of n nodes labeled from 0 to n - 1, find all possible 
 paths from node 0 to node n - 1 and return them in any order.
 
@@ -134,7 +138,7 @@ var allPathsSourceTarget = function (graph) {
 };
 
 /*
-Approach II: DFS + Backtracking (With complete Graph code)
+Approach II: DFS + Backtracking (Without complete Graph code)
 Time: O(2^N * N)
  - There could be at most 2^{N-1} -1 possible paths in the graph.
  - For each path, there could be at most N-2 intermediate nodes, i.e. it takes O(N) time to build a path.
@@ -170,8 +174,30 @@ var allPathsSourceTarget = function (graph) {
   return paths;
 };
 
+/* Backtrack: with separate funciton for backtrack*/
+var allPathsSourceTarget = function (graph) {
+  const paths = [];
+  backtrack(0, graph.length - 1, graph, [0], paths);
+  return paths;
+};
+
+function backtrack(v, t, G, currPath, paths) {
+  //reached to the target vertex
+  if (v == t) {
+    paths.push([...currPath]);
+    return; //backtrack
+  }
+  for (let w of G[v]) {
+    currPath.push(w);
+    backtrack(w, t, G, currPath, paths);
+    //remove current vertex to process other vertex
+    currPath.pop();
+  }
+}
+
+
 /*
-Approach II: BFS + Backtracking (With complete Graph code)
+Approach II: BFS + Backtracking (Without complete Graph code)
 Time: O(2^N * N)
  - There could be at most 2^{N-1} -1 possible paths in the graph.
  - For each path, there could be at most N-2 intermediate nodes, i.e. it takes O(N) time to build a path.
@@ -181,23 +207,24 @@ Space: O(2^N * N)
 up to N nodes, the space we need to store the results would be O(2^N * N).
  - the recursion would require additional O(N) space.
 
-Runtime: 175 ms, faster than 32.98% of JavaScript online submissions for All Paths From Source to Target.
-Memory Usage: 49.8 MB, less than 70.83% of JavaScript online submissions for All Paths From Source to Target.
-
+Runtime: 13 ms Beats 24.00%
+Memory Usage: 59.20 MB Beats 43.75%
  */
 var allPathsSourceTarget = function (graph) {
+  const Q = [];
+  const target = graph.length - 1;
   const paths = [];
-  if (graph == null || graph.length == 0) return paths;
-
-  const destination = graph.length - 1;
-  const queue = [];
-  queue.push([0, [0]]);
-  while (queue.length) {
-    const [v, path] = queue.shift();
-    if (v === destination) paths.push([...path]);
+  Q.push([0, [0]]);
+  while (Q.length) {
+    const [v, path] = Q.shift();
+    if (v == target) {
+      paths.push([...path]);
+      continue;
+    }
     for (let w of graph[v]) {
-      queue.push([w, [...path, w]]);
+      Q.push([w, [...path, w]]);
     }
   }
   return paths;
 };
+

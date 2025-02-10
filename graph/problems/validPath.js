@@ -1,4 +1,8 @@
 /* 
+1971. Find if Path Exists in Graph
+https://leetcode.com/problems/find-if-path-exists-in-graph
+Type: Easy
+
 There is a bi-directional graph with n vertices, where each vertex is labeled from 0 to n - 1
 (inclusive). The edges in the graph are represented as a 2D integer array edges, where each
 edges[i] = [ui, vi] denotes a bi-directional edge between vertex ui and vertex vi. 
@@ -10,6 +14,10 @@ Given edges and the integers n, source, and destination, return true if there is
 from source to destination, or false otherwise.
 
 Example 1:
+(0)----(1)
+ \     /
+  \   /
+   (2)
 Input: n = 3, edges = [[0,1],[1,2],[2,0]], source = 0, destination = 2
 Output: true
 Explanation: There are two paths from vertex 0 to vertex 2:
@@ -17,6 +25,13 @@ Explanation: There are two paths from vertex 0 to vertex 2:
 - 0 → 2
 
 Example 2:
+   (1)      (3)
+   /         | \
+  /          |  (5)   
+(0)          | /
+ \          (4) 
+  \   
+   (2)
 Input: n = 6, edges = [[0,1],[0,2],[3,5],[5,4],[4,3]], source = 0, destination = 5
 Output: false
 Explanation: There is no path from vertex 0 to vertex 5.
@@ -45,84 +60,55 @@ Approach I: DFS
 Time: O(V+E)
 Space: O(V)
 
-Runtime: 1139 ms
-Memory Usage: 184.4 MB
-Your runtime beats 16.60 % of javascript submissions.
+Runtime: 632 ms Beats 68.37%
+Memory Usage: 165.41 MB Beats 49.07%
 */
 class Graph {
-  constructor(V) {
-    this.V = V;
-    this.adj = new Array(V);
-    this.initialize(V);
+  constructor(n) {
+    this.N = n;
+    this.adj = new Array(n);
+    this.init();
   }
 
-  initialize(V) {
-    for (let i = 0; i < V; i++) {
+  init() {
+    for (let i = 0; i < this.N; i++) {
       this.adj[i] = [];
     }
   }
 
-  adjacent(v) {
+  adjacencyList(v) {
     return this.adj[v];
   }
 
-  connect(v, w) {
+  addEdge(v, w) {
+    console.log(`v: ${v}, w: ${w}`);
     this.adj[v].push(w);
     this.adj[w].push(v);
-  }
-
-  vertices() {
-    return this.V;
-  }
-}
-
-class DFSPath {
-  constructor(G, s) {
-    this.marked = new Array(G.vertices()).fill(false);
-    this.edgeTo = new Array(G.vertices());
-    this.s = s;
-    this.dfs(G, s);
-  }
-
-  dfs(G, v) {
-    this.marked[v] = true;
-    for (let w of G.adjacent(v)) {
-      if (!this.marked[w]) {
-        this.edgeTo[w] = v;
-        this.dfs(G, w);
-      }
-    }
-  }
-
-  hasPathTo(v) {
-    return this.marked[v];
-  }
-
-  //Note required for this problem
-  /**
-   * Path from s to v; [] if no such path
-   */
-  pathTo(v) {
-    if (!this.hasPathTo(v)) return [];
-    const path = [];
-    for (let w = v; w != this.s; w = this.edgeTo[w]) {
-      path.push(w);
-    }
-    path.push(this.s);
-    return path;
   }
 }
 
 var validPath = function (n, edges, source, destination) {
-  //create the Graph;
   const G = new Graph(n);
+  //create graph from edges
   for (const edge of edges) {
-    G.connect(edge[0], edge[1]);
+    G.addEdge(edge[0], edge[1]);
   }
-  //create DFS path
-  const dfsPath = new DFSPath(G, source);
-  return dfsPath.hasPathTo(destination);
+  const visisted = new Array[n]();
+  //perform dfs
+  return dfs(source, destination, G, visisted);
 };
+
+function dfs(v, t, G, visisted) {
+  if (v == t) return true;
+  visisted[v] = true;
+  //visit neighbors
+  for (let w of G.adjacencyList(v)) {
+    if (!visisted[w]) {
+      if (dfs(w, t, G, visisted)) return true;
+    }
+  }
+  return false;
+}
 
 /* 
 Approach II: BFS

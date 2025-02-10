@@ -81,9 +81,54 @@ Approach I: DFS + memoization
 Time: O(m * n)
 Space: O(m * n)
 
-Runtime: 162 ms, faster than 66.67% of JavaScript online submissions for Longest Increasing Path in a Matrix.
-Memory Usage: 50.2 MB, less than 55.08% of JavaScript online submissions for Longest Increasing Path in a Matrix.
+Runtime: 38 ms Beats 49.11%
+Memory Usage: 58.55 MB Beats 30.18%
 */
+
+var longestIncreasingPath = function (matrix) {
+  const m = matrix.length;
+  const n = matrix[0].length;
+  const visited = Array.from({ length: m }, () => new Array(n).fill(-1));
+  let maxPath = 0;
+  //perform dfs from each cell
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      maxPath = Math.max(maxPath, dfs(i, j, matrix, visited, m, n));
+    }
+  }
+  return maxPath;
+};
+
+function dfs(row, col, matrix, visited, m, n) {
+  if (visited[row][col] != -1) return visited[row][col];
+  let currPath = 0;
+  for (let cell of getDirections(row, col)) {
+    const [i, j] = cell;
+    if (i < 0 || j < 0 || i > m - 1 || j > n - 1) continue;
+    //if next cell is bigger than current then move further
+    if (matrix[i][j] > matrix[row][col]) {
+      currPath = Math.max(dfs(i, j, matrix, visited, m, n), currPath);
+    }
+  }
+  visited[row][col] = currPath + 1;
+  return visited[row][col];
+}
+
+function getDirections(row, col) {
+  const directions = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+  ];
+  const resutl = [];
+  for (let cell of directions) {
+    const [i, j] = cell;
+    resutl.push([row + i, col + j]);
+  }
+  return resutl;
+}
+
 
 var longestIncreasingPath = function (matrix) {
   const m = matrix.length;

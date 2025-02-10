@@ -61,42 +61,76 @@ also result in a space complexity of (M×N).
 Optimization: We can definitely reduce the space complexity of this algorithm by storing
 the indices corresponding to each word instead of storing the word itself.
 
-Runtime: 221 ms, faster than 81.93% of JavaScript online submissions for Word Ladder.
-Memory Usage: 67.6 MB, less than 16.78% of JavaScript online submissions for Word Ladder.
+Runtime: 74 ms Beats 90.51%
+Memory Usage: 71.62 MB Beats 10.98%
  */
 var ladderLength = function (beginWord, endWord, wordList) {
   const L = beginWord.length;
-  //1. Create generic word dictionary which differ by one letter
   const wordMap = new Map();
-  wordList.forEach((word) => {
+  //create generic word dictionary for each word
+  for (let word of wordList) {
     for (let i = 0; i < L; i++) {
       const newWord = word.substring(0, i) + "*" + word.substring(i + 1, L);
       if (!wordMap.has(newWord)) wordMap.set(newWord, []);
       // add this words which has the intermediate generic word 'newWord'.
       wordMap.get(newWord).push(word);
     }
-  });
-  // console.log(wordMap)
-  //2. Perform BFS
+  }
   const Q = [];
-  const visited = new Map();
-  Q.push([beginWord, 0]);
-  visited.set(beginWord, true);
+  const visited = new Set();
+  Q.push([beginWord, 1]);
+  visited.add(beginWord);
   while (Q.length) {
-    const [currWord, level] = Q.shift();
-    //found the end word
-    if (currWord === endWord) return level + 1;
-    //check for all combination of 'currWord'
+    const [word, level] = Q.shift();
+    if (word == endWord) return level;
+    //create variation of this word
     for (let i = 0; i < L; i++) {
-      // Intermediate words for current word
-      const newWord =
-        currWord.substring(0, i) + "*" + currWord.substring(i + 1, L);
-      for (let neighbor of wordMap.get(newWord) || []) {
-        if (!visited.get(neighbor)) {
-          visited.set(neighbor, true);
-          Q.push([neighbor, level + 1]);
+      const newWord = word.substring(0, i) + "*" + word.substring(i + 1, L);
+      if (wordMap.has(newWord)) {
+        for (let neighbour of wordMap.get(newWord) || []) {
+          if (!visited.has(neighbour)) {
+            visited.add(neighbour);
+            Q.push([neighbour, level + 1]);
+          }
         }
       }
+    }
+  }
+  return 0;
+};
+
+/* 
+Approach II
+Runtime: 300 ms Beats 27.88%
+Memory: 59.26 MB Beats 37.04%
+*/
+var ladderLength = function (beginWord, endWord, wordList) {
+  const L = beginWord.length;
+  const wordSet = new Set(wordList);
+  //remove the start word form set, if present in the word set
+  wordSet.delete(beginWord);
+  const Q = [];
+  Q.push([beginWord, 1]);
+  while (Q.length) {
+    const [word, level] = Q.shift();
+    //end word found
+    if (word == endWord) return level;
+    //try all combination of word
+    const chars = Array.from(word);
+    for (let i = 0; i < word.length; i++) {
+      const orgChar = chars[i];
+      for (let c = "a".charCodeAt(0); c <= "z".charCodeAt(0); c++) {
+        chars[i] = String.fromCharCode(c);
+        const newWord = chars.join("");
+        //check if word exist in set, if so push in the queue
+        if (wordSet.has(newWord)) {
+          Q.push([newWord, level + 1]);
+          //remove this word from set as we have now visited it
+          //and can not find shorter path than current
+          wordSet.delete(newWord);
+        }
+      }
+      chars[i] = orgChar;
     }
   }
   return 0;
