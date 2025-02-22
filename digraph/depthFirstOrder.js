@@ -33,6 +33,7 @@ class DepthFirstOrder {
   constructor(G) {
     this.marked = new Array(G.vertices()).fill(false);
     this.reversePost = [];
+    //run DFS from each vertices
     for (let v = 0; v < G.vertices(); v++) {
       if (!this.marked[v]) this.dfs(G, v);
     }
@@ -45,6 +46,7 @@ class DepthFirstOrder {
         this.dfs(G, w);
       }
     }
+    //done with this vertex. Add in reverse postorder array
     this.reversePost.push(v);
   }
 

@@ -54,140 +54,66 @@ Therefore, we have a time complexity of O(N).
 Space: O(N): The only additional space we used was the queue. We determined above that at most,
 we enqueued N cells. Therefore, an upper bound on the worst-case space complexity is O(N).
 
-Runtime: 195 ms, faster than 49.06% of JavaScript online submissions for Shortest Path in Binary Matrix.
-Memory Usage: 51.3 MB, less than 37.80% of JavaScript online submissions for Shortest Path in Binary Matrix.
+Runtime: 84 ms Beats 40.74%
+Memory Usage: 62.12 MB Beats 26.17%
 */
+class Cell {
+  constructor(row, col, distFromStart = 1) {
+    this.row = row;
+    this.col = col;
+    this.distFromStart = distFromStart;
+  }
+}
 var shortestPathBinaryMatrix = function (grid) {
-  const rows = grid.length;
-  const cols = rows;
-  //the top-left and bottom-right cell should be 0
-  if (grid[0][0] !== 0 || grid[rows - 1][cols - 1] !== 0) return -1;
+  if (grid[0][0] !== 0) return -1;
+  const m = grid.length;
+  const n = grid[0].length;
+  const visited = Array.from({ length: m }, () => new Array(n).fill(false));
   const Q = [];
-  const visited = [...Array(rows)].map((x) => Array(cols).fill(false));
-  Q.push([0, 0, 1]);
+  Q.push(new Cell(0, 0, 1));
   visited[0][0] = true;
   while (Q.length) {
-    const [i, j, distance] = Q.shift();
-    //reached bottom-right
-    if (i == rows - 1 && j == cols - 1) return distance;
-    //explore all 8 cells
-    //top-diagonal-left
-    if (i > 0 && j > 0 && grid[i - 1][j - 1] == 0 && !visited[i - 1][j - 1]) {
-      Q.push([i - 1, j - 1, distance + 1]);
-      visited[i - 1][j - 1] = true;
-    }
-    //top
-    if (i > 0 && grid[i - 1][j] == 0 && !visited[i - 1][j]) {
-      Q.push([i - 1, j, distance + 1]);
-      visited[i - 1][j] = true;
-    }
-    //top-diagonal-right
-    if (
-      i > 0 &&
-      j + 1 < cols &&
-      grid[i - 1][j + 1] == 0 &&
-      !visited[i - 1][j + 1]
-    ) {
-      Q.push([i - 1, j + 1, distance + 1]);
-      visited[i - 1][j + 1] = true;
-    }
-    //left
-    if (j > 0 && grid[i][j - 1] == 0 && !visited[i][j - 1]) {
-      Q.push([i, j - 1, distance + 1]);
-      visited[i][j - 1] = true;
-    }
-    //right
-    if (j + 1 < cols && grid[i][j + 1] == 0 && !visited[i][j + 1]) {
-      Q.push([i, j + 1, distance + 1]);
-      visited[i][j + 1] = true;
-    }
-    //bottom
-    if (i + 1 < rows && grid[i + 1][j] == 0 && !visited[i + 1][j]) {
-      Q.push([i + 1, j, distance + 1]);
-      visited[i + 1][j] = true;
-    }
-    //bottom-left-diagonal
-    if (
-      i + 1 < rows &&
-      j > 0 &&
-      grid[i + 1][j - 1] == 0 &&
-      !visited[i + 1][j - 1]
-    ) {
-      Q.push([i + 1, j - 1, distance + 1]);
-      visited[i + 1][j - 1] = true;
-    }
-    //bottom-right-diagonal
-    if (
-      i + 1 < rows &&
-      j + 1 < cols &&
-      grid[i + 1][j + 1] == 0 &&
-      !visited[i + 1][j + 1]
-    ) {
-      Q.push([i + 1, j + 1, distance + 1]);
-      visited[i + 1][j + 1] = true;
+    const cell = Q.shift();
+    //check if we reached end
+    if (cell.row == m - 1 && cell.col == n - 1) return cell.distFromStart;
+    //visit neighbour
+    for (let direction of getDirections(cell.row, cell.col, grid)) {
+      const [i, j] = direction;
+      if (!visited[i][j] && grid[i][j] == 0) {
+        Q.push(new Cell(i, j, cell.distFromStart + 1));
+        visited[i][j] = true;
+      }
     }
   }
   return -1;
 };
 
-/* 
-BSF, with cleaner code
-Runtime: 185 ms, faster than 53.36% of JavaScript online submissions for Shortest Path in Binary Matrix.
-Memory Usage: 60.4 MB, less than 21.18% of JavaScript online submissions for Shortest Path in Binary Matrix.
-*/
-var shortestPathBinaryMatrix = function (grid) {
-  const rows = grid.length;
-  const cols = rows;
-  //the top-left and bottom-right cell should be 0
-  if (grid[0][0] !== 0 || grid[rows - 1][cols - 1] !== 0) return -1;
+function getDirections(row, col, grid) {
   const directions = [
-    [-1, -1], //diagonal top left
-    [-1, 0], // top
-    [-1, 1], // diagonal top right
-    [0, -1], // left
-    [0, 1], // right
-    [1, -1], //diagonal bottom left
-    [1, 0], //down
-    [1, 1], //diagonal bottom right
+    [1, 0], // bottom
+    [1, -1], // bottom-left
+    [1, 1], // bottom-right
+    [-1, 0], // up
+    [-1, -1], // up-left
+    [-1, 1], // up-right
+    [0, 1], // left
+    [0, -1], // right
   ];
-
-  const getNeighbors = (row, col) => {
-    const neighbors = [];
-    for (let direction of directions) {
-      const newRow = row + direction[0];
-      const newCol = col + direction[1];
-      if (
-        newRow < 0 ||
-        newCol < 0 ||
-        newRow >= rows ||
-        newCol >= cols ||
-        grid[newRow][newCol] !== 0
-      ) {
-        continue;
-      }
-      neighbors.push([newRow, newCol]);
-    }
-    return neighbors;
-  };
-
-  const Q = [];
-  const visited = [...Array(rows)].map((x) => Array(cols).fill(false));
-  Q.push([0, 0, 1]); //row=0, col=0
-  visited[0][0] = true;
-  while (Q.length) {
-    const [row, col, distance] = Q.shift();
-    //reached bottom-right
-    if (row == rows - 1 && col == cols - 1) return distance;
-    //explore all neighboring cells
-    for (let neighbor of getNeighbors(row, col)) {
-      if (!visited[neighbor[0]][neighbor[1]]) {
-        visited[neighbor[0]][neighbor[1]] = true;
-        Q.push([neighbor[0], neighbor[1], distance + 1]);
-      }
+  const neighbors = [];
+  for (let direction of directions) {
+    const newRow = row + direction[0];
+    const newCol = col + direction[1];
+    if (
+      newRow >= 0 &&
+      newCol >= 0 &&
+      newRow < grid.length &&
+      newCol < grid[0].length
+    ) {
+      neighbors.push([row + direction[0], col + direction[1]]);
     }
   }
-  return -1;
-};
+  return neighbors;
+}
 
 /* 
 BSF: With, overwriting input 

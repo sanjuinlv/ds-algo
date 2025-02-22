@@ -46,10 +46,11 @@ class KosarajuSCC {
     //number of strong component
     this.count = 0;
     // reverse postorder on reversed graph
-    const order = new DepthFirstOrder(G.reverse()).getReversePost();
-    for (let v = order.length - 1; v >= 0; v--) {
-      if (!this.marked[order[v]]) {
-        this.dfs(G, order[v]);
+    const reversePostOrder = new DepthFirstOrder(G.reverse()).getReversePost();
+    //run DFS on D^R
+    for (let v = reversePostOrder.length - 1; v >= 0; v--) {
+      if (!this.marked[reversePostOrder[v]]) {
+        this.dfs(G, reversePostOrder[v]);
         this.count++;
       }
     }

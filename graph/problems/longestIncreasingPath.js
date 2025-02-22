@@ -36,45 +36,53 @@ Will timeout on large input
  */
 var longestIncreasingPath = function (matrix) {
   const m = matrix.length;
-  const n = matrix.length;
-  const visited = [...Array(m)].map((x) => Array(n).fill(-1));
-  let maxPath = 0;
+  const n = matrix[0].length;
+  const visited = Array.from({ length: m }, () => new Array(n).fill(false));
+  console.log(`visited`, visited);
+  let maxPathLength = 0;
+  //perform dfs from each cell
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      const currPath = dfs(i, j, matrix, visited, m, n);
+      maxPathLength = Math.max(maxPathLength, currPath);
+    }
+  }
+  return maxPathLength;
+};
+//m= 4, i=4
+function dfs(row, col, matrix, visited, m, n) {
+  visited[row][col] = true;
+  console.log(`row: ${row}, col: ${col}`);
+  let currPath = 0;
+  //perform dfs on neighbours
+  for (let cell of getDirections(row, col)) {
+    const [i, j] = cell;
+    if (i < 0 || j < 0 || i > m - 1 || j > n - 1 || visited[i][j]) continue;
+    //next cell is bigger than current
+    if (matrix[i][j] > matrix[row][col]) {
+      currPath = Math.max(dfs(i, j, matrix, visited, m, n), currPath);
+    }
+  }
+  //mark visisted false so that this can be used in another path
+  visited[row][col] = false;
+  console.log(`done: row: ${row}, col: ${col}, currPath: ${currPath + 1}`);
+  return currPath + 1;
+}
+
+function getDirections(row, col) {
   const directions = [
     [1, 0],
     [-1, 0],
     [0, 1],
     [0, -1],
   ];
-  const getDirections = (i, j) => {
-    const result = [];
-    for (let direction of directions) {
-      const row = direction[0] + i;
-      const col = direction[1] + j;
-      if (row >= 0 && row < m && col >= 0 && col < n) result.push([row, col]);
-    }
-    return result;
-  };
-
-  const dfs = (i, j, l) => {
-    const temp = matrix[i][j];
-    matrix[i][j] = "#";
-    maxPath = Math.max(maxPath, l);
-    for (const direction of getDirections(i, j)) {
-      const [row, col] = direction;
-      if (matrix[row][col] > temp) {
-        dfs(row, col, l + 1);
-      }
-    }
-    matrix[i][j] = temp;
-  };
-
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      dfs(i, j, 1);
-    }
+  const resutl = [];
+  for (let cell of directions) {
+    const [i, j] = cell;
+    resutl.push([row + i, col + j]);
   }
-  return maxPath;
-};
+  return resutl;
+}
 
 /*
 Approach I: DFS + memoization
@@ -84,7 +92,6 @@ Space: O(m * n)
 Runtime: 38 ms Beats 49.11%
 Memory Usage: 58.55 MB Beats 30.18%
 */
-
 var longestIncreasingPath = function (matrix) {
   const m = matrix.length;
   const n = matrix[0].length;
@@ -129,7 +136,50 @@ function getDirections(row, col) {
   return resutl;
 }
 
+//II: DFS
+var longestIncreasingPath = function (matrix) {
+  const m = matrix.length;
+  const n = matrix.length;
+  const visited = [...Array(m)].map((x) => Array(n).fill(-1));
+  let maxPath = 0;
+  const directions = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+  ];
+  const getDirections = (i, j) => {
+    const result = [];
+    for (let direction of directions) {
+      const row = direction[0] + i;
+      const col = direction[1] + j;
+      if (row >= 0 && row < m && col >= 0 && col < n) result.push([row, col]);
+    }
+    return result;
+  };
 
+  const dfs = (i, j, l) => {
+    const temp = matrix[i][j];
+    matrix[i][j] = "#";
+    maxPath = Math.max(maxPath, l);
+    for (const direction of getDirections(i, j)) {
+      const [row, col] = direction;
+      if (matrix[row][col] > temp) {
+        dfs(row, col, l + 1);
+      }
+    }
+    matrix[i][j] = temp;
+  };
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      dfs(i, j, 1);
+    }
+  }
+  return maxPath;
+};
+
+//II: DFS with memoization
 var longestIncreasingPath = function (matrix) {
   const m = matrix.length;
   const n = matrix.length;

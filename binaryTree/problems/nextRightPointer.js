@@ -1,4 +1,8 @@
 /* 
+116. Populating Next Right Pointers in Each Node
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+Type: Medium
+
 You are given a perfect binary tree where all leaves are on the same level, and every
  parent has two children. The binary tree has the following definition:
 
@@ -94,14 +98,13 @@ Approach: Level Order Traversal (BSF) without using level separator (using for l
 Time: O(N)
 Space: O(N)
 
-Runtime: 120 ms, faster than 29.21% of JavaScript online submissions for Populating Next Right Pointers in Each Node.
-Memory Usage: 49.1 MB, less than 26.84% of JavaScript online submissions for Populating Next Right Pointers in Each Node.
+Runtime: 66 ms Beats 58.97%
+Memory Usage: 56.65 MB Beats 6.79%
 */
 var connect = function (root) {
   if (root == null) return root;
   const queue = [];
   queue.push(root);
-
   while (queue.length) {
     const size = queue.length;
     for (let i = 0; i < size; i++) {
@@ -110,11 +113,37 @@ var connect = function (root) {
       // connections. The queue will contain nodes from 2 levels
       // at most at any point in time. This check ensures we only
       // don't establish next pointers beyond the end of a level
-      if (i < size - 1) {
-        node.next = queue[0];
-      }
+      if (i < size - 1) node.next = queue[0];
       if (node.left) queue.push(node.left);
       if (node.right) queue.push(node.right);
+    }
+  }
+  return root;
+};
+
+/* 
+Level order traversal: using extra array for storing child nodes
+Runtime: 81 ms Beats 5.51%
+Memory: 55.53 MB Beats 46.15%
+*/
+var connect = function (root) {
+  if (root == null) return root;
+  const Q = [];
+  Q.push(root);
+  while (Q.length) {
+    const size = Q.length;
+    const nodeAtLevel = [];
+    for (let i = 0; i < size; i++) {
+      const node = Q.shift();
+      //item in front of Q will ne next node of this node
+      if (Q.length) node.next = Q[0];
+      else node.next = null;
+      nodeAtLevel.push(node);
+    }
+    //node add all node's left and right child at this level
+    for (const node of nodeAtLevel) {
+      if (node.left) Q.push(node.left);
+      if (node.right) Q.push(node.right);
     }
   }
   return root;

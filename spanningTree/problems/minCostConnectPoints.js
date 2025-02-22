@@ -1,4 +1,8 @@
 /* 
+1584. Min Cost to Connect All Points
+https://leetcode.com/problems/min-cost-to-connect-all-points/
+Type: Medium
+
 You are given an array points representing integer coordinates of some points on
 a 2D-plane, where points[i] = [xi, yi].
 The cost of connecting two points [xi, yi] and [xj, yj] is the manhattan distance
@@ -68,7 +72,7 @@ class UnionFind {
   union(p, q) {
     const pRoot = this.find(p);
     const qRoot = this.find(q);
-    if (pRoot == qRoot) return;
+    if (pRoot == qRoot) return false;
     if (this.rank[pRoot] > this.rank[qRoot]) {
       this.root[qRoot] = pRoot;
     } else if (this.rank[pRoot] < this.rank[qRoot]) {
@@ -79,6 +83,7 @@ class UnionFind {
       //increase the height by one of pRoot
       this.rank[pRoot] += 1;
     }
+    return true;
   }
 }
 
@@ -140,6 +145,64 @@ var minCostConnectPoints = function (points) {
       minCost += edge.weight();
       counter--;
     }
+  }
+  return minCost;
+};
+
+/* 
+Approach II: wothout using PQ (using sorted array instead)
+Runtime: 654 ms Beats 73.66% 
+Memory: 94.92 MB Beats 75.80%
+*/
+class Edge {
+  constructor(v, w, weight) {
+    this.v = v;
+    this.w = w;
+    this.edgeWeight = weight;
+  }
+
+  either() {
+    return this.v;
+  }
+
+  other(v) {
+    return this.v === v ? this.w : this.v;
+  }
+
+  get weight() {  // Use a getter instead of a method
+    return this.edgeWeight;
+  }
+}
+
+var minCostConnectPoints = function (points) {
+  if (!points || points.length == 0) return 0;    
+  const edges = [];
+  let vertices = points.length;
+  for (let i = 0; i < vertices; i++) {
+    const p1 = points[i];
+    //calculate edge for each points from this point
+    for (let j = i + 1; j < vertices; j++) {
+      const p2 = points[j];
+      const cost = Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+      edges.push(new Edge(i, j, cost));
+    }
+  }
+  //sort the edges by weight
+  edges.sort((a, b) => a.weight - b.weight);
+  const uf = new RankUF(vertices);
+  let minCost = 0;
+  //edges can be max v-1
+  let counter = vertices - 1;
+  //process all edges unit counter is zero (v-1 edges obtained)
+  for (let i = 0; i < edges.length; i++) {
+    const edge = edges[i];
+    const v = edge.either();
+    const w = edge.other(v);
+    if (uf.union(v, w)) {
+      minCost += edge.weight;
+      counter--;
+    }
+    if (counter == 0) break;
   }
   return minCost;
 };

@@ -21,7 +21,7 @@ class Edge {
     //compare
     compareTo(that){
         if (this.edgeWeight < that.weight) return -1;
-        else if (this.edgeWeight < that.weight) return 1;
+        else if (this.edgeWeight > that.weight) return 1;
         else return 0;
     }
 

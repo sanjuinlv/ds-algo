@@ -1,4 +1,5 @@
 /* 
+1168. Optimize Water Distribution in a Village
 https://leetcode.com/problems/optimize-water-distribution-in-a-village/solution/
 Category - Hard
 
@@ -138,6 +139,60 @@ var minCostToSupplyWater = function (n, wells, pipes) {
       totalCost += cost;
       counter--;
     }
+  }
+  return totalCost;
+};
+
+
+/* 
+Approach II: Without using Min PQ (using sorting instead)
+Runtime: 58 ms Beats 61.36% 
+Memory: 61.04 MB Beats 56.82%
+*/
+class Edge {
+  constructor(v, w, weight) {
+    this.v = v;
+    this.w = w;
+    this.edgeWeight = weight;
+  }
+  either() {
+    return this.v;
+  }
+
+  other(v) {
+    return this.v == v ? this.w : this.v;
+  }
+
+  get weight() {
+    return this.edgeWeight;
+  }
+}
+
+var minCostToSupplyWater = function (n, wells, pipes) {
+  const edges = [];
+  // Create an edge from all vertices to dummy vertex '0'
+  for (let i = 0; i < n; i++) {
+    edges.push(new Edge(i + 1, 0, wells[i]));
+  }
+  // Add all edges from pipes
+  for (const pipe of pipes) {
+    const [v, w, weight] = pipe;
+    edges.push(new Edge(v, w, weight));
+  }
+  //sort the edges by weight
+  edges.sort((a, b) => a.weight - b.weight);
+  const UF = new RankUF(n);
+  let totalCost = 0;
+  let count = n; // Total nodes (villages + dummy node)
+  for (let i = 0; i < edges.length; i++) {
+    const edge = edges[i];
+    const p = edge.either();
+    const q = edge.other(p);
+    if (UF.union(p, q)) {
+      totalCost += edge.weight;
+      count--;
+    }
+    if (count == 0) break;
   }
   return totalCost;
 };
