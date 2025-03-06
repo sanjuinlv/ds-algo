@@ -46,8 +46,8 @@ nodes in two lists.
 
 Space: O(1)
 
-Runtime: 336 ms, faster than 32.12% of JavaScript online submissions for Merge k Sorted Lists.
-Memory Usage: 47.3 MB, less than 77.02% of JavaScript online submissions for Merge k Sorted Lists.
+Runtime: 154 ms Beats 27.78%
+Memory Usage: 62.16 MB Beats 12.73%.
 */
 /**
  * @param {ListNode[]} lists
@@ -57,46 +57,8 @@ var mergeKLists = function (lists) {
   const N = lists.length;
   if (N == 0) return null;
   if (N == 1) return lists[0];
-
-  const mergeTwoLists = (l1, l2) => {
-    const dummy = new ListNode(0);
-    let curr = dummy;
-    while (l1 != null && l2 != null) {
-      if (l1.val <= l2.val) {
-        curr.next = l1;
-        l1 = l1.next;
-      } else {
-        curr.next = l2;
-        l2 = l2.next;
-      }
-      curr = curr.next;
-    }
-    curr.next = l1 === null ? l2 : l1;
-    return dummy.next;
-  };
-
-  let l1 = lists[0];
-  let i = 1;
-  while (i < N) {
-    l1 = mergeTwoLists(l1, lists[i++]);
-  }
-  return l1;
-};
-
-/* 
-Approach II: Divide And Conquer Merge Sort
-Time: O(N logK) where k is number of linked list
-Space: O(k) - stack size
-Runtime: 75 ms, faster than 90.40% of JavaScript online submissions for Merge k Sorted Lists.
-Memory Usage: 55.52 MB, less than 57.60% of JavaScript online submissions for Merge k Sorted Lists.
-*/
-var mergeKLists = function (lists) {
-  const N = lists.length;
-  if (N == 0) return null;
-  if (N == 1) return lists[0];
-
-  const mergeTwoLists = (l1, l2) => {
-    const dummy = new ListNode(0);
+  const mergeTwoList = (l1, l2) => {
+    const dummy = new ListNode();
     let curr = dummy;
     while (l1 != null && l2 != null) {
       if (l1.val <= l2.val) {
@@ -112,46 +74,87 @@ var mergeKLists = function (lists) {
     return dummy.next;
   };
 
-  const mergeDivideAndConquer = (list, lo, hi) => {
-    if (lo > hi) return hi;
-    if (lo == hi) return lists[lo]; //left-leaning
-    const mid = lo + parseInt((hi - lo) / 2);
-    //sort left
-    const left = mergeDivideAndConquer(lists, lo, mid);
-    //sort right
-    const right = mergeDivideAndConquer(lists, mid + 1, hi);
-    //merge two parts
-    return mergeTwoLists(left, right);
-  };
-  return mergeDivideAndConquer(lists, 0, N - 1);
+  let l1 = lists[0];
+  for (let i = 1; i < N; i++) {
+    l1 = mergeTwoList(l1, lists[i]);
+  }
+  return l1;
 };
 
 /* 
-Approach: Min priority queue
-Note: Since Javascript doesn't has Priority queue, we can simulate it using array by sorted array items
-Didn't submit it as its performance will be bad due to multiple sort. But it passes all test cases
+Approach II: Divide And Conquer Merge Sort
+Time: O(N logK) where k is number of linked list
+Space: O(k) - stack size
+
+Runtime: 4 ms Beats 96.48%
+Memory Usage: 61.98 MB Beats 16.17%
 */
 var mergeKLists = function (lists) {
   const N = lists.length;
   if (N == 0) return null;
   if (N == 1) return lists[0];
-  const queue = [];
-  for (let i = 0; i < N; i++) {
-    if (lists[i] !== null) {
-      queue.push(lists[i]);
+  const mergeTwoList = (l1, l2) => {
+    const dummy = new ListNode();
+    let curr = dummy;
+    while (l1 != null && l2 != null) {
+      if (l1.val <= l2.val) {
+        curr.next = l1;
+        l1 = l1.next;
+      } else {
+        curr.next = l2;
+        l2 = l2.next;
+      }
+      curr = curr.next;
     }
+    curr.next = l1 == null ? l2 : l1;
+    return dummy.next;
+  };
+
+  const divideAndConquer = (lists, lo, hi) => {
+    if (lo > hi) return null; //nothing to merge
+    if (lo == hi) return lists[lo];
+    const mid = lo + Math.floor((hi - lo) / 2);
+    //sort left
+    const left = divideAndConquer(lists, lo, mid);
+    //sort right
+    const right = divideAndConquer(lists, mid + 1, hi);
+    //merge two parts
+    return mergeTwoList(left, right);
+  };
+
+  return divideAndConquer(lists, 0, N - 1);
+};
+
+/* 
+Approach III: Min priority queue
+Time: O(NlogK), where K is the number of lists and N is number of list nodes
+Space: O(N)
+
+Runtime: 23 ms Beats 46.53%
+Memory: 62.65 MB Beats 9.65%
+*/
+var mergeKLists = function (lists) {
+  const N = lists.length;
+  if (N == 0) return null;
+  if (N == 1) return lists[0];
+  //Min priority queue
+  const pq = new PriorityQueue((a, b) => {
+    return a.val - b.val;
+  });
+  //add all sorted list to the priority queue
+  for (let list of lists) {
+    if (list != null) pq.enqueue(list);
   }
-  queue.sort((a, b) => a.val - b.val);
-  const dummy = new ListNode(-1);
-  let prev = dummy;
-  while (queue.length > 0) {
-    const curr = queue.shift();
-    prev.next = curr;
-    prev = prev.next;
-    if (curr.next !== null) {
-      queue.push(curr.next);
-      queue.sort((a, b) => a.val - b.val);
-    }
+  console.log(`pq`, pq);
+  const dummy = new ListNode();
+  let curr = dummy;
+  while (pq.size() > 0) {
+    const node = pq.dequeue();
+    curr.next = node;
+    //move curr to next node
+    curr = curr.next;
+    //add next of the current node to the priority queue
+    if (curr.next != null) pq.enqueue(curr.next);
   }
   return dummy.next;
 };

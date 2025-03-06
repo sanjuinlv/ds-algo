@@ -1,4 +1,5 @@
 /*
+206. Reverse Linked List
 https://leetcode.com/problems/reverse-linked-list
 Type: Easy
 
@@ -19,8 +20,9 @@ Approach: Iterative
 Time complexity: (L)
 Space complexity: O(1)
 
-Your runtime beats 95.19 % of javascript submissions.
-Your memory usage beats 26.29 % of javascript submissions.
+Runtime: 0 ms Beats 100.00%
+Memory: 57.70 MB Beats 6.94%
+
  */
 var reverseList = function (head) {
   let reversedHead = null;
@@ -37,26 +39,53 @@ var reverseList = function (head) {
   return reversedHead;
 };
 
-// Using recursion by someone
-/**
- * The recursive version is slightly trickier and the key is to work backwards. 
- * Assume that the rest of the list had already been reversed, now how do I reverse the front part? 
- * Let's assume the list is: n1 → … → nk-1 → nk → nk+1 → … → nm → Ø
-   Assume from node nk+1 to nm had been reversed and you are at node nk.
-   n1 → … → nk-1 → nk → nk+1 ← … ← nm
-   We want nk+1’s next node to point to nk.
-   So,
-   nk.next.next = nk;
- * @param {*} head 
- */
+/* 
+Itirative II
+
+Runtime: 0 ms Beats 100.00%
+Memory: 56.66 MB Beats 13.59%
+*/
 var reverseList = function (head) {
-  if (!head) return head;
-  if (!head.next) return head;
+  let prevNode = null;
+  let currNode = head;
+  while (currNode != null) {
+    //store the next node
+    const nextNode = currNode.next;
+    //change pointer of curr node to prev node
+    currNode.next = prevNode;
+    //now prev node is curre node
+    prevNode = currNode;
+    //change curr node to previously save next node
+    currNode = nextNode;
+  }
+  return prevNode;
+};
 
-  const curr = reverseList(head.next);
+/* 
+Approach III: recursion
+The recursive version is slightly trickier and the key is to work backwards. 
+Assume that the rest of the list had already been reversed, now how do I reverse the front part? 
+Let's assume the list is: n1 → … → nk-1 → nk → nk+1 → … → nm → Ø
+Assume from node nk+1 to nm had been reversed and you are at node nk.
+n1 → … → nk-1 → nk → nk+1 ← … ← nm
+We want nk+1’s next node to point to nk.
+So,
+nk.next.next = nk;
 
+Time: O(N)
+Space: O(N)
+
+Runtime: 0 ms Beats 100.00%
+Memory: 56.64 MB Beats 13.59%
+*/
+
+var reverseList = function (head) {
+  if (head == null || head.next == null) return head;
+  //reverse list recusively
+  const reversedHead = reverseList(head.next);
+  //reverse head's next pointer to head
   head.next.next = head;
+  //mark head's next to null to avoid cycle
   head.next = null;
-
-  return curr;
+  return reversedHead;
 };

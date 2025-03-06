@@ -1,4 +1,5 @@
 /* 
+21. Merge Two Sorted Lists
 https://leetcode.com/problems/merge-two-sorted-lists
 Type: Easy
 
@@ -30,90 +31,25 @@ Output: [0]
 Time complexity: O(max(M,N))
 Space complexity: O(M+N)
 
-Runtime: 88 ms
-Memory Usage: 40.9 MB
-Your runtime beats 80.86 % of javascript submissions. 
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 56.70 MB Beats 15.49% 
 */
-var mergeTwoLists = function(l1, l2) {
-   let l1 = l1, list2 = l2;
-   let dummyNode = new ListNode(0);
-   let curr = dummyNode;
-   while (l1 != null || list2 != null){
-    if (l1 != null && list2 != null) {
-        if (l1.val < list2.val) {
-            curr.next = new ListNode(l1.val);
-            l1 = l1.next;
-        } else if (l1.val > list2.val){
-            curr.next = new ListNode(list2.val);
-            list2 = list2.next;
-        } else {
-            curr.next = new ListNode(l1.val);
-            l1 = l1.next;
-        }
-    } else if (l1 == null && list2 != null) {
-        curr.next = new ListNode(list2.val);
-        list2 = list2.next;
-    } else if (list2 == null && l1 != null) {
-        curr.next = new ListNode(l1.val);
-        l1 = l1.next;
+var mergeTwoLists = function (list1, list2) {
+  const dummy = new ListNode();
+  let curr = dummy;
+  while (list1 != null && list2 != null) {
+    if (list1.val <= list2.val) {
+      curr.next = list1;
+      list1 = list1.next;
+    } else {
+      curr.next = list2;
+      list2 = list2.next;
     }
     curr = curr.next;
-   }
-   return dummyNode.next;
+  }
+  curr.next = list1 == null ? list2 : list1;
+  return dummy.next;
 };
-
-// Solution reference
-// less and clean code
-/*
-Runtime: 88 ms, faster than 80.86% of JavaScript online submissions for Merge Two Sorted Lists.
-Memory Usage: 40.4 MB, less than 43.99% of JavaScript online submissions for Merge Two Sorted Lists. 
-*/
-var mergeTwoLists = function(l1, l2) {
-    let dummyNode = new ListNode(0);
-    let curr = dummyNode;
-    while (l1 != null && l2 != null){
-        if (l1.val <= l2.val) {
-            curr.next = new ListNode(l1.val);
-            l1 = l1.next;
-        } else {
-            curr.next = new ListNode(l2.val);
-            l2 = l2.next;
-        }
-        curr = curr.next;
-    }
-    // exactly one of l1 and l2 can be non-null at this point, so connect
-    // the non-null list to the end of the merged list.
-    curr.next = l1 == null ? l2: l1;
-    return dummyNode.next;
- };
-
-/**
- * @param {ListNode} l1
- * @param {ListNode} l2
- * @return {ListNode}
- */
-/*
-2nd Try (2-Jan-21)
-Runtime: 84 ms, faster than 92.38% of JavaScript online submissions for Merge Two Sorted Lists.
-Memory Usage: 40.3 MB, less than 55.15% of JavaScript online submissions for Merge Two Sorted Lists.
- */
-var mergeTwoLists = function(l1, l2) {
-    const dummy = new ListNode(0);
-    curr = dummy;
-    while(l1 != null && l2 != null){
-        if (l1.val <= l2.val) {
-            curr.next = l1
-            l1 = l1.next;
-        } else {
-            curr.next = l2;
-            l2 = l2.next;
-        } 
-        curr = curr.next;
-    }
-    curr.next = l1 == null ? l2 : l1;
-    return dummy.next;
-};
-
 /* 
 Recursive solution:
 We can recursively define the result of a merge operation on two lists as the following 
@@ -126,19 +62,18 @@ Namely, the smaller of the two lists' heads plus the result of a merge on the re
 
 Time Complexity: O(m + n)
 Space Complexity: O(m + n)
+
+Runtime: 1 ms Beats 48.68%
+Memory: 58.15 MB Beats 5.20%
 */
-var mergeTwoLists = function(l1, l2) {
-    if (l1 == null){
-        return l2;
-    }
-    if (l2 == null) {
-        return l1;
-    }
-    if (l1.val <= l2.val){
-        l1.next = mergeTwoLists(l1.next, l2);
-        return l1;
-    } else {
-        l2.next = mergeTwoLists(l2.next, l1);
-        return l2;
-    }
-}
+var mergeTwoLists = function (l1, l2) {
+  if (l1 == null) return l2;
+  if (l2 == null) return l1;
+  if (l1.val <= l2.val) {
+    l1.next = mergeTwoLists(l1.next, l2);
+    return l1;
+  } else {
+    l2.next = mergeTwoLists(l2.next, l1);
+    return l2;
+  }
+};

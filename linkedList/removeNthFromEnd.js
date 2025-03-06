@@ -1,4 +1,6 @@
 /* 
+19. Remove Nth Node From End of List
+https://leetcode.com/problems/remove-nth-node-from-end-of-list
 Type: Easy
 
 Given the head of a linked list, remove the nth node from the end of the list and return its head.
@@ -116,26 +118,24 @@ Now, both pointers are exactly separated by n nodes apart. We maintain this cons
 gap by advancing both pointers together until the first pointer arrives past the 
 last node. The second pointer will be pointing at the nth node counting from the last. 
 
-Runtime: 80 ms, faster than 85.60% of JavaScript online submissions for Remove Nth Node From End of List.
-Memory Usage: 40.6 MB, less than 6.62% of JavaScript online submissions for Remove Nth Node From End of List.
+Runtime: 0 ms Beats 100.00%
+Memory: 54.32 MB Beats 7.29%
 */
 var removeNthFromEnd = function (head, n) {
   const dummy = new ListNode(0);
   dummy.next = head;
   let first = dummy;
   let second = dummy;
-  //move the first pointer n steps
+  //move the first pointer n+1 steps
   for (let i = 1; i <= n + 1; i++) {
     first = first.next;
   }
-  console.log(`first: ${first.val}`);
   //now move both pointer until first reached end
   //by then second will reach L-n from begining, which is nth position from end
   while (first != null) {
     first = first.next;
     second = second.next;
   }
-  console.log(`second: ${second.val}`);
   temp = second.next;
   second.next = temp.next;
   temp = null;

@@ -1,4 +1,8 @@
 /* 
+53. Maximum Subarray
+https://leetcode.com/problems/maximum-subarray/
+Type: Medium
+
 Given an integer array nums, find the contiguous subarray (containing at least one number) 
 which has the largest sum and return its sum.
 Follow up: If you have figured out the O(n) solution, try coding another solution 
@@ -14,81 +18,86 @@ Example 2:
 Example 3:
     Input: nums = [0]
     Output: 0
+
+Constraints:
+ - 1 <= nums.length <= 10^5
+ - -10^4 <= nums[i] <= 10^4
+
+Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.    
 */
 /**
  * @param {number[]} nums
  * @return {number}
  */
-var maxSubArray = function(nums) {
-    const N = nums.length;
-    // initialize the 2-D array and fill with zeros
-    const dp = [...Array(N)].map(x => Array(N).fill(0));
-    // console.log(`dp after intialization : ${dp}`)
-    maxSum = nums[0];
-    //set the values at [i][i] to number itself
-    for (let i = 0; i < N; i++) {
-        dp[i][i] = nums[i];
-        if (nums[i] > maxSum) maxSum = nums[i];
-    }
-    // console.log(`dp I : ${dp}`)
-    console.log(dp);
-    // for 
-    for (let i = 0; i < N - 1; i++) {
-        dp[i][i + 1] = nums[i] + nums[i + 1];
-        if (dp[i][i + 1] > maxSum) maxSum = dp[i][i + 1];
-    }
-    // console.log(`dp II: ${dp}`);
-    console.log(dp);
-    for (let k = 3; k <= N; k++) {
-        console.log(`k: ${k}`);
-        for (let i = 0; i <= N - k; i++) {
-            j = i + k - 1;//-1 to convert it zero based index
-            console.log(`i: ${i}, j: ${j}`);
-            dp[i][j] = dp[i][j - 1] + nums[j];
-            if (dp[i][j] > maxSum) maxSum = dp[i][j];
-            console.log(`maxSum: ${maxSum}`);
-        }
-        console.log(dp);
-    }
-    console.log(`maxSum: ${maxSum}`);
-    return maxSum;
-};
-
-// Using Kadane's algorithms
-// Time complexity: O(N)
-// Space: O(1)
 /*
+Approach I: Brute Force
+Time: O(N^2)
+Space: O(1)
+*/
+var maxSubArray = function (nums) {
+  const N = nums.length;
+  let maxSum = nums[0];
+  for (let i = 0; i < N; i++) {
+    let localSum = 0;
+    for (let j = i; j < N; i++) {
+      localSum += nums[j];
+      maxSum = Math.max(maxSum, localSum);
+    }
+  }
+  return maxSum;
+};
+/*
+Approach I: Using Kadane's Algorithm
+Time: O(N)
+Space: O(1)
+
 Runtime: 96 ms, faster than 24.66% of JavaScript online submissions for Maximum Subarray.
 Memory Usage: 38.3 MB, less than 8.43% of JavaScript online submissions for Maximum Subarray.
  */
-var maxSubArray = function(nums) {
-    const N = nums.length;
-    let local_max = nums[0];
-    let global_max = local_max;
-
-    for (let i = 1; i < N; i++) {
-        local_max = Math.max(nums[i], nums[i] + local_max);
-        if (local_max > global_max) global_max = local_max;
-    }
-    return global_max;
-}
-
-//[-2,1,-3,4,-1,2,1,-5,4]
-
-/*
-2nd Try (6-Jan-21)
-Kadane's algorithm
-Time Complexity: O(N)
-Space Complexity: O(1)
-Runtime: 80 ms, faster than 89.47% of JavaScript online submissions for Maximum Subarray.
-Memory Usage: 39.1 MB, less than 60.90% of JavaScript online submissions for Maximum Subarray.
- */
 var maxSubArray = function (nums) {
-    let localMax = nums[0];
-    let gloablMax = localMax;
-    for (let i = 1; i < nums.length; i++) {
-      localMax = Math.max(nums[i], localMax + nums[i]);
-      gloablMax = Math.max(gloablMax, localMax);
-    }
-    return gloablMax;
-  };
+  let localMax = nums[0];
+  let gloablMax = localMax;
+  for (let i = 1; i < nums.length; i++) {
+    localMax = Math.max(nums[i], localMax + nums[i]);
+    gloablMax = Math.max(gloablMax, localMax);
+  }
+  return gloablMax;
+};
+
+/* 
+Approach III: Divide and Conquer
+Time: O(N Log N)
+Space: O(Log N)
+
+Runtime: 21 ms Beats 5.40%
+Memory: 63.47 MB Beats 22.85% 
+*/
+
+var maxSubArray = function (nums) {
+  return findBestSubarray(0, nums.length - 1, nums);
+};
+
+function findBestSubarray(left, right, nums) {
+  //base case
+  if (left > right) return -Infinity;
+  let leftBestSum = 0;
+  let rightBestSum = 0;
+  let mid = left + Math.floor((right - left) / 2);
+  let currSum = 0;
+  // find left max sum from the middle to the beginning
+  for (let i = mid - 1; i >= left; i--) {
+    currSum += nums[i];
+    leftBestSum = Math.max(leftBestSum, currSum);
+  }
+  //reset currSum
+  currSum = 0;
+  // find right max sum from the middle to the end
+  for (let i = mid + 1; i <= right; i++) {
+    currSum += nums[i];
+    rightBestSum = Math.max(rightBestSum, currSum);
+  }
+  const bestCombinedSum = nums[mid] + leftBestSum + rightBestSum;
+  const leftHalf = findBestSubarray(left, mid - 1, nums);
+  const rightHalf = findBestSubarray(mid + 1, right, nums);
+  return Math.max(bestCombinedSum, Math.max(leftHalf, rightHalf));
+}

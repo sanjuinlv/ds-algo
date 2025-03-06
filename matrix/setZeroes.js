@@ -97,10 +97,13 @@ var setZeroes = function (matrix) {
 };
 /* 
 Approach II: Space (Optimized)
+Rather than using additional variables to keep track of rows and columns to be reset, we use the matrix itself as the indicators.
+
 Time: O(M * N)
 Space: O(1)
-Runtime: 4 ms Beats 36.00%
-Memory Usage: 53.22 MB Beats 72.07%
+
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 56.48 MB Beats 27.15%
 */
 var setZeroes = function (matrix) {
   const rows = matrix.length;
@@ -109,7 +112,6 @@ var setZeroes = function (matrix) {
   let firstRow = false;
   //flag to find if there is any zero in first col
   let firstCol = false;
-  //set firts row and column for matching zeros
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
       if (matrix[i][j] == 0) {
@@ -122,23 +124,18 @@ var setZeroes = function (matrix) {
       }
     }
   }
-  //set row and columns to zeros for found cell with 0
+  //set row and columns, expect first, to zeros for found cell with 0
   for (let i = 1; i < rows; i++) {
     for (let j = 1; j < cols; j++) {
-        //if either of 0th row or 0th col of this cell i,j is '0' then set this cell as '0'
       if (matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
     }
   }
   //set first row's columsn to zero
   if (firstRow) {
-    for (let j = 0; j < cols; j++) {
-      matrix[0][j] = 0;
-    }
+    for (let j = 0; j < cols; j++) matrix[0][j] = 0;
   }
   //set first colum's rows to zero
   if (firstCol) {
-    for (let i = 0; i < rows; i++) {
-      matrix[i][0] = 0;
-    }
+    for (let i = 0; i < rows; i++) matrix[i][0] = 0;
   }
 };

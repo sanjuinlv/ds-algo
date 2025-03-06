@@ -1,4 +1,5 @@
 /* 
+75. Sort Colors
 https://leetcode.com/problems/sort-colors/
 Type: Medium
 
@@ -28,21 +29,22 @@ Constraints:
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 /* 
-Approach: Two pass counting sort
+Approach I : Two pass counting sort
 Time: O(N)
 Space: O(N)
-Runtime: 63 ms, faster than 91.31% of JavaScript online submissions for Sort Colors.
-Memory Usage: 41.6 MB, less than 97.23% of JavaScript online submissions for Sort Colors.
+
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 53.72 MB Beats 14.74%
 */
 var sortColors = function (nums) {
   const countMap = new Map();
-  for (let i = 0; i < nums.length; i++) {
-    countMap.set(nums[i], (countMap.get(nums[i]) || 0) + 1);
+  for (let num of nums) {
+    countMap.set(num, (countMap.get(num) || 0) + 1);
   }
-  const colorOrder = [0, 1, 2];
+  const colors = [0, 1, 2];
   let k = 0;
-  for (let color of colorOrder) {
-    const colorCount = countMap.get(color);
+  for (let color of colors) {
+    let colorCount = countMap.get(color);
     while (colorCount > 0) {
       nums[k++] = color;
       colorCount--;
@@ -99,8 +101,8 @@ Algorithm:
     - Do not increment mid, because the element swapped from the end may still need to be processed.
 3. Continue this process until mid exceeds high.
 
-Runtime: 53 ms, faster than 56.96% of JavaScript online submissions for Sort Colors.
-Memory Usage: 49.27 MB, less than 28.01% of JavaScript online submissions for Sort Colors.
+Runtime: 1 ms Beats 27.92%
+Memory Usage: 53.62 MB Beats 16.78%
 */
 var sortColors = function (nums) {
   //pointer for 0's (Red)
@@ -109,7 +111,7 @@ var sortColors = function (nums) {
   let white = 0;
   //pointer for 2's (Blue)
   let blue = nums.length - 1;
-  const swap = (i, j, arr) => {
+  const swap = (i, j, arr) => { 
     [arr[i], arr[j]] = [arr[j], arr[i]];
   };
   //iterate until white pointer is less than blue pointer

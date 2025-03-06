@@ -35,21 +35,37 @@ Explanation: There is no cycle in the linked list.
  * @return {boolean}
  */
 /* 
-Approach: Using two pointer
+Approach I: Using two pointer (Flyod's algorithm)
 Time Complexity: O(N)
 Space Complexity: O(1)
-Runtime: 92 ms, faster than 31.58% of JavaScript online submissions for Linked List Cycle.
-Memory Usage: 40.8 MB, less than 80.45 %% of JavaScript online submissions for Linked List Cycle.
+
+Runtime: 56 ms Beats 82.24%
+Memory Usage: 58.26 MB Beats 14.31%
 */
 var hasCycle = function (head) {
   let slowPointer = head;
   let fastPointer = head;
-  while (fastPointer !== null && fastPointer.next !== null) {
+  //move slow pointer one step and fast pointer 2 steps
+  while (fastPointer != null && fastPointer.next != null) {
     slowPointer = slowPointer.next;
     fastPointer = fastPointer.next.next;
-    if (slowPointer === fastPointer) {
-      return true;
-    }
+    if (slowPointer === fastPointer) return true;
+  }
+  return false;
+};
+
+/* 
+Approach II:: Using Hashtable
+Runtime: 48 ms Beats 96.10%
+Memory; 59.36 MB Beats 6.30%
+*/
+var hasCycle = function (head) {
+  const seen = new Set();
+  let curr = head;
+  while (curr !== null) {
+    if (seen.has(curr)) return true;
+    seen.add(curr);
+    curr = curr.next;
   }
   return false;
 };
