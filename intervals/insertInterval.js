@@ -3,10 +3,7 @@
 https://leetcode.com/problems/insert-interval/
 Type: Medium
 
-You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] 
-represent the start and the end of the ith interval and intervals is sorted in ascending
- order by starti. You are also given an interval newInterval = [start, end] that represents
-  the start and end of another interval.
+You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
 Insert newInterval into intervals such that intervals is still sorted in ascending order
 by starti and intervals still does not have any overlapping intervals (merge overlapping
 intervals if necessary).
@@ -41,27 +38,28 @@ Approach I: Greedy
 Time: O(N)
 Space: O(1), no additional space, excluding result array
 
-Runtime: 5 ms Beats 53.15%
-Memory: 53.58 MB Beats 83.21%
+Runtime: 2 ms Beats 88.32%
+Memory: 56.82 MB Beats 40.60%
 */
 var insert = function (intervals, newInterval) {
   const N = intervals.length;
-  const result = [];
+  let result = [];
   let i = 0;
-  //non-overlapping: add to the result array
+  //non-overlapping intervals: end of curr interval is less than start of new interval
+  //add to the result array
   while (i < N && intervals[i][1] < newInterval[0]) result.push(intervals[i++]);
-  //merge overlapping inntervals
+  //overlapping intervals: merge until we have start of the curr interval <= new interval's end
   while (i < N && intervals[i][0] <= newInterval[1]) {
-    //take min of the start
     newInterval[0] = Math.min(intervals[i][0], newInterval[0]);
-    //take max of the end
     newInterval[1] = Math.max(intervals[i][1], newInterval[1]);
     i++;
   }
-  //add the merged/updated new interval to the result array
+  //insert the new interval
   result.push(newInterval);
-  //insert rest of the intervals
-  while (i < N) result.push(intervals[i++]);
+  //insert rest of the intervals, if any left
+  while (i < N) {
+    result.push(intervals[i++]);
+  }
   return result;
 };
 

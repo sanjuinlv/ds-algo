@@ -1,6 +1,6 @@
 /*
 435. Non-overlapping Intervals
-https://leetcode.com/problems/non-overlapping-intervals/description/
+https://leetcode.com/problems/non-overlapping-intervals
 Type: Medium
 
 Given an array of intervals intervals where intervals[i] = [starti, endi], 
@@ -32,7 +32,10 @@ Constraint:
  * @return {number}
  */
 /* 
-Approach II
+Approach I: Greedy
+This is opposite of the N meeting in one room. 
+Count the non-overlapping intervals and return N - nonOverlappingCount
+
 Time: O(NlogN)
 Space: O(logN)
 
@@ -56,19 +59,25 @@ var eraseOverlapIntervals = function (intervals) {
 };
 
 //above code starting from 0th index
+/* 
+RunTime: 72 ms Beats 81.27% 
+Memory: 86.06 MB Beats 34.16%
+*/
 var eraseOverlapIntervals = function (intervals) {
   const N = intervals.length;
+  //sort intervals by end time (ascending order)
   intervals.sort((a, b) => a[1] - b[1]);
-  let count = 0;
   let lastEndTime = -Infinity;
-  //sort the intervals by end time
-  for (i = 0; i < N; i++) {
+  let count = 0;
+  for (let i = 0; i < N; i++) {
     const interval = intervals[i];
+    //check if there is no overlap, i.e, curr interval start is >= last end interval
     if (interval[0] >= lastEndTime) {
       count++;
       lastEndTime = interval[1];
     }
   }
+  //return overlapping intervals, i.e, N-nonOverlapping
   return N - count;
 };
 

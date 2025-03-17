@@ -35,7 +35,7 @@ Approach I: Recursion
 var canJump = function (nums) {
   const N = nums.length;
   const jump = (i) => {
-    if (i == N - 1) return true;
+    if (i >= N - 1) return true;
     const nuOfJumps = Math.min(nums[i], N - 1);
     //we can not proceed further
     if (nuOfJumps == 0) return false;
@@ -63,7 +63,7 @@ var canJump = function (nums) {
   const N = nums.length;
   const memo = new Array(N).fill(-1);
   const jump = (i) => {
-    if (i == N - 1) return true;
+    if (i >= N - 1) return true;
     if (memo[i] != -1) return memo[i];
     const nuOfJumps = Math.min(nums[i], N - 1);
     //we can not proceed further

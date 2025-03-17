@@ -39,7 +39,7 @@ class Solution {
       // If sum is 0 then there is 1 solution
       // (do not include any coin)
       if (sum == 0) return 1;
-      // 0 ways in if sum is <0 or no elements in array
+      // 0 ways  if sum is < 0 or no elements in array
       if (sum < 0 || i == 0) return 0;
       //we can make two choices: take the coin or do not take
       //if we take then we need to check remaining sum, i.e., sum-coins[i-1]

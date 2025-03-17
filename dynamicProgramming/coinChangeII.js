@@ -40,22 +40,83 @@ Constraints:
  * @param {number[]} coins
  * @return {number}
  */
-//this will count the duplicate paths so final number will be more.
-//E.g., for amount 5 and coins [1,2,5] both 1+1+1+2 and 1+1+2+1 will be counted
+//recursive
 var change = function (amount, coins) {
-  let noOfCombination = 0;
-  const dp = (remain) => {
-    if (remain < 0) return;
-    if (remain === 0) {
-      noOfCombination++;
-      return;
+  return count(coins.length, amount, coins);
+};
+
+function count(i, sum, coins) {
+  //base cases
+  //if sum is 0 then there are 1 way
+  if (sum === 0) return 1;
+  //0 ways if sum is < 0 or no element in array
+  if (sum < 0 || i == 0) return 0;
+  //take this coin
+  const taken = count(i, sum - coins[i - 1], coins);
+  //do not take this coin
+  const notTaken = count(i - 1, sum, coins);
+  return taken + notTaken;
+}
+
+/* 
+Approach II: Recursion + Memo
+Time: O(n * amount)
+Space: O(n * amount)
+
+Runtime: 39 ms Beats 50.10%
+Memory: 82.62 MB Beats 19.16%
+*/
+var change = function (amount, coins) {
+  const N = coins.length;
+  const memo = Array.from({ length: N + 1 }, () =>
+    new Array(amount + 1).fill(null)
+  );
+  return count(coins.length, amount, coins, memo);
+};
+
+function count(i, sum, coins, memo) {
+  //base cases
+  //if sum is 0 then there are 1 way
+  if (sum === 0) return 1;
+  //0 ways if sum is < 0 or no element in array
+  if (sum < 0 || i == 0) return 0;
+  if (memo[i][sum] != null) return memo[i][sum];
+  //take this coin
+  const taken = count(i, sum - coins[i - 1], coins, memo);
+  //do not take this coin
+  const notTaken = count(i - 1, sum, coins, memo);
+  return (memo[i][sum] = taken + notTaken);
+}
+
+/*
+Approach III: Bottom Up DP
+Time: O(n * amount)
+Space: O(n * amount)
+
+Runtime: 57 ms Beats 39.32%
+Memory: 81.16 MB Beats 23.55%
+*/
+
+var change = function (amount, coins) {
+  const N = coins.length;
+  const dp = Array.from({ length: N + 1 }, () => new Array(amount + 1).fill(0));
+  //base case
+  // for all sum=0 there is at least one way
+  for (let i = 0; i <= N; i++) dp[i][0] = 1;
+  //for no element there 0 ways
+  for (let j = 1; j <= amount; j++) dp[0][j] = 0;
+
+  for (let i = 1; i <= N; i++) {
+    for (let j = 1; j <= sum; j++) {
+      if (coins[i - 1] <= j) {
+        //taken + non taken
+        dp[i][j] = dp[i][j - coins[i - 1]] + dp[i - 1][j];
+      } else {
+        dp[i][j] = dp[i - 1][j]; //non taken
+      }
     }
-    for (let coin of coins) {
-      dp(remain - coin);
-    }
-  };
-  dp(amount);
-  return noOfCombination;
+  }
+  return dp[N][amount];
 };
 
 /*
