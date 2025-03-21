@@ -44,7 +44,7 @@ var dailyTemperatures = function (temperatures) {
     if (stack.length && top(stack)[0] > temperatures[i]) {
       result[i] = top(stack)[1] - i;
     } else {
-      //
+      //until we have lower temperature in stack from curr temp, pop it
       while (stack.length && top(stack)[0] <= temperatures[i]) stack.pop();
       if (stack.length) result[i] = top(stack)[1] - i;
     }
