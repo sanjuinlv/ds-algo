@@ -1,5 +1,7 @@
 /* 
+69. Sqrt(x)
 https://leetcode.com/problems/sqrtx/
+Type: Easy
 
 Given a non-negative integer x, compute and return the square root of x.
 Since the return type is an integer, the decimal digits are truncated, and only
@@ -42,7 +44,7 @@ var mySqrt = function (x) {
     mid = left + parseInt((right - left) / 2);
     const sqr = mid * mid;
     if (sqr == x) return mid;
-    if (sqr < x) left = mid + 1;
+    else if (sqr < x) left = mid + 1;
     else right = mid - 1;
   }
   return right;

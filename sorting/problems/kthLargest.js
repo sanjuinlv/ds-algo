@@ -1,5 +1,6 @@
 /* 
-https://leetcode.com/problems/kth-largest-element-in-an-array/description/
+215. Kth Largest Element in an Array
+https://leetcode.com/problems/kth-largest-element-in-an-array/
 Category - Medium
 
 Find the kth largest element in an unsorted array. Note that it is the kth largest element
@@ -13,8 +14,9 @@ Example 2:
 Input: [3,2,3,1,2,4,5,5,6] and k = 4
 Output: 4
 
-Note: 
-You may assume k is always valid, 1 ≤ k ≤ array's length.
+onstraints:
+ - 1 <= k <= nums.length <= 10^5
+ - -10^4 <= nums[i] <= 10^4
 */
 /**
  * @param {number[]} nums
@@ -29,29 +31,84 @@ That would be an algorithm of O(NlogN) time complexity and O(1) space complexity
 
 /* 
 Approach I: Heap
+Maintain a min Heap of size K and return the front element which will be kth largest
+
 Time: O(N logK)
 Space: O(LogK)
 
-Runtime: 133 ms, faster than 31.96% of JavaScript online submissions for Kth Largest Element in an Array.
-Memory Usage: 46.8 MB, less than 13.41% of JavaScript online submissions for Kth Largest Element in an Array.
+Runtime: 57 ms Beats 67.66%
+Memory Usage: 69.96 MB Beats 33.76%
 */
 var findKthLargest = function (nums, k) {
+  //Use min heap to get the kth largest
   const minPQ = new MinPriorityQueue();
-  for (num of nums) {
+  for (const num of nums) {
+    //PQ size is less than k then add num to PQ
     if (minPQ.size() < k) {
       minPQ.enqueue(num);
     } else {
-      if (minPQ.front().element < num) {
+      //front of the Q is less than curr num
+      if (minPQ.front() < num) {
+        //remove the front entry
         minPQ.dequeue();
+        //add new value 'num'
         minPQ.enqueue(num);
       }
     }
   }
-  return minPQ.front().element;
+  //return front entry which is kth largest
+  return minPQ.front();
 };
 
-/*
+/* 
 Approach II: Quick Select
+Runtime: 19 ms Beats 87.45%
+Memory; 64.36 MB Beats 71.20%
+*/
+var findKthLargest = function (nums, k) {
+  const N = nums.length;
+  const indx = quickSelect(0, N - 1, N - k, nums);
+  return nums[indx];
+};
+
+function quickSelect(lo, hi, kthSmallest, nums) {
+  // if (lo > hi) return -1;
+  const pivot = partition(lo, hi, nums);
+  if (pivot == kthSmallest) return pivot;
+  //go right
+  if (pivot < kthSmallest) return quickSelect(pivot + 1, hi, kthSmallest, nums);
+  //go left
+  else return quickSelect(lo, pivot - 1, kthSmallest, nums);
+}
+
+function partition(lo, hi, nums) {
+  //choose random index as pivot index
+  const pivotIndex = lo + Math.floor(Math.random() * (hi - lo + 1));
+  //swap the random pivot point with lo point
+  swap(lo, pivotIndex, nums);
+  const pivot = nums[lo];
+  let i = lo + 1;
+  let j = hi;
+  while (true) {
+    //move to right until we find a element greater than pivot
+    while (i <= j && nums[i] < pivot) i++;
+    //move to left until we find a element smaller than pivot
+    while (i <= j && nums[j] > pivot) j--;
+    //swap i & j if i has not crossed j
+    if (i >= j) break;
+    swap(i++, j--, nums);
+  }
+  swap(lo, j, nums);
+  return j;
+}
+
+function swap(i, j, A) {
+  [A[i], A[j]] = [A[j], A[i]];
+}
+
+
+/*
+Approach III: Quick Select - Iterative
 
 Time complexity : O(N) in the average case, (N^2) in the worst case.
 Space complexity : O(1).
@@ -89,7 +146,7 @@ var findKthLargest = function (nums, k) {
     let lo = 0;
     let hi = N - 1;
     if (lo == hi) return A[lo];
-    while (lo <= lo) {
+    while (lo <= hi) {
       let p = partition(A, lo, hi);
       if (p < k) lo = p + 1; 
       else if (p > k) hi = p - 1;
@@ -99,54 +156,3 @@ var findKthLargest = function (nums, k) {
   return select(nums, k);
 };
 
-/*
-Approach II: Quick Select recursive
-
-Time complexity : O(N) in the average case, (N^2) in the worst case.
-Space complexity : O(1).
-
-Runtime: 109 ms, faster than 48.45% of JavaScript online submissions for Kth Largest Element in an Array.
-Memory Usage: 43.8 MB, less than 58.22% of JavaScript online submissions for Kth Largest Element in an Array.
-*/
-var findKthLargest = function (nums, k) {
-  const SWAP = (a, i, j) => {
-    [a[i], a[j]] = [a[j], a[i]];
-  };
-  const partition = (A, lo, hi) => {
-    let i = lo;
-    let j = hi + 1;
-    const pivot = A[lo];
-    while (i < j) {
-      //find an element greater than pivot towards right
-      while (A[++i] < pivot) if (i === hi) break;
-      //find an element less than pivot towards left
-      while (A[--j] > pivot) if (j === lo) break;
-      //if pointers crossed then stop
-      if (i >= j) break;
-      //else swap the element
-      SWAP(A, i, j);
-    }
-    //finally swap pivot position with j
-    SWAP(A, lo, j);
-    return j;
-  };
-
-  const N = nums.length;
-  //kth largest element is the same as N - kth smallest element, hence one could implement kth smallest
-  // algorithm for this problem
-  const kSmallest = N - k;
-  if (k > N) return;
-  const quickSelect = (A, lo, hi) => {
-    if (lo > hi) return;
-    // only one element
-    if (lo == hi) return A[lo];
-    const p = partition(A, lo, hi);
-    // the pivot is on (N - k)th smallest position
-    if (p === kSmallest) return A[p];
-    // go to the right side
-    else if (p < kSmallest) return quickSelect(A, p + 1, hi);
-    // go to the left side
-    else return quickSelect(A, lo, p - 1);
-  };
-  return quickSelect(nums, 0, N - 1);
-};

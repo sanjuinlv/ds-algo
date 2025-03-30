@@ -1,4 +1,8 @@
 /*
+706. Design HashMap
+https://leetcode.com/problems/design-hashmap/description/
+Type: Easy
+
 Design a HashMap without using any built-in hash table libraries.
 
 Implement the MyHashMap class:
@@ -80,7 +84,7 @@ var MyHashMap = function () {
       }
       prev.next = new Node(key, value);
     } else {
-      //no node exists. add this entry
+      //no node exists. create dummy node for head
       const node = new Node(0, -1); //dummy node
       node.next = new Node(key, value);
       this.bucket[hash] = node;

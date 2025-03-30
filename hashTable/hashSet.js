@@ -1,4 +1,8 @@
 /*
+705. Design HashSet
+https://leetcode.com/problems/design-hashset/description/
+Type: Easy
+
 Design a HashSet without using any built-in hash table libraries.
 Implement MyHashSet class:
 
@@ -24,10 +28,10 @@ var MyHashSet = function () {
   };
 };
 
-//handling collision with capacity limit
 /*
-Using Linked List as Bucket 
+Approach : Using Linked list
 Note: Using the bucket size as prime number is better, e.g. 769
+
 Time Complexity: O(N/K), where N is number of all possible values and K is bucket size
 Space Complexity: O(K + M), where K is number of pre-defined bucket and M is number of unique values inserted in to HashSet.
 
@@ -57,10 +61,10 @@ var MyHashSet = function () {
       }
       prev.next = new Node(key);
     } else {
-      //no entry found
+      //create dummy node for head
       const node = new Node(0);
-      this.data[hash] = node;
       node.next = new Node(key);
+      this.data[hash] = node;
     }
   };
 

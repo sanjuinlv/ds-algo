@@ -1,91 +1,104 @@
+/* 
+36. Valid Sudoku
+https://leetcode.com/problems/valid-sudoku/
+Type: Medium
+
+Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+
+Each row must contain the digits 1-9 without repetition.
+Each column must contain the digits 1-9 without repetition.
+Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+Note:
+
+A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+Only the filled cells need to be validated according to the mentioned rules.
+ 
+
+Example 1:
+
+Input: board = 
+[["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+Output: true
+Example 2:
+
+Input: board = 
+[["8","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+Output: false
+Explanation: Same as Example 1, except with the 5 in the top left corner being modified to 8. Since there are two 8's in the top left 3x3 sub-box, it is invalid.
+ 
+
+Constraints:
+ - board.length == 9
+ - board[i].length == 9
+ - board[i][j] is a digit 1-9 or '.'.
+*/
 /**
  * @param {character[][]} board
  * @return {boolean}
  */
-// Approach 1: using hash table 
 /* 
-Runtime: 88 ms, faster than 96.96% of JavaScript online submissions for Valid Sudoku.
-Memory Usage: 41.6 MB, less than 71.99% of JavaScript online submissions for Valid Sudoku.
+Approach 1: Using Hashtable
+Time: O(N^2) - N*N cells
+Space: O(N^2) - In worst case if board is full we need to store all seens numbers 
+
+Runtime: 2 ms Beats 96.05% 
+Memory: 58.23 MB Beats 28.58%
 */
-var isValidSudoku = function(board) {
-    let visited = new Set();
-    //validate all the 3 X 3 grids
-    let gridSize = 3;
-    for (let row = 0; row < board.length; row += gridSize){
-        for (let column = 0; column < board[0].length; column += gridSize){
-            visited.clear();
-            for (let i = row; i < row + gridSize; i++){            
-                for (let j = column; j < column + gridSize; j++){
-                    if (board[i][j] == ".") continue;
-                    if (visited.has(board[i][j])) return false;
-                    visited.add(board[i][j]);
-                }
-            }    
-        }
+var isValidSudoku = function (board) {
+  const rows = new Array(9);
+  const cols = new Array(9);
+  const boxes = new Array(9);
+  for (let i = 0; i < 9; i++) {
+    rows[i] = new Set();
+    cols[i] = new Set();
+    boxes[i] = new Set();
+  }
+  const m = board.length;
+  const n = board[0].length;
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      const value = board[i][j];
+      if (value != ".") {
+        if (rows[i].has(value)) return false;
+        if (cols[j].has(value)) return false;
+        const boxIndex = parseInt(i / 3) * 3 + parseInt(j / 3);
+        if (boxes[boxIndex].has(value)) return false;
+        rows[i].add(value);
+        cols[j].add(value);
+        boxes[boxIndex].add(value);
+      }
     }
-    console.log(`3 X 3 matrix are valid`);
-    //validate the rows 
-    for (let i = 0; i < board.length; i++){
-        visited.clear();
-        for (let j = 0; j < board[0].length; j++){
-            if (board[i][j] == ".") continue;
-            if (visited.has(board[i][j])) return false;
-            visited.add(board[i][j]);
-        }
-    }
-    console.log(`rows are valid`);
-    //validate the columns  
-    for (let i = 0; i < board[0].length; i++){
-        visited.clear();
-        for (let j = 0; j < board.length; j++){
-            if (board[j][i] == ".") continue;
-            if (visited.has(board[j][i])) return false;
-            visited.add(board[j][i]);
-        }
-    }
-    return true;    
+  }
+  return true;
 };
 
-// Using solution reference
 /* 
-Runtime: 88 ms, faster than 96.96% of JavaScript online submissions for Valid Sudoku.
-Memory Usage: 42.9 MB, less than 42.06% of JavaScript online submissions for Valid Sudoku.
+Approach II: Array Of Fixed length
 */
-var isValidSudoku = function(board) {
-    let rows = [];
-    let colums = [];
-    let boxes = [];
-    for (let i = 0; i < 9; i++){
-        rows[i] = new Map();
-        colums[i] = new Map();
-        boxes[i] = new Map();
-    }
-    for (let i = 0 ; i < 9; i++){
-        for (let j = 0; j < 9; j++){
-            if (board[i][j] != '.'){
-                let value = board[i][j];
-                boxIndex = parseInt((i / 3)) * 3 + parseInt(j / 3);
-                rows[i].set(value, (rows[i].get(value)|| 0) + 1);
-                colums[j].set(value, (colums[j].get(value)|| 0) + 1);
-                boxes[boxIndex].set(value, (boxes[boxIndex].get(value)|| 0) + 1);
-                if (rows[i].get(value) > 1 || colums[j].get(value) > 1
-                    || boxes[boxIndex].get(value) > 1){
-                    return false;
-                }
-            }
-        }
-    }
-    return true;
-}
 
-[["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+/* 
+Approach III: Bit masking
+*/
 
-[["8","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
-
-
+/* 
 
 boxIndex = (row / 3) * 3 + col /3
-
 row = 2, col = 4
 (2 / 3 ) * 3 + 4/3
 0 * 3 + 1
@@ -96,3 +109,4 @@ row = 2, col = 1
 (2/3)*3 + 1/3
 0 *3 + 0
 = 0 
+*/

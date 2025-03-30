@@ -1,0 +1,22 @@
+# ********** Quick Sort ***************
+- Quicksort is in-place sorting 
+- It is not stable sort
+- Java sort for primitive types
+- C qsort, Unix, Pyhton, Chrome JavaScript
+- Compare: Worst Case: 1/2*N^2, Avg Case: N*LogN
+- Time: O(N*LogN)
+- Space: O(LogN), no aux array but depth of recursion
+  # Quick sort basic plan:
+   - Shuffle the array
+   - Partition so that for some j
+    - entry a[j] is in place
+    - no large entry to the left of j
+    - no smaller entry to the right of j
+  - Sort each piece recursively
+
+# *************** Merge Sort **************
+- Stable sort
+- Java sort for objects.
+- C++ stable sort, Firefox JavaScript
+- Time: O(NlogN)
+- Space: O(N) for auxilary array

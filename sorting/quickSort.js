@@ -96,3 +96,25 @@ class QuickSort {
     [a[i], a[j]] = [a[j], a[i]];
   }
 }
+
+//easier to understand partition function
+function partition(lo, hi, arr) {
+  //find random pivot point
+  const pivotIndex = lo + Math.floor(Math.random() * (hi - lo + 1));
+  swap(arr, lo, pivotIndex);
+  const pivot = arr[lo];
+  let i = lo + 1;
+  let j = hi;
+  while (true) {
+    // moved towards right until we find an item greater than pivot
+    while (i <= j && freqMap.get(arr[i]) < pivot) i++;
+    // moved towards left until we find an item less than pivot
+    while (i <= j && freqMap.get(arr[j]) > pivot) j--;    
+    if (i > j) break;    
+    swap(arr, i, j);
+    i++;
+    j--;
+  }  
+  swap(arr, lo, j);
+  return j;
+}

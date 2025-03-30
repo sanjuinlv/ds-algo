@@ -1,4 +1,5 @@
 /*
+973. K Closest Points to Origin
 https://leetcode.com/problems/k-closest-points-to-origin/
 Type: Medium
 
@@ -133,8 +134,58 @@ var kClosest = function (points, k) {
   return maxHeap.toArray();
 };
 
+/*
+Approach III: Quick Select (Recursive) 
+Runtime: 103 ms Beats 24.95%
+Memory: 72.30 MB Beats 35.74%
+*/
+var kClosest = function (points, k) {
+  quickSelect(0, points.length - 1, k, points);
+  console.log(points);
+  return points.slice(0, k);
+};
+
+function quickSelect(lo, hi, k, A) {
+  if (lo >= hi) return;
+  const pivot = partition(lo, hi, A);
+  if (pivot === k) return;
+  if (pivot < k) quickSelect(pivot + 1, hi, k, A);
+  else quickSelect(lo, pivot - 1, k, A);
+}
+
+function partition(lo, hi, A) {
+  console.log(`lo: ${lo}, hi: ${hi}`, A)
+  //find random pivot
+  const pivotIndex = lo + Math.floor(Math.random() * (hi - lo + 1));
+  //swap lo with random
+  swap(lo, pivotIndex, A);
+  const pivot = sqrt(A[lo]);
+  let i = lo + 1;
+  let j = hi;
+  while (true) {
+    //move toward right until we find element greater than pivot
+    while (i <= j && sqrt(A[i]) < pivot) i++;
+    //move toward left until we find element smaller than pivot
+    while (i <= j && sqrt(A[j]) > pivot) j--;
+    //if i and j have not crossed then swap them
+    if (i >= j) break;
+    swap(i++, j--, A);
+  }
+  //swap lo with j
+  swap(lo, j, A);
+  return j;
+}
+
+function sqrt(a) {
+  return Math.sqrt(a[0] * a[0] + a[1] * a[1]);
+}
+
+function swap(i, j, A) {
+  [A[i], A[j]] = [A[j], A[i]];
+}
+
 /* 
-Approach III: Using Quick Select
+Approach III: Using Quick Select (Iterative)
 
 Time: O(N) Similar to the binary search solution, the QuickSelect solution
 has a worst-case time complexity of O(N^2) if the worst pivot is chosen each time. 

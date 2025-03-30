@@ -1,4 +1,5 @@
 /* 
+69. Sqrt(x)
 https://leetcode.com/problems/sqrtx/
 Type: Easy
 
@@ -50,3 +51,40 @@ var mySqrt = function (x) {
   }
   return right;
 };
+
+/* 
+If we are asked to find upto a given precision, e.g., upto 8 decimal positio
+*/
+/**
+ * @param {number} x
+ * @param {number} precision - Number of decimal places (default: 0 for integer part only)
+ * @return {number}
+ */
+function mySqrt(x, precision = 0) {
+  if (x === 0) return 0;
+  // For decimal precision (follow-up)
+  let left = 0;
+  let right = x;
+  // Binary search with precision
+  for (let i = 0; i < 100; i++) { // 100 iterations should be enough for convergence
+      const mid = (left + right) / 2;
+      const square = mid * mid;
+      //Number.EPSILON: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/EPSILON
+      if (Math.abs(square - x) < Number.EPSILON) {
+          return mid;
+      } else if (square > x) {
+          right = mid;
+      } else {
+          left = mid;
+      }
+  }
+  // Round to specified precision
+  const multiplier = Math.pow(10, precision);
+  return Math.round((left + right) / 2 * multiplier) / multiplier;
+}
+
+// Test cases
+console.log(mySqrt(4, 0));      // 2 (integer part only)
+console.log(mySqrt(8, 0));      // 2 (integer part only)
+console.log(mySqrt(2, 8));      // 1.41421356 (8 decimal places)
+console.log(mySqrt(10, 8));     // 3.16227766 (8 decimal places)}

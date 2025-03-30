@@ -47,9 +47,9 @@ class Solution {
   // railway station such that no train waits.
   findPlatform(arr, dep) {
     let N = arr.length;
-    //sort by the arival time
+    //sort the arival time
     arr.sort((a, b) => a - b);
-    //sort by the arival time
+    //sort the departure time
     dep.sort((a, b) => a - b);
     //we start with first train arrival so we need one platform
     let platformNeeded = 1;

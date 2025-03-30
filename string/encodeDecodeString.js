@@ -94,6 +94,49 @@ var decode = function (s) {
   return s.split(delim);
 };
 
+/* 
+Approach II; Escaping
+Time: O(N)
+Space: O(N)
+
+Runtime: 77 ms Beats 19.52% 
+Memory: 62.82 MB Beats 8.71%
+*/
+var encode = function (strs) {
+  let encodedString = "";
+  for (let str of strs) {
+    //if "/" character found in string then escape it and add "/:" as delim
+    encodedString += str.replaceAll("/", "//").concat("/:");
+  }
+  return encodedString;
+};
+
+var decode = function (s) {
+  let N = s.length;
+  let decodedString = [];
+  let currStr = "";
+  let i = 0;
+  while (i < N) {
+    //delim found, add string to the array
+    if (i + 1 < N && s[i] == "/" && s[i + 1] == ":") {
+      //add the current word to the list of decodedString
+      decodedString.push(currStr);
+      //clear currStr
+      currStr = "";
+      //move index by 2 position
+      i += 2;
+    } else if (i + 1 < N && s[i] == "/" && s[i + 1] == "/") {
+      //add single "/" to current string
+      currStr += s[i];
+      //move pointer by 2 position
+      i += 2;
+    } else {
+      currStr += s[i++];
+    }
+  }
+  return decodedString;
+};
+
 /**
  * Your functions will be called as such:
  * decode(encode(strs));

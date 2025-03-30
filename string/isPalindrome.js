@@ -17,11 +17,13 @@ Output: false
  * @return {boolean}
  */
 /* 
+Approach I : Using two pointers
+
 Time complexity: O(N)
 Space complexity: O(1)
+
 Runtime: 96 ms
 Memory Usage: 43.2 MB
-Your runtime beats 60.11 % of javascript submissions.
 */
 
 var isPalindrome = function (s) {
@@ -29,6 +31,7 @@ var isPalindrome = function (s) {
   let leftIndex = 0;
   rightIndex = N - 1;
   let isPalindrome = true;
+  //returns true if the char is between a-z or 0-9
   const isAlphanumeric = (char) => {
     return (
       ("a" <= char && char <= "z") ||

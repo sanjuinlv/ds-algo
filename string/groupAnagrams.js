@@ -1,6 +1,6 @@
 /* 
 49. Group Anagrams
-https://leetcode.com/problems/group-anagrams/description/
+https://leetcode.com/problems/group-anagrams
 Type - Medium
 
 Given an array of strings strs, group the anagrams together. You can return the answer in any order.
@@ -50,8 +50,9 @@ var groupAnagrams = function (strs) {
 Approach II : Categorized by Count
 Time: O(N*K), where N is input array size and K is longest word length
 Space: O(N*K)
-Runtime: 115 ms Beats 60.57%
-Memory Usage: 64.66 MB Beats 11.87%
+
+Runtime: 36 ms Beats 51.85%
+Memory Usage: 68.45 MB Beats 20.69%
 */
 var groupAnagrams = function (strs) {
   if (strs.length == 0) return [];
@@ -67,5 +68,5 @@ var groupAnagrams = function (strs) {
     if (!result[key]) result[key] = [];
     result[key].push(s);
   }
-  return Object.values();
+  return Object.values(result);
 };
