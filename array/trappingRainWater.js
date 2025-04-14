@@ -69,13 +69,13 @@ var trap = function (height) {
 Approach I: Dynamic programming 
 Time: O(N)
 Space: O(N)
-Runtime: 79 ms, faster than 71.50% of JavaScript online submissions for Trapping Rain Water.
-Memory Usage: 44.8 MB, less than 35.26% of JavaScript online submissions for Trapping Rain Water.
+Runtime: 11 ms Beats 18.48%
+Memory Usage: 59.43 MB Beats 16.89%
  */
 var trap = function (height) {
   const N = height.length;
-  const leftMax = new Array(N);
-  const rightMax = new Array(N);
+  const leftMax = new Array(N).fill(0);
+  const rightMax = new Array(N).fill(0);
 
   //1. calculate the max height to the left of an elevation 
   leftMax[0] = height[0];
@@ -97,7 +97,31 @@ var trap = function (height) {
 };
 
 /*
-Approach I: Two pointer approach
+Approach II: Using single array for max
+
+Runtime: 7 ms Beats 28.17%
+Memory: 56.50 MB Beats 28.22%
+ */
+var trap = function (height) {
+  const N = height.length;
+  const rightMax = new Array(N).fill(0);
+  //2. Suffix max: calculate the max height to the right of an elevation
+  rightMax[N - 1] = height[N - 1];
+  for (let i = N - 2; i >= 0; i--) {
+    rightMax[i] = Math.max(height[i], rightMax[i + 1]);
+  }
+  //3. calculate the total trapped water
+  let totalTrappedWater = 0;
+  let leftMax = -Infinity;
+  for (let i = 0; i < N; i++) {
+    leftMax = Math.max(leftMax, height[i]);
+    totalTrappedWater += Math.min(leftMax, rightMax[i]) - height[i];
+  }
+  return totalTrappedWater;
+};
+
+/*
+Approach III: Two pointer approach
 Time: O(N)
 Space: O(1)
 Runtime: 88 ms, faster than 57.67% of JavaScript online submissions for Trapping Rain Water.

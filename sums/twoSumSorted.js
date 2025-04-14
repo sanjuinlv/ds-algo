@@ -35,7 +35,8 @@ Explanation: The sum of -1 and 0 is -1. Therefore index1 = 1, index2 = 2. We ret
  * @return {number[]}
  */
 
-/* 
+/*
+Approach I: Using two pointers
 Time: O(n). The input array is traversed at most once. Thus the time complexity is O(n).
 Space: O(1). We only use additional space to store two indices and the sum, so the space complexity is O(1).
 
@@ -55,3 +56,19 @@ var twoSum = function (numbers, target) {
   return [-1, -1];
 };
 
+/* 
+Follow Up:
+What if the problem constraints were different and we needed to consider integer overflow when adding numbers[low] and numbers[high]? In that case, to prevent an overflow error, we could cast our numbers from int data type to long data type before adding them together, e.g.: long sum = static_cast<long>(numbers[low]) + numbers[high] for C++. Casting ensures that we will not get the overflow error since the signed long data type supports numbers up to 2^63 - 1. Alternatively, if we cannot use long integers, then we can check if numbers[low] > (1 << 31) - 1 - numbers[high] at the beginning of each iteration. If this condition is true, then numbers[low] + numbers[high] will result in integer overflow, and so we would move the larger index to the left.
+*/
+/* 
+We can use below syntax to avoid the overflow for language which does not automatically handles of large integers:
+
+// Java example
+if (numbers[right] > target - numbers[left]) { //Sum is more than target
+    right--;
+} else if (numbers[right] < target - numbers[left]) {//Sum is less than target
+    left++;
+} else { //Equal
+    return new int[] {left + 1, right + 1};
+}
+*/

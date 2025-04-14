@@ -13,26 +13,27 @@ Once you reach a tree with fruit that cannot fit in your baskets, you must stop.
 Given the integer array fruits, return the maximum number of fruits you can pick.
 
 Example 1:
-    Input: fruits = [1,2,1]
-    Output: 3
-    Explanation: We can pick from all 3 trees.
+  Input: fruits = [1,2,1]
+  Output: 3
+  Explanation: We can pick from all 3 trees.
 
 Example 2:
-    Input: fruits = [0,1,2,2]
-    Output: 3
-    Explanation: We can pick from trees [1,2,2].
-    If we had started at the first tree, we would only pick from trees [0,1].
+  Input: fruits = [0,1,2,2]
+  Output: 3
+  Explanation: We can pick from trees [1,2,2].
+  If we had started at the first tree, we would only pick from trees [0,1].
 
 Example 3:
-    Input: fruits = [1,2,3,2,2]
-    Output: 4
-    Explanation: We can pick from trees [2,3,2,2].
-    If we had started at the first tree, we would only pick from trees [1,2].
+  Input: fruits = [1,2,3,2,2]
+  Output: 4
+  Explanation: We can pick from trees [2,3,2,2].
+  If we had started at the first tree, we would only pick from trees [1,2].
 
 Constraints:
  - 1 <= fruits.length <= 10^5
  - 0 <= fruits[i] < fruits.length
- */
+*/
+
 /**
  * @param {number[]} fruits
  * @return {number}
@@ -42,8 +43,8 @@ Approach : Sliding Window
 Time: O(N)
 Space: O(1) - we store max 2 entry
 
-Runtime: 95 ms Beats 80.44%
-Memory: 61.30 MB Beats 77.44%
+Runtime: 34 ms Beats 56.55% 
+Memory: 65.74 MB Beats 78.37%
 */
 var totalFruit = function (fruits) {
   const N = fruits.length;

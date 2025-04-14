@@ -57,32 +57,34 @@ Approach: Sliding Window
 Time: O(N)
 Space: O(M) - The maximum number of keys in the map equals the number of unique characters in the string. Considering uppercase English letters only, m=26, it will be O(1)
 
-Runtime: 74 ms Beats 48.75%
-Memory Usage: 50.69 MB Beats 59.51%
+Runtime: 19 ms Beats 69.81%
+Memory Usage: 57.17 MB Beats 28.89%
  */
 var characterReplacement = function (s, k) {
   const N = s.length;
-  const visited = {};
+  const charMap = {};
   let left = 0;
+  let right = 0;
   let maxFrequency = 0;
   let maxLength = 0;
-  for (let right = 0; right < N; right++) {
+  while (right < N) {
     const char = s[right];
-    //increase the char frequency count
-    visited[char] = (visited[char] || 0) + 1;
-    // the maximum frequency we have seen in any window yet
-    maxFrequency = Math.max(maxFrequency, visited[char]);
-    //check if the window is valid, i.e., (window size - maxFreq) <= k
-    const isValid = right - left + 1 - maxFrequency <= k;
-    if (!isValid) {
-      // move the start pointer towards right if the current
-      // window is invalid
-      visited[s[left]]--;
-      left++;
+    //increase this char frequence
+    charMap[char] = (charMap[char] || 0) + 1;
+    maxFrequency = Math.max(maxFrequency, charMap[char]);
+    //curr window lenght
+    const windowLength = right - left + 1;
+    //letters to change = windowLength - maxFreq
+    const lettersToChange = windowLength - maxFrequency;
+    //if char replacement requirement is more than k then we need to shrink the window
+    if (lettersToChange > k) {
+      //remove the left char from the window and decrease its count
+      charMap[s[left++]]--;
     }
     // the window is valid at this point, store length
     // size of the window never decreases
     maxLength = Math.max(maxLength, right - left + 1);
+    right++;
   }
   return maxLength;
 };

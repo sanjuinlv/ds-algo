@@ -1,6 +1,6 @@
 /* 
 123. Best Time to Buy and Sell Stock III
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/description/
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii
 Type: Hard
 
 You are given an array prices where prices[i] is the price of a given stock on the ith day.

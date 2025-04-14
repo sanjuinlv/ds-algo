@@ -1,6 +1,6 @@
 /* 
 188. Best Time to Buy and Sell Stock IV
-https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/editorial/
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv
 Type: Hard
 
 You are given an integer array prices where prices[i] is the price of a given stock on the ith day, and an integer k.

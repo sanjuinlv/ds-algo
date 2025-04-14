@@ -44,44 +44,46 @@ Approach : Sliding Window
 Time: O(S+T)
 Space: O(K), where K is size of t
 
-Runetime: 92 ms Beats 42.70%
-Memory: 52.06 MB Beats 91.56%
+Runetime: 17 ms Beats 90.82%
+Memory: 55.24 MB Beats 80.06%
 */
 var minWindow = function (s, t) {
   if (s.length == "" || t.length == "") return "";
-  const ans = { min: -1, left: 0, right: 0 };
-  const N = s.length;
+  let N = s.length;
+  const charMap = new Map();
+  for (const c of t) charMap.set(c, (charMap.get(c) || 0) + 1);
+  let count = charMap.size;
   let i = 0;
   let j = 0;
-  const charMap = new Map();
-  for (let c of t) charMap.set(c, (charMap.get(c) || 0) + 1);
-  let count = charMap.size;
+  let ans = { min: Infinity, left: i, right: j };
   while (j < N) {
-    //if this character exists in t then reduce the match count
     const char = s[j];
     if (charMap.has(char)) {
-      charMap.set(char, (charMap.get(char) || 0) - 1);
-      //if all occurance has been found then reduce the count
+      //if this character exists in t then reduce the match count
+      charMap.set(char, charMap.get(char) - 1);
+      //one less unique char to find
       if (charMap.get(char) == 0) count--;
     }
     //until we have all matched characters matched shrink the window for next match
     while (count == 0) {
-      const outChar = s[i];
-      if (charMap.has(outChar)) {
-        if (charMap.get(outChar) == 0) count++;
-        charMap.set(outChar, charMap.get(outChar) + 1);
-      }
-      //record the window size
-      if (ans.min == -1 || ans.min > j - i + 1) {
+      //record the window length
+      if (j - i + 1 < ans.min) {
         ans.min = j - i + 1;
         ans.left = i;
         ans.right = j;
       }
-      i++; //increment left
+      const outChar = s[i];
+      if (charMap.has(outChar)) {
+        const outCharCount = charMap.get(outChar);
+        if (outCharCount == 0) count++;
+        charMap.set(outChar, outCharCount + 1);
+      }
+      i++;
     }
     j++;
   }
-  return ans.min > 0 ? s.slice(ans.left, ans.right + 1) : "";
+  if (ans.min == Infinity) return "";
+  return s.substring(ans.left, ans.right + 1);
 };
 
 //General Template for substring problems

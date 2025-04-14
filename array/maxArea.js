@@ -1,5 +1,6 @@
 /* 
-https://leetcode.com/problems/container-with-most-water/description/
+11. Container With Most Water
+https://leetcode.com/problems/container-with-most-water
 Type: Medium
 
 You are given an integer array height of length n. There are n vertical lines
@@ -55,22 +56,20 @@ Approach - Two pointer
 
 Time: O(N)
 Space: O(1)
-Runtime: 60 ms, faster than 99.78% of JavaScript online submissions for Container With Most Water.
-Memory Usage: 49.4 MB, less than 61.07% of JavaScript online submissions for Container With Most Water.
+Runtime: 3 ms Beats 54.78%
+Memory Usage: 63.54 MB Beats 11.92%
 */
 var maxArea = function (height) {
+  let maxWater = -Infinity;
   const N = height.length;
-  let maxWater = Number.NEGATIVE_INFINITY;
   let i = 0;
   let j = N - 1;
   while (i < j) {
-    let area = Math.min(height[i], height[j]) * (j - i);
-    maxWater = Math.max(maxWater, area);
-    if (height[i] < height[j]) {
-      i++;
-    } else {
-      j--;
-    }
+    const currArea = Math.min(height[i], height[j]) * (j - i);
+    maxWater = Math.max(maxWater, currArea);
+    //left height is smaller than  right height, move right
+    if (height[i] < height[j]) i++;
+    else j--;
   }
   return maxWater;
 };

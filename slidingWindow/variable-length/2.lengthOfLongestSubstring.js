@@ -26,47 +26,6 @@ Constraints:
  - s consists of English letters, digits, symbols and spaces.
 */
 
-// Using 2-D array and dp
-// Time complexity: O(N^2) (can it be O(N^3)) because of char look=up inside inner loop?
-// Space complexity: O(N^2) (2-D array)
-var lengthOfLongestSubstring = function (s) {
-  const N = s.length;
-  if (N == 0) return 0;
-  let maxLength = 1;
-  //create 2-D array
-  const dp = [...Array(N)].map((x) => Array(N).fill(0));
-  //fill for all i==i
-  for (let i = 0; i < N; i++) {
-    dp[i][i] = 1;
-  }
-  // compare the two char each and fill 1 for unique substring
-  for (let i = 0; i < N - 1; i++) {
-    if (s.charAt(i) !== s.charAt(i + 1)) {
-      dp[i][i + 1] = 1;
-      maxLength = 2;
-    }
-  }
-
-  for (let k = 3; k <= N; k++) {
-    for (let i = 0; i <= N - k; i++) {
-      j = i + k - 1; // -1 for 0 index
-      console.log(`i: ${i}, j: ${j}`);
-      const subStringMinusOne = s.substring(i, j);
-      console.log(`substring: ${subStringMinusOne}`);
-      console.log(`char to add: ${s.charAt(j)}`);
-      if (dp[i][j - 1] != 0 && subStringMinusOne.indexOf(s.charAt(j)) < 0) {
-        console.log(`adding ${s.charAt(j)} not found in ${subStringMinusOne}`);
-        dp[i][j] = 1;
-        if (subStringMinusOne.length + 1 > maxLength)
-          maxLength = subStringMinusOne.length + 1;
-        console.log(`maxLength: ${maxLength}`);
-      }
-    }
-  }
-  console.log(`maxLength: ${maxLength}`);
-  return maxLength;
-};
-
 /* 
 Approach I : Sliding window with HashSet
 We use HashSet to store the characters in current window [i,j] (j = i initially). 
@@ -137,8 +96,8 @@ approach III: Sliding Window Optimized
 Time: O(N)
 Space: O(1) (english char set)
 
-Runtime: 89 ms, faster than 91.37% of JavaScript online submissions for Longest Substring Without Repeating Characters.
-Memory Usage: 44.5 MB, less than 89.50% of JavaScript online submissions for Longest Substring Without Repeating Characters.
+Runtime: 4 ms Beats 92.32%
+Memory Usage: 56.02 MB Beats 72.08% 
 */
 var lengthOfLongestSubstring = function (s) {
   const N = s.length;
@@ -154,62 +113,38 @@ var lengthOfLongestSubstring = function (s) {
       i = Math.max(charMap.get(s[j]) + 1, i);
     }
     longestLength = Math.max(longestLength, j - i + 1);
-    charMap.set(s[j], j);
-    j++;
+    charMap.set(s[j], j++);
   }
   return longestLength;
 };
 
 /* 
-Time: O(N)
-Space: O(1) - Only english character set
-Runtime 85 ms Beats 55.32%
-Memory: 53.00 MB Beats 82.30%
+Using Variable length template for Sliding Window
+Runtime: 5 ms Beats 85.81%
+Memory: 59.16 MB Beats 34.56%
 */
 var lengthOfLongestSubstring = function (s) {
   const N = s.length;
-  if (N == 0) return 0;
-  const charMap = new Map();
   let i = 0;
   let j = 0;
-  let maxLength = 0;
-  while (j < N) {
-    if (charMap.has(s[j])) {
-      maxLength = Math.max(maxLength, j - i);
-      i = Math.max(charMap.get(s[j]) + 1, i);
-    }
-    charMap.set(s[j], j++);
-  }
-  return Math.max(maxLength, j - i);
-};
-
-/* 
-Using Variable length tenplate for Sliding Window
-Runtime: 83 ms Beats 61.66%
-Memory: 54.79 MB Beats 48.18%
-*/
-var lengthOfLongestSubstring = function (s) {
-  const N = s.length;
-  if (N == 0) return 0;
   const charMap = new Map();
-  let i = 0;
-  let j = 0;
   let maxLength = 0;
   while (j < N) {
+    //set this char count or increase if already present
     charMap.set(s[j], (charMap.get(s[j]) || 0) + 1);
     //if map char count is less than the window size then remove elements
-    //from left until map char count is same as window size
+    //from left until map char count is same as window size, indicating duplciate chars in window
     while (charMap.size < j - i + 1) {
       const charOut = s[i];
       if (charMap.has(charOut)) {
         charMap.set(charOut, charMap.get(charOut) - 1);
+        //if char count is zero then remove from map
         if (charMap.get(charOut) == 0) charMap.delete(charOut);
       }
       i++;
     }
-    if (charMap.size == j - i + 1) maxLength = Math.max(maxLength, j - i + 1);
+    maxLength = Math.max(maxLength, j - i + 1);
     j++;
   }
   return maxLength;
 };
-

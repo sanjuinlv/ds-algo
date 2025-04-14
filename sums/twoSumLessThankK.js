@@ -1,26 +1,53 @@
+/* 
+1099. Two Sum Less Than K
+https://leetcode.com/problems/two-sum-less-than-k
+Type: Easy
+
+Given an array nums of integers and integer k, return the maximum sum such that there exists i < j with nums[i] + nums[j] = sum and sum < k. If no i, j exist satisfying this equation, return -1.
+
+Example 1:
+Input: nums = [34,23,1,24,75,33,54,8], k = 60
+Output: 58
+Explanation: We can use 34 and 24 to sum 58 which is less than 60.
+
+Example 2:
+Input: nums = [10,20,30], k = 15
+Output: -1
+Explanation: In this case it is not possible to get a pair sum less that 15.
+
+Constraints:
+ - 1 <= nums.length <= 100
+ - 1 <= nums[i] <= 1000
+ - 1 <= k <= 2000
+
+*/
 /**
- * Given an array A of integers and integer K, return the maximum S such that there exists i < j 
+ * Given an array A of integers and integer K, return the maximum S such that there exists i < j
  * with A[i] + A[j] = S and S < K. If no i, j exist satisfying this equation, return -1.
  * @param {number[]} A
  * @param {number} K
  * @return {number}
  */
 //using sorting and left, right pointer
+/* 
+Approach I: Sorting
+*/
 var twoSumLessThanK = function (A, K) {
-    //sort the array first
-    A = A.sort((a, b) => a - b);
-    left = 0; right = A.length - 1, max = -1, sum = 0;
-    while (left < right) {
-        sum = A[left] + A[right];
-        console.log(`left: ${left}, right: ${right}, sum: ${sum}, S: ${max}`)
-        if (sum < K) {
-            if (max < sum) { // max of (max, sum)
-                max = sum; // reassign the max to this
-            }
-            left++;
-        } else {
-            right--;
-        }
+  //sort the array first
+  A = A.sort((a, b) => a - b);
+  let left = 0;
+  let right = A.length - 1;
+  let max = -1;
+  let sum = 0;
+  while (left < right) {
+    sum = A[left] + A[right];
+    console.log(`left: ${left}, right: ${right}, sum: ${sum}, S: ${max}`);
+    if (sum < K) {
+      max = Math.max(max, sum)
+      left++;
+    } else {
+      right--;
     }
-    return max;
+  }
+  return max;
 };

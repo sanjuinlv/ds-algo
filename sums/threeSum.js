@@ -67,119 +67,77 @@ var threeSum = function (nums) {
   return result;
 };
 
-// Solution reference
 /* 
-Approach I: Two pointers
+Approach II: Sorting + Two pointers
+Time: O(N^2)
+Space: O(LogN) - for sorting
 
-Time complexity: O(N^2) 
-Sorting Array: O(NLogN) 
-twoSum is O(N) and we call it N times so its O(N^2)
-total complexity: O(NlogN+ N^2) = O(N^2)
-
-Space complexity: O(logN) to O(N) based on sorting algorithm 
-
-Runtime: 170 ms, faster than 36.41% of JavaScript online submissions for 3Sum.
-Memory Usage: 65.84 MB, less than 36.59% of JavaScript online submissions for 3Sum.
+Runtime: 35 ms Beats 69.49%
+Memory: 72.07 MB Beats 46.79%
 */
 var threeSum = function (nums) {
-  const twoSumSorted = (nums, i, result) => {
-    let left = i + 1;
-    let right = nums.length - 1;
-    while (left < right) {
-      const sum = nums[i] + nums[left] + nums[right];
-      if (sum === 0) {
-        result.push([nums[i], nums[left], nums[right]]);
-        //move the pointer to look up other combination
-        left++;
-        right--;
-        // Increment left pointer while the next value is the same as before to avoid duplicates in the result.
-        while (left < right && nums[left] == nums[left - 1]) left++;
-      } else if (sum > 0) {
-        right--;
-      } else {
-        left++;
-      }
-    }
-  };
-  const N = nums.length;
-  //sort the array
-  nums = nums.sort((a, b) => a - b);
   const result = [];
+  //sort the input array
+  nums.sort((a, b) => a - b);
   //If the current value is greater than zero, break from the loop. Remaining values cannot sum to zero.
   for (let i = 0; i < nums.length && nums[i] <= 0; i++) {
-    //If the current value is the same as the one before, skip it.
-    if (i === 0 || nums[i] != nums[i - 1]) {
-      twoSumSorted(nums, i, result);
-    }
-  }
-  return result;
-};
-
-// Approach 2: Hashset
-/*
-Time complexity: O(N ^ 2)
-Sorting Array: O(NLogN)
-twoSum is O(N) and we call it N times so its O(N ^ 2)
-total complexity: O(NlogN + N ^ 2) = O(N ^ 2)
-Space complexity: O(N) for hashset
-
-Runtime: 468 ms Beats 13.19%
-Memory: 64.73 MB Beats 80.91%
-*/
-
-var threeSum = function (nums) {
-  const twoSum = (nums, i, result) => {
-    const seen = new Set();
-    for (let j = i + 1; j < nums.length; j++) {
-      // a + b + c = k (=0) => a + b = k - c = 0 - c = -c;
-      // we are getting c from index i (nums[i]). So we need to solve the two sum for a+b and target as -c
-      // so a = -c - b, i.e, a = -nums[i] - nums[j];
-      const compliment = -nums[i] - nums[j];
-      if (seen.has(compliment)) {
-        result.push([nums[i], nums[j], compliment]);
-        // Increment the pointer while the next value is the same as before to avoid duplicates in the result.
-        while (j + 1 < nums.length && nums[j] == nums[j + 1]) j++;
-      }
-      seen.add(nums[j]);
-    }
-  };
-  const N = nums.length;
-  //sort the array
-  nums = nums.sort((a, b) => a - b);
-  const result = [];
-  //If the current value is greater than zero, break from the loop. Remaining values cannot sum to zero.
-  for (let i = 0; i < nums.length && nums[i] <= 0; i++) {
-    //If the current value is the same as the one before, skip it.
+    //if curr num is same as prev then continue
     if (i > 0 && nums[i] == nums[i - 1]) continue;
-    twoSum(nums, i, result);
+    solveTwoSumSorted(i, nums, result);
   }
   return result;
 };
+
+function solveTwoSumSorted(i, nums, result) {
+  let left = i + 1;
+  let right = nums.length - 1;
+  const target = -nums[i];
+  while (left < right) {
+    if (nums[right] > target - nums[left]) right--;
+    else if (nums[right] < target - nums[left]) left++;
+    else {
+      result.push([nums[left], nums[right], nums[i]]);
+      //move the pointer to look up other combination
+      left++;
+      right--;
+      // Increment left pointer while the next value is the same as before to avoid duplicates in the result.
+      while (left < right && nums[left] == nums[left - 1]) left++;
+    }
+  }
+}
 
 /* 
-Runtime: 531 ms, faster than 24.16% of JavaScript online submissions for 3Sum.
-Memory Usage: 59.8 MB, less than 19.28% of JavaScript online submissions for 3Sum.
+Approach III: Sorting + Two Sum
+Time: O(N^2)
+Space: O(N) for Set
+
+Runtime: 379 ms Beats 12.25%
+Memory Usage: 69.80 MB Beats 65.74%
 */
 var threeSum = function (nums) {
   const result = [];
-  const N = nums.length;
-  const solveTwoSum = (i) => {
-    const target = -nums[i];
-    const seen = new Set();
-    for (let j = i + 1; j < N; j++) {
-      const compliment = target - nums[j];
-      if (seen.has(compliment)) {
-        result.push([nums[i], compliment, nums[j]]);
-        // Increment the pointer while the next value is the same as before to avoid duplicates in the result.
-        while (j + 1 < nums.length && nums[j] == nums[j + 1]) j++;
-      }
-      seen.add(nums[j]);
-    }
-  };
-  nums.sort();
-  for (let i = 0; i <= N - 3; i++) {
+  //sort the input array
+  nums.sort((a, b) => a - b);
+  //If the current value is greater than zero, break from the loop. Remaining values cannot sum to zero.
+  for (let i = 0; i < nums.length && nums[i] <= 0; i++) {
+    //if curr num is same as prev then continue
     if (i > 0 && nums[i] == nums[i - 1]) continue;
-    solveTwoSum(i);
+    solveTwoSum(i, nums, result);
   }
   return result;
 };
+
+
+function solveTwoSum(i, nums, result) {
+  const target = -nums[i];
+  const seen = new Set();
+  for (let j = i + 1; j < nums.length; j++) {
+    const compliment = target - nums[j];
+    if (seen.has(compliment)) {
+      result.push([nums[i], compliment, nums[j]]);
+      //skip next duplicate nums
+      while (j + 1 < nums.length && nums[j] == nums[j + 1]) j++;
+    }
+    seen.add(nums[j]);
+  }
+}
