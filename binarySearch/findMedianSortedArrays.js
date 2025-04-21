@@ -34,33 +34,30 @@ Constraints:
 /* 
 Time: O(m+n): Merge and find median
 Space: O(m+n)
-Runtime: 134 ms, faster than 65.98% of JavaScript online submissions for Median of Two Sorted Arrays.
-Memory Usage: 46.8 MB, less than 75.66% of JavaScript online submissions for Median of Two Sorted Arrays.
+Runtime: 2 ms Beats 89.69%
+Memory Usage: 59.92 MB Beats 32.86%
 */
 var findMedianSortedArrays = function (nums1, nums2) {
-  const m = nums1.length;
-  const n = nums2.length;
-  const mergedArray = new Array(m + n);
-  let i = 0,
-    j = 0,
-    k = 0;
+  let m = nums1.length;
+  let n = nums2.length;
+  let k = 0;
+  let i = 0;
+  let j = 0;
+  let merged = [];
   while (i < m && j < n) {
-    if (nums1[i] <= nums2[j]) {
-      mergedArray[k++] = nums1[i++];
-    } else {
-      mergedArray[k++] = nums2[j++];
-    }
+    //nums1 entry is smaller than nums2
+    if (nums1[i] <= nums2[j]) merged[k++] = nums1[i++];
+    else merged[k++] = nums2[j++];
   }
-  //copy remaining items from nums1 or nums2
-  while (i < m) mergedArray[k++] = nums1[i++];
-  while (j < m) mergedArray[k++] = nums2[j++];
+  //copy remaining items from nums1 and nums2
+  while (i < m) merged[k++] = nums1[i++];
+  while (j < n) merged[k++] = nums2[j++];
   //even no of elements
-  if ((m + n) % 2 == 0) {
-    const mid = 0 + parseInt((m + n - 1) / 2);
-    return (mergedArray[mid] + mergedArray[mid + 1]) / 2;
+  if (k % 2 == 0) {
+    const mid = Math.floor((k - 1) / 2);
+    return (merged[mid] + merged[mid + 1]) / 2;
   } else {
-    //odd number
-    return mergedArray[parseInt((m + n) / 2)];
+    return merged[parseInt(k / 2)];
   }
 };
 
@@ -72,12 +69,12 @@ Runtime: 201 ms, faster than 24.34% of JavaScript online submissions for Median 
 Memory Usage: 46.7 MB, less than 77.39% of JavaScript online submissions for Median of Two Sorted Arrays.
 */
 var findMedianSortedArrays = function (nums1, nums2) {
-  //if input1 length is greater than switch them so that input1 is smaller than input2.
+  //if input1 length is greater than input2 then switch them so that input1 is smaller than input2.
   if (nums1.length > nums2.length) return findMedianSortedArrays(nums2, nums1);
   const x = nums1.length;
   const y = nums2.length;
-  let lo = 0,
-    hi = x;
+  let lo = 0;
+  let hi = x;
   while (lo <= hi) {
     let partitionX = parseInt((lo + hi) / 2);
     let partitionY = parseInt((x + y + 1) / 2) - partitionX;

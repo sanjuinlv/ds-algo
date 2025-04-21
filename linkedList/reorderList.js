@@ -50,26 +50,26 @@ var reorderList = function (head) {
   let prev = null;
   let curr = slow;
   while (curr != null) {
-    let temp = curr.next;
+    let nextNode = curr.next;
     //change pointer to prev node
     curr.next = prev;
     prev = curr;
     //move curr pointer to next node
-    curr = temp;
+    curr = nextNode;
   }
   //3. merge the two lists
   let first = head;
   let second = prev;
   while (second.next != null) {
-    const temp1 = first.next;
-    const temp2 = second.next;
+    const firstNext = first.next;
+    const secondNext = second.next;
     //point first node to second node
     first.next = second;
     //sconde node to first's next
-    second.next = temp1;
+    second.next = firstNext;
     //move first and second pointer
-    first = temp1;
-    second = temp2;
+    first = firstNext;
+    second = secondNext;
   }
 };
 

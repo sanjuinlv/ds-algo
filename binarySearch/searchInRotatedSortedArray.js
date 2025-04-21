@@ -1,4 +1,8 @@
 /* 
+33. Search in Rotated Sorted Array
+https://leetcode.com/problems/search-in-rotated-sorted-array/
+Type: Medium
+
 You are given an integer array nums sorted in ascending order (with distinct values),
 and an integer target.
 
@@ -7,14 +11,26 @@ Suppose that nums is rotated at some pivot unknown to you beforehand
 
 If target is found in the array return its index, otherwise, return -1.
 
+Example 1:
 Input: nums = [4,5,6,7,0,1,2], target = 0
 Output: 4
 
+Example 2:
 Input: nums = [4,5,6,7,0,1,2], target = 3
 Output: -1
 
+Example 2:
 Input: nums = [1], target = 0
 Output: -1
+
+
+Constraints:
+
+ - 1 <= nums.length <= 5000
+ - -10^4 <= nums[i] <= 10^4
+ - All values of nums are unique.
+ - nums is an ascending array that is possibly rotated.
+ - -10^4 <= target <= 10^4
 */
 /**
  * @param {number[]} nums
@@ -135,8 +151,8 @@ var search = function (nums, target) {
 /* 
 Approach II: One pass binary search
 
-Runtime: 55 ms, faster than 43.11% of JavaScript online submissions for Search in Rotated Sorted Array.
-Memory Usage: 49.30 MB, less than 13.42% of JavaScript online submissions for Search in Rotated Sorted Array.
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 53.98 MB Beats 27.11%
 */
 var search = function (nums, target) {
   let left = 0;
@@ -147,14 +163,13 @@ var search = function (nums, target) {
     //if mid is greater than left then this part is not rotated
     if (nums[mid] >= nums[left]) {
       //the number is between the sorted array
-      if (nums[left] <= target && target < nums[mid]) right = mid - 1;
+      if (target >= nums[left] && target < nums[mid]) right = mid - 1;
       //look in other half
       else left = mid + 1;
     } else {
-      //nums[mid] < nums[left] implies rotation index is between 0 and mid.
-      //It implies that sub-array from mid to end is not rotated
-      //check if target is between mid and end
-      if (nums[mid] < target && target <= nums[right]) left = mid + 1;
+      //target is between mid to to right, search in right part
+      if (target > nums[mid] && target <= nums[right]) left = mid + 1;
+      //look in other half
       else right = mid - 1;
     }
   }

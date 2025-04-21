@@ -1,5 +1,7 @@
-/* 
+/*
+25. Reverse Nodes in k-Group 
 https://leetcode.com/problems/reverse-nodes-in-k-group/
+Type: Medium
 
 Given the head of a linked list, reverse the nodes of the list k at a time, and return
  the modified list.
@@ -70,49 +72,49 @@ var reverseKGroup = function (head, k) {
   return head;
 };
 
-//solution reference
 /*
 Approach: Recursive
 Time: O(N) since we process each node exactly twice.
 Space: O(N/k) used up by the recursion stack. The number of recursion calls is determined by both
 k and N. In every recursive call, we process k nodes and then make a recursive call to process the rest.
 
-Runtime: 80 ms, faster than 91.40% of JavaScript online submissions for Reverse Nodes in k-Group.
-Memory Usage: 45.5 MB, less than 34.18% of JavaScript online submissions for Reverse Nodes in k-Group.
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 59.50 MB Beats 19.59%
 */
-var reverseLinkedList = (head, k) => {
-  let revHead = null;
-  let curr = head;
-  while (k > 0) {
-    const newHead = curr;
-    curr = curr.next;
-    newHead.next = revHead;
-    revHead = newHead;
-    k--;
-  }
-  return revHead;
-};
-
 var reverseKGroup = function (head, k) {
   let count = 0;
   let curr = head;
-  // First, see if there are atleast k nodes
-  // left in the linked list.
-  while (count < k && curr != null) {
+  //check if there are at least k nodes in the list
+  while (curr != null && count < k) {
     curr = curr.next;
     count++;
   }
-  // If we have k nodes, then we reverse them
-  if (count === k) {
-    // Reverse the first k nodes of the list and
-    // get the reversed list's head.
-    const reversedHead = reverseLinkedList(head, k);
+  //if k nodes exist then reverse first k nodes
+  if (count == k) {
+    const reversedHead = reverseList(head, k);
     // Now recurse on the remaining linked list. Since
     // our recursion returns the head of the overall processed
     // list, we use that and the "original" head of the "k" nodes
     // to re-wire the connections.
     head.next = reverseKGroup(curr, k);
+    //returned the new reversed head
     return reversedHead;
   }
   return head;
 };
+
+function reverseList(head, k) {
+  let reversedHead = null;
+  let curr = head;
+  while (k > 0) {
+    //save next node
+    const nextNode = curr.next;
+    //reverse the curr node next direction to prev node
+    curr.next = reversedHead;
+    reversedHead = curr;
+    //curr now points to nead head
+    curr = nextNode;
+    k--;
+  }
+  return reversedHead;
+}

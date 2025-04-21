@@ -51,19 +51,20 @@ Approach: Recursive (DFS)
 Time: O(M*N) - For every N node in the tree, we check if the tree rooted at node is identical to subRoot. This check takes O(M) time, where M is the number of nodes in subRoot. Hence, the overall time complexity is O(MN).
 Space: O(M+N) - There will be at most N recursive call to dfs ( or isSubtree). Now, each of these calls will have M recursive calls to isIdentical. Before calling isIdentical, our call stack has at most O(N) elements and might increase to O(N+M) during the call. After calling isIdentical, it will be back to at most O(N) since all elements made by isIdentical are popped out. Hence, the maximum number of elements in the call stack will be M+N.
 
-Runtime: 108 ms, faster than 58.69% of JavaScript online submissions for Subtree of Another Tree.
-Memory Usage: 49.3 MB, less than 58.28% of JavaScript online submissions for Subtree of Another Tree.
+Runtime: 6 ms Beats 82.42%
+Memory Usage: 63.04 MB Beats 9.28%
 */
 var isSubtree = function (root, subRoot) {
-  const isIdentical = (t1, t2) => {
+  const isSymmetric = (t1, t2) => {
     if (t1 == null && t2 == null) return true;
     if (t1 == null || t2 == null) return false;
     if (t1.val !== t2.val) return false;
-    return isIdentical(t1.left, t2.left) && isIdentical(t1.right, t2.right);
+    return isSymmetric(t1.left, t2.left) && isSymmetric(t1.right, t2.right);
   };
+  //check if the root is symmetric to subtree
+  if (isSymmetric(root, subRoot)) return true;
   if (root == null) return false;
-  if (isIdentical(root, subRoot)) return true;
-  //root node is not same as subRoot, check with left and right node of root
+  // since root is not symmetric to subtree, check left and right ndoes
   return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
 };
 
@@ -89,33 +90,48 @@ var isSubtree = function (root, subRoot) {
 
 /*
 Approach: Iterative
-Runtime: 124 ms, faster than 40.08% of JavaScript online submissions for Subtree of Another Tree.
-Memory Usage: 49.2 MB, less than 58.28% of JavaScript online submissions for Subtree of Another Tree.
+Runtime: 8 ms Beats 51.32%
+Memory Usage: 63.24 MB Beats 5.28%
 */
 var isSubtree = function (root, subRoot) {
-  //DFS
-  const isSymmetric = (l1, l2) => {
-    if (l1 === null && l2 === null) return true;
-    if (l1 === null || l2 === null) return false;
-    if (l1.val !== l2.val) return false;
-    return isSymmetric(l1.left, l2.left) && isSymmetric(l1.right, l2.right);
-  };
-  //BFS
-  const bfs = (t1, t2) => {
-    const Q = [t1];
-    while (Q.length) {
-      const node = Q.shift();
-      //if root value matches then check for tree symmetry
-      if (node.val === t2.val) {
-        if (isSymmetric(node, t2)) return true;
-      }
-      if (node.left !== null) Q.push(node.left);
-      if (node.right !== null) Q.push(node.right);
-    }
-    return false;
-  };
-  return bfs(root, subRoot);
+  const Q = [root];
+  while (Q.length) {
+    const node = Q.shift();
+    // t1 and t2 are symmetrical then return true
+    if (isSymmetric(node, subRoot)) return true;
+    //if t1 and t2 not symmetrical then check for left and right child node of t1
+    if (node.left) Q.push(node.left);
+    if (node.right) Q.push(node.right);
+  }
+  return false;
 };
+
+var isSubtree = function (root, subRoot) {
+  const Q = [root];
+  while (Q.length) {
+    const node = Q.shift(); //Q.pop()
+    // t1 and t2 are symmetrical then return true
+    if (isSymmetric(node, subRoot)) return true;
+    //if t1 and t2 not symmetrical then check for left and right child node of t1
+    if (node.left) Q.push(node.left);
+    if (node.right) Q.push(node.right);
+  }
+  return false;
+};
+
+function isSymmetric(p, q) {
+  const stack = [];
+  stack.push([p, q]);
+  while (stack.length) {
+    const [t1, t2] = stack.pop();
+    if (t1 == null && t2 == null) continue;
+    if (t1 == null || t2 == null) return false;
+    if (t1.val !== t2.val) return false;
+    stack.push([t1.left, t2.left]);
+    stack.push([t1.right, t2.right]);
+  }
+  return true;
+}
 
 /* 
 Iterative with inner loop on queue

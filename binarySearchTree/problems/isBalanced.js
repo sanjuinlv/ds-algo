@@ -34,21 +34,30 @@ The number of nodes in the tree is in the range [0, 5000].
  * @param {TreeNode} root
  * @return {boolean}
  */
-//Fails for [1,2,2,3,null,null,3,4,null,null,4]
+
+/*
+Cleaner Bottom up
+Time: O(N)
+Space: O(N)
+
+Runtime: 0 ms Beats 100.00%
+Memory: 60.45 MB Beats 46.29%
+ */
 var isBalanced = function (root) {
-  if (root == null) return true;
-  const findDepth = (node) => {
-    if (node === null) return 0;
-    return 1 + Math.max(findDepth(node.left), findDepth(node.right));
+  const helper = (node) => {
+    if (node == null) return 0;
+    const leftHeight = helper(node.left);
+    if (leftHeight == -1) return -1;
+    const rightHeight = helper(node.left);
+    if (rightHeight == -1) return -1;
+    if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+    return 1 + Math.max(leftHeight, rightHeight);
   };
-  const leftDepth = findDepth(root.left);
-  const rightDepth = findDepth(root.right);
-  if (Math.abs(leftDepth - rightDepth) > 1) return false;
-  return true;
+  return helper(root) !== -1;
 };
 
 /* 
-Approach: Bottom Up Recursive 
+Approach: Bottom Up II 
 Time: O(N),  For every subtree, we compute its height in constant time as well as compare 
 the height of its children
 Space: O(N), the recursion stack
@@ -72,33 +81,16 @@ var isBalanced = function (root) {
   return result;
 };
 
-/*
-Cleaner Bottom up approach
-Runtime: 54 ms Beats 93.86%
-Memory: 53.95 MB Beats 79.29%
- */
-var isBalanced = function (root) {
-  if (root == null) return true;
-  let result = true;
-  const helper = (node) => {
-    if (node == null) return 0;
-    const leftHeight = helper(node.left);
-    if (leftHeight == -1) return -1;
-    const rightHeight = helper(node.right);
-    if (rightHeight == -1) return -1;
-    if (Math.abs(leftHeight - rightHeight) > 1) return -1;
-    return 1 + Math.max(leftHeight, rightHeight);
-  };
-  return helper(root) != -1;
-};
-
 /* 
 Approach II: Top Down Recursion
 Time: O(N LogN)
 For a node p at depth d, height(p) will be called d times.
 Space: O(N)
-Runtime: 139 ms, faster than 12.88% of JavaScript online submissions for Balanced Binary Tree.
-Memory Usage: 47.9 MB, less than 25.30% of JavaScript online submissions for Balanced Binary Tree.
+In this case we make duplicate calls to calculate height from each node which
+is not the case with bottom up approach
+
+Runtime: 1 ms Beats 89.50%
+Memory Usage: 58.57 MB Beats 94.56%
 */
 var isBalanced = function (root) {
   if (root == null) return true;

@@ -13,15 +13,19 @@ Example 1:
 Input: nums = [1,3,4,2,2]
 Output: 2
 
-Example 1:
+Example 2:
 Input: nums = [3,1,3,4,2]
 Output: 3
 
+Example 3:
+Input: nums = [3,3,3,3,3]
+Output: 3
+
 Constraint:
-  - 1 <= n <= 10^5
-  - nums.length == n + 1
-  - 1 <= nums[i] <= n
-  - All the integers in nums appear only once except for precisely one integer 
+ - 1 <= n <= 10^5
+ - nums.length == n + 1
+ - 1 <= nums[i] <= n
+ - All the integers in nums appear only once except for precisely one integer 
 which appears two or more times.
 
 Follow up:
@@ -32,21 +36,6 @@ Can you solve the problem in linear runtime complexity?
  * @param {number[]} nums
  * @return {number}
  */
-/* 
-Pass: [1,3,4,2,2]
-Pass: [3,1,3,4,2]
-Fails for [2,2,2,2,2]
-*/
-var findDuplicate = function (nums) {
-  let totalSum = 0;
-  nums.forEach((num) => {
-    totalSum += num;
-  });
-  const N = nums.length;
-  const mathSum = parseInt(((N - 1) * N) / 2);
-  const unique = totalSum - mathSum;
-  return unique;
-};
 
 /* 
 Approach 1: Sort
@@ -110,7 +99,41 @@ var findDuplicate = function (nums) {
 };
 
 /* 
-Approach: Sum of Set Bits
+Approach 4: Floyd's Tortoise and Hare (Cycle Detection)
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+
+Runtime: 6 ms Beats 85.97%
+Memory Usage: 63.14 MB Beats 75.57% 
+
+findDuplicate([1,3,4,2,2])
+findDuplicate([3,1,3,4,2])
+findDuplicate([2,2,2,2,2])
+findDuplicate([2,6,4,1,3,1,5])
+findDuplicate([2,5,9,6,9,3,8,9,7,1])
+*/
+var findDuplicate = function (nums) {
+  let tortoise = nums[0];
+  let hare = nums[0];
+  // Move slow by one step and fast by two steps until they meet
+  do {
+    tortoise = nums[tortoise];
+    hare = nums[nums[hare]];
+  } while (hare != tortoise);
+  //reset slow to start
+  tortoise = nums[0];
+  // Move slow and fast one step at a time until they meet again
+  while (tortoise != hare) {
+    hare = nums[hare];
+    tortoise = nums[tortoise];
+  }
+  // The duplicate number is where slow and fast meet
+  return tortoise;
+};
+
+/* 
+Approach 5: Sum of Set Bits
 
 Let n be the length of nums and m be the bit-length of n.
 Time Complexity: O(nlogn)
@@ -164,36 +187,3 @@ var findDuplicate = function (nums) {
   return duplicate;
 };
 
-/* 
-Approach: Floyd's Tortoise and Hare (Cycle Detection)
-
-Time Complexity: O(n)
-Space Complexity: O(1)
-
-Runtime: 77 ms, faster than 66.28% of JavaScript online submissions for Find the Duplicate Number.
-Memory Usage: 57.83 MB, less than 62.27% of JavaScript online submissions for Find the Duplicate Number.
-
-findDuplicate([1,3,4,2,2])
-findDuplicate([3,1,3,4,2])
-findDuplicate([2,2,2,2,2])
-findDuplicate([2,6,4,1,3,1,5])
-findDuplicate([2,5,9,6,9,3,8,9,7,1])
-*/
-var findDuplicate = function (nums) {
-  let tortoise = nums[0];
-  let hare = nums[0];
-  // Move slow by one step and fast by two steps until they meet
-  do {
-    tortoise = nums[tortoise];
-    hare = nums[nums[hare]];
-  } while (hare != tortoise);
-  //reset slot to start
-  tortoise = nums[0];
-  // Move slow and fast one step at a time until they meet again
-  while (tortoise != hare) {
-    hare = nums[hare];
-    tortoise = nums[tortoise];
-  }
-  // The duplicate number is where slow and fast meet
-  return tortoise;
-};

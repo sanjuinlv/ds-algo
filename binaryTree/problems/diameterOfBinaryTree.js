@@ -64,6 +64,26 @@ var diameterOfBinaryTree = function (root) {
   return diameter;
 };
 
+//using function signature for helper method
+/* 
+Runtime: 0 ms Beats 100.00%
+Memory: 60.68 MB Beats 88.72%
+*/
+var diameterOfBinaryTree = function (root) {
+  function helper(root) {
+    if (root == null) return 0;
+    let leftHeight = helper(root.left);
+    let rightHeight = helper(root.right);
+    //diameter for this node
+    const nodeDiameter = leftHeight + rightHeight;
+    this.diameter = Math.max(this.diameter, nodeDiameter);
+    return 1 + Math.max(leftHeight, rightHeight);
+  }
+  this.diameter = 0;
+  helper(root);
+  return this.diameter;
+};
+
 /* 
 TODO: Iterative
 */

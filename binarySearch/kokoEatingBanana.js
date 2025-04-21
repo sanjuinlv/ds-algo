@@ -1,6 +1,6 @@
 /* 
 875. Koko Eating Bananas
-https://leetcode.com/problems/koko-eating-bananas/?envType=problem-list-v2&envId=9fq0g406
+https://leetcode.com/problems/koko-eating-bananas
 Type: Medium
 
 Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
@@ -59,8 +59,8 @@ Approach II: Binary Search
 Time: O(n * logm)
 Space: O(1)
 
-Runtime: 11 ms Beats 44.99%
-Memory: 52.92 MB Beats 27.86%
+Runtime: 9 ms Beats 66.01%
+Memory: 57.54 MB Beats 55.35% 
 */
 var minEatingSpeed = function (piles, h) {
   let lo = 1;
