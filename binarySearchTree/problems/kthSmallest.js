@@ -52,16 +52,19 @@ Runtime: 0 ms Beats 100.00%
 Memory Usage: 55.34 MB Beats 42.62%
 */
 var kthSmallest = function (root, k) {
-  let nodeCount = 0;
   let result = null;
+  let nodeCount = 0;
   const inOrder = (node) => {
     if (node == null) return;
+    //go to left farmost subtree
     inOrder(node.left);
     nodeCount++;
     if (nodeCount == k) {
+      //kth smallest found, return
       result = node.val;
       return;
     }
+    //explore right subtree
     inOrder(node.right);
   };
   inOrder(root);
@@ -78,23 +81,22 @@ Runtime: 0 ms Beats 100.00%
 Memory: 55.78 MB Beats 17.67%
 */
 var kthSmallest = function (root, k) {
-  let nodeCount = 0;
-  let result = null;
-  let stack = [];
+  const stack = [];
   let curr = root;
+  let nodeCount = 0;
   while (true) {
     while (curr != null) {
       stack.push(curr);
-      curr = curr.left;
+      //keep moving to left farmost node
+      curr = curr.next;
     }
+    if (stack.length == 0) return null;
     curr = stack.pop();
     nodeCount++;
     if (nodeCount == k) return curr.val;
     curr = curr.right;
   }
-  return null;
 };
-
 
 //We can use same approach to solve kthLargest
 // var kthLargest = function(root, k) {

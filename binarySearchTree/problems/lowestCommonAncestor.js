@@ -64,8 +64,8 @@ Approach II: Recursive (using BST property)
 Time: O(N) worst case tree height will be N
 Space: O(N) for skewed BST tree
 
-Runtime: 77 ms Beats 24.94%
-Memory Usage: 59.31 MB Beats 36.49%
+Runtime: 49 ms Beats 95.35%
+Memory Usage: 65.42 MB Beats 56.50%
 */
 var lowestCommonAncestor = function (root, p, q) {
   if (root == null) return null;
@@ -87,19 +87,21 @@ Time: O(N) worst case tree height will be N
 Space: O(1) 
 Note: We don't need to use stack for this
 
-Runtime: 83 ms Beats 7.96%
-Memory Usage: 59.21 MB Beats 44.20%
+Runtime: 62 ms Beats 50.17%
+Memory Usage: 64.97 MB Beats 87.20%
 */
 var lowestCommonAncestor = function (root, p, q) {
-  if (root === null) return null;
-  let node = root;
-  while (node != null) {
-    if (p.val > node.val && q.val > node.val) {
-      node = node.right;
-    } else if (p.val < node.val && q.val < node.val) {
-      node = node.left;
+  if (root == null) return root;
+  while (root != null) {
+    //both nodes p & q are left side of the tree
+    if (root.val > p.val && root.val > q.val) {
+      root = root.left;
+    } else if (root.val < p.val && root.val < q.val) {
+      //both nodes p & q are in right side of the tree
+      root = root.right;
     } else {
-      return node;
+      //p and q are in left and right side of the tree, so root will be LCA
+      return root;
     }
   }
   return null;

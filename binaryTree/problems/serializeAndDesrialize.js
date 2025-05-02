@@ -50,18 +50,18 @@ Runtime: 132 ms Beats 23.84%
 Memory Usage: 61.34 MB Beats 87.74%
  */
 var serialize = function (root) {
-  let result = "";
+  let serializedStr = "";
   const preOrder = (node) => {
     if (node == null) {
-      result += "null,";
+      serializedStr += "null,";
       return;
     }
-    result += node.val + ",";
+    serializedStr += node.val + ",";
     preOrder(node.left);
     preOrder(node.right);
   };
   preOrder(root);
-  return result;
+  return serializedStr;
 };
 
 /**

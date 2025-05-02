@@ -10,7 +10,7 @@ let i = j = 0;
 while (j < N) {
   //1. perform the calculation for index 'j'
   //if condition is less than k then continue
-  if (condition) j++;
+  if (j - i + 1 < k) j++;
   else if (condition == k) {
     //calculation
     j++;

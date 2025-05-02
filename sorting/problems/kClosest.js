@@ -50,7 +50,7 @@ var kClosest = function (points, k) {
 };
 
 /* 
-Approach II: Priority Queue
+Approach II: Simulating PQ using array with sorting
 Time: O(N LogK) Adding to/removing from the heap (or priority queue) only takes O(logk) time when
  the size of the heap is capped at k elements.
 Space: O(k) The heap (or priority queue) will contain at most k elements.
@@ -86,17 +86,15 @@ Time: O(N LogK) Adding to/removing from the heap (or priority queue) only takes 
  the size of the heap is capped at k elements.
 Space: O(k) The heap (or priority queue) will contain at most k elements.
 
-Runtime: 207 ms, faster than 47.56% of JavaScript online submissions for K Closest Points to Origin.
-Memory Usage: 64.13 MB, less than 68.89% of JavaScript online submissions for K Closest Points to Origin.
+Runtime: 80 ms Beats 29.88%
+Memory Usage: 67.97 MB Beats 89.72%
 */
 var kClosest = function (points, k) {
-  const maxPQ = new MaxPriorityQueue({
-    compare: (a, b) => {
-      return (
-        Math.sqrt(b[0] * b[0] + b[1] * b[1]) -
-        Math.sqrt(a[0] * a[0] + a[1] * a[1])
-      );
-    },
+  const maxPQ = new PriorityQueue((a, b) => {
+    return (
+      Math.sqrt(b[0] * b[0] + b[1] * b[1]) -
+      Math.sqrt(a[0] * a[0] + a[1] * a[1])
+    );
   });
 
   for (const point of points) {
@@ -108,30 +106,28 @@ var kClosest = function (points, k) {
 
 // PQ: Add only when the incoming point is smaller than PQ max element
 var kClosest = function (points, k) {
-  const maxHeap = new MaxPriorityQueue({
-    compare: (a, b) => {
-      return (
-        Math.sqrt(b[0] * b[0] + b[1] * b[1]) -
-        Math.sqrt(a[0] * a[0] + a[1] * a[1])
-      );
-    },
+  const maxPQ = new PriorityQueue((a, b) => {
+    return (
+      Math.sqrt(b[0] * b[0] + b[1] * b[1]) -
+      Math.sqrt(a[0] * a[0] + a[1] * a[1])
+    );
   });
   for (const point of points) {
     //if heap size is less than k then add it
-    if (maxHeap.size() < k) maxHeap.enqueue(point);
+    if (maxPQ.size() < k) maxPQ.enqueue(point);
     else {
-      const front = maxHeap.front();
+      const front = maxPQ.front();
       // if the heap's top element is farther than this point then add this to Q
       if (
         Math.sqrt(front[0] * front[0] + front[1] * front[1]) >
         Math.sqrt(point[0] * point[0] + point[1] * point[1])
       ) {
-        maxHeap.dequeue();
-        maxHeap.enqueue(point);
+        maxPQ.dequeue();
+        maxPQ.enqueue(point);
       }
     }
   }
-  return maxHeap.toArray();
+  return maxPQ.toArray();
 };
 
 /*

@@ -41,8 +41,8 @@ Approach 1: Recursive Traversal with Valid Range
 Time: O(N) since we visit each node exactly once.
 Space: O(N) since we keep up to the entire tree
 
-Runtime: 60 ms, faster than 63.90% of JavaScript online submissions for Validate Binary Search Tree.
-Memory Usage: 53.23 MB, less than 57.24% of JavaScript online submissions for Validate Binary Search Tree.
+Runtime: 1 ms Beats 62.89%
+Memory Usage: 59.51 MB Beats 28.38%
  */
 var isValidBST = function (root) {
   //recursively validate left and right sub-tree

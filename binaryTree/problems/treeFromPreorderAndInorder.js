@@ -50,15 +50,18 @@ Space: O(N) - Building the hashmap and storing the entire tree each requires O(N
 implicit system stack used by recursion calls depends on the height of the tree, which is O(N)
 in the worst case and O(logN) on average. Taking both into consideration, the space complexity is O(N).
 
-Runtime: 68 ms Beats 95.00%
-Memory Usage: 54.59 MB Beats 68.43%
+Runtime: 3 ms Beats 73.85%
+Memory Usage: 57.95 MB Beats 95.83%
 */
 var buildTree = function (preorder, inorder) {
   const N = preorder.length;
   const helper = (left, right) => {
+    //if left crosses right then we are done with all elements
     if (left > right) return null;
     const root = new TreeNode(preorder.shift());
+    //from 'left' till this root's (index - 1) will be left subtree of root
     root.left = helper(left, inOrderIndexMap.get(root.val) - 1);
+    //from this root's (index + 1) till 'right' will be right subtree of root
     root.right = helper(inOrderIndexMap.get(root.val) + 1, right);
     return root;
   };

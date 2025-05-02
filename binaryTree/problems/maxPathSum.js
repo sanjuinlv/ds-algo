@@ -42,8 +42,8 @@ Approach: Post Order DFS
 Time: O(N) - Each node in the tree is visited only once.
 Space; O(N) - We don't use any auxiliary data structure, but the recursive call stack can go as deep as the tree's height. In the worst case, the tree is a linked list, so the height is n. Therefore, the space complexity is O(n).
 
-Runtime: 68 ms Beats 62.04%
-Memory Usage: 59.21 MB Beats 27.55%
+Runtime: 2 ms Beats 78.11%
+Memory Usage: 65.59 MB Beats 18.12%
  */
 var maxPathSum = function (root) {
   let maxPathSum = -Infinity;

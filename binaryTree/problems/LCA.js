@@ -50,14 +50,15 @@ Memory Usage: 58.99 MB Beats 66.74%
 */
 var lowestCommonAncestor = function (root, p, q) {
   const LCA = (node, p, q) => {
-    if (node == null) return null;
-    //if any of the p and q matches root then, root is LCA
+    if (node == null) return node;
+    //if any of the p and q matches node then, node is LCA
     if (node == p || node == q) return node;
-    //find recursively the left child LCA
-    let leftLCA = LCA(node.left, p, q);
-    //find recursively the right child LCA
-    let rightLCA = LCA(node.right, p, q);
+    // look into left and right subtree
+    const leftLCA = LCA(node.left, p, q);
+    const rightLCA = LCA(node.right, p, q);
+    //if LCA found in left and right subtree then curr node is LCA
     if (leftLCA && rightLCA) return node;
+    //ndoe is not LCA so it is either left of rigth subtree
     return leftLCA ? leftLCA : rightLCA;
   };
   return LCA(root, p, q);
