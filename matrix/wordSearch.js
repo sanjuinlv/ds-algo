@@ -90,41 +90,47 @@ Memory: 55.98 MB Beats 9.10%
 var exist = function (board, word) {
   const rows = board.length;
   const cols = board[0].length;
-  this.visited = [...Array(rows)].map((x) => Array(cols).fill(false));
-  const directions = [
-    [1, 0],
-    [-1, 0],
-    [0, 1],
-    [0, -1],
-  ];
-  const getDirections = (i, j) => {
-    const result = [];
-    for (let direction of directions) {
-      const row = direction[0] + i;
-      const col = direction[1] + j;
-      if (row >= 0 && row < rows && col >= 0 && col < cols) result.push([row, col]);
-    }
-    return result;
-  };
-  
-  const backtrack = (d, i, j) => {
-    //check the bottom case
+  const visited = Array.from({ length: rows }, () =>
+    new Array(cols).fill(false)
+  );
+  const dfs = (d, i, j) => {
+    //if we found all char match then return true
     if (d == word.length) return true;
-    if (this.visited[i][j] || board[i][j] !== word[d]) return false;
+    //if curr char does not match or already visited then return false
+    if (visited[i][j] || word[d] !== board[i][j]) return false;
     // If the word has only one character and we match it, return true
-    if (d === word.length - 1 ) return true;
-    this.visited[i][j] = true;
-    for (let [row, col] of getDirections(i, j)){
-      if (backtrack(d + 1, row, col)) return true;
+    if (d === word.length - 1) return true;
+    visited[i][j] = true;
+    for (let [row, col] of getNeighbour(i, j, rows, cols)) {
+      if (dfs(d + 1, row, col)) return true;
     }
-    this.visited[i][j] = false;
+    visited[i][j] = false;
     return false;
   };
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      if (backtrack(0, i, j)) return true;
+      if (dfs(0, i, j)) return true;
     }
   }
   return false;
 };
+
+function getNeighbour(row, col, rows, cols) {
+  const directions = [
+    [1, 0],
+    [0, 1],
+    [-1, 0],
+    [0, -1],
+  ];
+  const neighbours = [];
+  for (const direction of directions) {
+    const newRow = row + direction[0];
+    const newCols = col + direction[1];
+    if (newRow < 0 || newCols < 0 || newRow >= rows || newCols >= cols) {
+      continue;
+    }
+    neighbours.push([newRow, newCols]);
+  }
+  return neighbours;
+}

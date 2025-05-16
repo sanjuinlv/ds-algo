@@ -129,7 +129,7 @@ function recurse(i, j, s1, s2, dp) {
 }
 
 /* 
-Approach III: Recursion + memo
+Approach III: Iterative
 Time: O(M*M)
 Space: O(M*N)
 

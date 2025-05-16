@@ -30,7 +30,12 @@ Constraints:
  */
 //using sorting and left, right pointer
 /* 
-Approach I: Sorting
+Approach I: Sorting and Two pointers
+Time: O(NLogN)
+Space: O(1)
+
+Runtime: 3 ms Beats 30.91%
+Memory: 54.34 MB Beats 54.55%
 */
 var twoSumLessThanK = function (A, K) {
   //sort the array first
@@ -41,7 +46,6 @@ var twoSumLessThanK = function (A, K) {
   let sum = 0;
   while (left < right) {
     sum = A[left] + A[right];
-    console.log(`left: ${left}, right: ${right}, sum: ${sum}, S: ${max}`);
     if (sum < K) {
       max = Math.max(max, sum)
       left++;

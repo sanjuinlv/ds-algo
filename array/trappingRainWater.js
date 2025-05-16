@@ -69,8 +69,8 @@ var trap = function (height) {
 Approach I: Dynamic programming 
 Time: O(N)
 Space: O(N)
-Runtime: 11 ms Beats 18.48%
-Memory Usage: 59.43 MB Beats 16.89%
+Runtime: 6 ms Beats 34.85%
+Memory Usage: 60.44 MB Beats 17.56%
  */
 var trap = function (height) {
   const N = height.length;
@@ -101,7 +101,7 @@ Approach II: Using single array for max
 
 Runtime: 7 ms Beats 28.17%
 Memory: 56.50 MB Beats 28.22%
- */
+*/
 var trap = function (height) {
   const N = height.length;
   const rightMax = new Array(N).fill(0);

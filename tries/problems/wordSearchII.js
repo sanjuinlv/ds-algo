@@ -1,6 +1,6 @@
 /* 
 212. Word Search II
-https://leetcode.com/problems/word-search-ii/description/
+https://leetcode.com/problems/word-search-ii
 Type: Hard
 
 Given an m x n board of characters and a list of strings words, return all words on the board.
@@ -47,8 +47,8 @@ findWords([["a","a"]],["aaa"]) => []
 */
 var findWords = function (board, words) {
   this.root = new Node();
-  const rows = board.length,
-    columns = board[0].length;
+  const rows = board.length;
+  const columns = board[0].length;
   this.visited = [...Array(rows)].map((x) => Array(columns).fill(false));
 
   function Node() {
@@ -129,15 +129,15 @@ Memory: 52.97 MB Beats 73.36%
 var findWords = function (board, words) {
   const rows = board.length;
   const cols = board[0].length;
-
+  //root of Trie
   this.root = new Node();
-
+  //Trie node
   function Node() {
     this.children = new Map();
     this.word = null;
   }
-
-  this.insert = (word) => {
+  //insert word to Trie
+  this.insert = function (word) {
     let curr = this.root;
     for (let c of word) {
       if (!curr.children.has(c)) curr.children.set(c, new Node());
@@ -145,39 +145,37 @@ var findWords = function (board, words) {
     }
     curr.word = word;
   };
-
   const backtrack = (i, j, node) => {
-    //validate i, j and see if borad is already visisted
+    //check if i and j is in boundary
     if (i < 0 || j < 0 || i >= rows || j >= cols || board[i][j] == "#") return;
-    let char = board[i][j];
-    //check if any path matches in the trie
-    const childNode = node.children.get(char);
-    if (!childNode) return; //there won't be any further path match so return
+    //board character to restore back
+    const boardChar = board[i][j];
+    //get node in trie for curr board char
+    const childNode = node.children.get(boardChar);
+    //if no node found then backtrack and try other path
+    if (childNode == null) return;
     if (childNode.word != null) {
       result.push(childNode.word);
-      //avoid duplicate value
+      //reset word to avoid duplicate
       childNode.word = null;
     }
-    //insert into trie
+    //mark board cell as visited
     board[i][j] = "#";
-    //go in all directions
-    backtrack(i, j + 1, childNode);
-    backtrack(i, j - 1, childNode);
-    backtrack(i + 1, j, childNode);
-    backtrack(i - 1, j, childNode);
-    //re-store the boarad character
-    board[i][j] = char;
+    backtrack(i + 1, j, childNode); //next row
+    backtrack(i - 1, j, childNode); //prev row
+    backtrack(i, j + 1, childNode); //next col
+    backtrack(i, j - 1, childNode); //next row
+    //restore board character to try other word combination
+    board[i][j] = boardChar;
   };
-
   //1. create trie from words dictionary
   for (const word of words) {
-    if (this.insert(word)) result.push(word);
+    this.insert(word);
   }
-  //check if words are present in tries
   const result = [];
-  //2. backtrack for all combination from board letters
+  //2. try for all combination from board letters
   for (let i = 0; i < rows; i++) {
-    for (j = 0; j < cols; j++) {
+    for (let j = 0; j < cols; j++) {
       backtrack(i, j, this.root);
     }
   }

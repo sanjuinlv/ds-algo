@@ -57,19 +57,19 @@ Time Complexity: O(N). We do N operations of search, delete and insert, each wit
 Space Complexity: O(min(n,k)). The extra space required depends on the number of 
 items stored in the hash table, which is the size of the sliding window, min(n,k).
 
-Runtime: 18 ms Beats 72.49%
-Memory Usage: 69.18 MB Beats 77.26%
+Runtime: 17 ms Beats 91.14%
+Memory Usage: 70.55 MB Beats 85.99%
 */
 var containsNearbyDuplicate = function (nums, k) {
   const set = new Set();
   for (let i = 0; i < nums.length; i++) {
+    const num = nums[i];
     //if a match is found, it is guaranteed that its with in the window of length 'k'
-    if (set.has(nums[i])) return true;
-    set.add(nums[i]);
+    if (set.has(num)) return true;
+    set.add(num);
     //the sliding window size is more than k, so remove the (i-k)th item
-    if (set.size > k) {
-      set.delete(nums[i - k]);
-    }
+    if (set.size > k) set.delete(nums[i - k]);
   }
   return false;
 };
+

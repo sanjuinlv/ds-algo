@@ -48,9 +48,9 @@ Example 2:
   Output: [""]
 
 Constraints:
-  1 <= strs.length <= 200
-  0 <= strs[i].length <= 200
-  strs[i] contains any possible characters out of 256 valid ASCII characters.
+ - 1 <= strs.length <= 200
+ - 0 <= strs[i].length <= 200
+ - strs[i] contains any possible characters out of 256 valid ASCII characters.
 
 Follow up: Could you write a generalized algorithm to work on any possible set of characters?
 
@@ -67,19 +67,17 @@ Memory Usage: 49.6 MB, less than 14.15% of JavaScript online submissions for Enc
  */
 /* 
 Approach I: Non ASCII delimiter
+
 Time: O(N)
 Space: O(1)
+
+Runtime: 63 ms Beats 40.78%
+Memory: 60.94 MB Beats 65.08%
  */
 var encode = function (strs) {
   if (strs.length == 0) return String.fromCodePoint(258);
   const delim = String.fromCodePoint(257);
-  let encodedStr = "";
-  for (let str of strs) {
-    encodedStr += str;
-    encodedStr += delim;
-  }
-  //finally the encoded string without last delimiter character
-  return encodedStr.slice(0, encodedStr.length - 1);
+  return strs.join(delim);
 };
 
 /**

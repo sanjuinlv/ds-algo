@@ -30,8 +30,27 @@ Constraints:
  * @param {number} n
  * @return {number}
  */
-//Solution reference
+
 /*
+Approach I: Backtracking
+diagonal logic:
+For each square on a given diagonal, the difference between the row and column indices (row - col) will be constant. Think about the diagonal that starts from (0, 0) - the ith square has the coordinates (i, i), so the difference is always 0.
+  | 0 | 1 | 2 | 3 | 
+-------------------
+0 | 0 |-1 |-2 |-3 | 
+1 | 1 | 0 |-1 |-2 |
+2 | 2 | 1 | 0 |-1 | 
+3 | 3 | 2 | 1 | 0 |
+
+For each square on a given anti-diagonal, the sum of the row and column indexes (row + col) will be constant. If you were to start at the highest square in an anti-diagonal and move downwards, the row index increments by 1 (row + 1), and the column index decrements by 1 (col - 1). These cancel each other out.
+  | 0 | 1 | 2 | 3 | 
+-------------------
+0 | 0 | 1 | 2 | 3 | 
+1 | 1 | 2 | 3 | 4 |
+2 | 2 | 3 | 4 | 5 | 
+3 | 3 | 4 | 5 | 6 |
+
+
 Time: O(N!)
 Unlike the brute force approach, we will only place queens on squares that aren't under attack. For the first queen, we have N options. For the next queen, we won't attempt to place it in the same column as the first queen, and there must be at least one square attacked diagonally by the first queen as well. Thus, the maximum number of squares we can consider for the second queen is N−2. For the third queen, we won't attempt to place it in 2 columns already occupied by the first 2 queens, and there must be at least two squares attacked diagonally from the first 2 queens. Thus, the maximum number of squares we can consider for the third queen is N−4. This pattern continues, resulting in an approximate time complexity of N!.
 
@@ -43,39 +62,41 @@ Runetime: 8 ms Beats 89.47%
 Memory: 52.40 MB Beats 72.60%
  */
 var solveNQueens = function (n) {
+  const result = [];
+  const emptyBoard = Array.from({ length: n }, () => Array(n).fill("."));
   const colSet = new Set();
   const diagonalSet = new Set();
   const antiDiagonalSet = new Set();
-  const result = [];
-  const emptyBoard = [...new Array(n)].map((x) => new Array(n).fill("."));
-
   const backtrack = (row, state) => {
-    //base case - N queen has been placed
+    //we reached of the matrix
     if (row == n) {
       result.push(state.map((x) => x.join("")));
       return;
     }
+    //try placing the queen at each column
     for (let col = 0; col < n; col++) {
       const diagonal = row - col;
       const antiDiagonal = row + col;
+      //check if this queen is being attacked
       if (
         colSet.has(col) ||
         diagonalSet.has(diagonal) ||
         antiDiagonalSet.has(antiDiagonal)
-      ) {
+      )
         continue;
-      }
+      //mark col and diagonals as attacked
       colSet.add(col);
       diagonalSet.add(diagonal);
       antiDiagonalSet.add(antiDiagonal);
+      //place the queen at this cell
       state[row][col] = "Q";
+      //try placing other queens
       backtrack(row + 1, state);
-      // "Remove" the queen from the board since we have already
-      // explored all valid paths using the above function call
+      //revert this queen position and attck cells to try with other position
+      state[row][col] = ".";
       colSet.delete(col);
       diagonalSet.delete(diagonal);
       antiDiagonalSet.delete(antiDiagonal);
-      state[row][col] = ".";
     }
   };
   backtrack(0, emptyBoard);

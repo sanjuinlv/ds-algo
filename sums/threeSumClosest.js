@@ -56,8 +56,8 @@ Sorting the array takes O(nlogn), so overall complexity is O(nlogn+n^2).
 This is asymptotically equivalent to O(n^2).
 Space: from O(logn) to O(n), depending on the implementation of the sorting algorithm.
 
-Runtime: 66 ms Beats 77.97%
-Memory Usage: 51.32 MB Beats 24.70%
+Runtime: 13 ms Beats 77.70%
+Memory Usage: 55.03 MB Beats 54.80%
 */
 var threeSumClosest = function (nums, target) {
   let closest = Infinity;

@@ -1,6 +1,6 @@
 /* 
 211. Design Add and Search Words Data Structure
-https://leetcode.com/problems/design-add-and-search-words-data-structure/description/
+https://leetcode.com/problems/design-add-and-search-words-data-structure
 Type: Medium
 
 Design a data structure that supports adding new words and finding if a string 
@@ -45,19 +45,69 @@ Runtime: 609 ms Beats 99.87%
 Memory: 117.66 MB Beats 13.13%
 */
 function Node() {
+  this.children = new Map();
+  this.isWord = false;
+}
+
+var WordDictionary = function () {
+  this.root = new Node();
+};
+
+/**
+ * @param {string} word
+ * @return {void}
+ */
+WordDictionary.prototype.addWord = function (word) {
+  let curr = this.root;
+  for (const c of word) {
+    if (!curr.children.has(c)) curr.children.set(c, new Node());
+    curr = curr.children.get(c);
+  }
+  curr.isWord = true;
+};
+
+/**
+ * @param {string} word
+ * @return {boolean}
+ */
+WordDictionary.prototype.search = function (word) {
+  return this.searchByNode(word, this.root);
+};
+
+WordDictionary.prototype.searchByNode = function (word, node) {
+  const N = word.length;
+  for (let i = 0; i < N; i++) {
+    const c = word[i];
+    if (c == ".") {
+      //for wildcard we look into each children for match
+      for (const child of node.children.values()) {
+        if (this.searchByNode(word.slice(i + 1, N), child)) return true;
+      }
+      //no match found in children nodes
+      return false;
+    } else {
+      if (!node.children.has(c)) return false;
+      node = node.children.get(c);
+    }
+  }
+  return node.isWord;
+};
+
+/*
+Using Function syntax 
+
+Runtime: 728 ms Beats 24.69%
+Memory Usage: 114.49 MB Beats 26.49%
+*/
+function WordDictionary() {
+  function Node() {
     this.children = new Map();
     this.isWord = false;
   }
-  
-  var WordDictionary = function () {
-    this.root = new Node();
-  };
-  
-  /**
-   * @param {string} word
-   * @return {void}
-   */
-  WordDictionary.prototype.addWord = function (word) {
+
+  this.root = new Node();
+
+  this.addWord = function (word) {
     let curr = this.root;
     for (const c of word) {
       if (!curr.children.has(c)) curr.children.set(c, new Node());
@@ -65,83 +115,33 @@ function Node() {
     }
     curr.isWord = true;
   };
-  
-  /**
-   * @param {string} word
-   * @return {boolean}
-   */
-  WordDictionary.prototype.search = function (word) {
+
+  this.search = function (word) {
     return this.searchByNode(word, this.root);
   };
-  
-  WordDictionary.prototype.searchByNode = function (word, node) {
+
+  this.searchByNode = function (word, node) {
+    console.log(`word: ${word}`, node);
     const N = word.length;
     for (let i = 0; i < N; i++) {
       const c = word[i];
       if (c == ".") {
-        //for wildcard we look into each children for match
+        //check if any the given word mathes with any of the child node
         for (const child of node.children.values()) {
-          if (this.searchByNode(word.slice(i + 1, N), child)) return true;
+          if (this.searchByNode(word.slice(i + 1), child)) return true;
         }
-        //no match found in children nodes
+        //if none of the child path matches then return false
         return false;
       } else {
         if (!node.children.has(c)) return false;
-        node = node.children.get(c);
       }
+      node = node.children.get(c);
     }
     return node.isWord;
   };
-  
+}
 
-/*
-Using Function syntax 
-Runtime: 224 ms, faster than 97.59% of JavaScript online submissions for Design Add and Search Words Data Structure.
-Memory Usage: 60.6 MB, less than 42.59% of JavaScript online submissions for Design Add and Search Words Data Structure.
-*/
-var WordDictionary = function() {
-    this.root = new Node();
-    
-    function Node(){
-        this.isWord = false;
-        this.children = new Map();
-    }        
-
-    this.addWord = function(word) {
-        let curr = this.root;
-        for (const c of word){
-            if (!curr.children.has(c)) {
-                curr.children.set(c, new Node());
-            }
-            curr = curr.children.get(c);
-        }
-        curr.isWord = true;
-    };
-    
-    this.search = function(word) {
-        return this.searchByNode(word, this.root);
-    }
-
-    this.searchByNode = function(word, node) {
-        for (let i = 0; i < word.length; i++) {
-            // console.log(`c: ${word[i]}`)
-            if (word[i] === ".") {
-                //wildcard character. check for all child nodes 
-                for (const child of node.children.values()){
-                    if (this.searchByNode(word.slice(i+1, word.length), child)) return true;
-                }
-                return false;
-            } else {
-                if (!node.children.has(word[i])) return false;
-            }
-            node = node.children.get(word[i]);    
-        }
-        return node.isWord;
-    };
-};
-
-
-/** 
+/**
  * Your WordDictionary object will be instantiated and called as such:
  * var obj = new WordDictionary()
  * obj.addWord(word)

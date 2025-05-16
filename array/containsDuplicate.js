@@ -1,7 +1,7 @@
 /* 
 217. Contains Duplicate
 https://leetcode.com/problems/contains-duplicate/
-Type: Medium
+Type: Easy
 
 Given an array of integers, find if the array contains any duplicates.
 Your function should return true if any value appears at least twice in the array, 

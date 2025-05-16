@@ -51,8 +51,8 @@ Approach II : Categorized by Count
 Time: O(N*K), where N is input array size and K is longest word length
 Space: O(N*K)
 
-Runtime: 36 ms Beats 51.85%
-Memory Usage: 68.45 MB Beats 20.69%
+Runtime: 34 ms Beats 54.22%
+Memory Usage: 67.79 MB Beats 55.05%
 */
 var groupAnagrams = function (strs) {
   if (strs.length == 0) return [];
