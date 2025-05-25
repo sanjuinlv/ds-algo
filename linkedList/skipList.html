@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Skip List Visualizer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      padding: 8px;
+      margin-right: 8px;
+    }
+
+    .level {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .node {
+      background: #4caf50;
+      color: white;
+      padding: 10px;
+      margin: 0 5px;
+      border-radius: 4px;
+      min-width: 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .node::after {
+      content: '→';
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .node:last-child::after {
+      content: '';
+    }
+
+    .level-label {
+      width: 50px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Skip List Visualizer</h2>
+  <div class="controls">
+    <input type="number" id="valueInput" placeholder="Enter number" />
+    <button onclick="insert()">Insert</button>
+    <button onclick="search()">Search</button>
+    <button onclick="remove()">Delete</button>
+    <span id="status"></span>
+  </div>
+  <div id="visualizer"></div>
+
+  <script>
+    class Node {
+      constructor(value, level) {
+        this.value = value;
+        this.forward = new Array(level + 1).fill(null);
+      }
+    }
+
+    class SkipList {
+      constructor(maxLevel = 4, p = 0.5) {
+        this.maxLevel = maxLevel;
+        this.p = p;
+        this.level = 0;
+        this.header = new Node(null, maxLevel);
+      }
+
+      randomLevel() {
+        let lvl = 0;
+        while (Math.random() < this.p && lvl < this.maxLevel) lvl++;
+        return lvl;
+      }
+
+      insert(value) {
+        let update = Array(this.maxLevel + 1);
+        let current = this.header;
+
+        for (let i = this.level; i >= 0; i--) {
+          while (current.forward[i] && current.forward[i].value < value) {
+            current = current.forward[i];
+          }
+          update[i] = current;
+        }
+
+        current = current.forward[0];
+        if (current === null || current.value !== value) {
+          const lvl = this.randomLevel();
+
+          if (lvl > this.level) {
+            for (let i = this.level + 1; i <= lvl; i++) {
+              update[i] = this.header;
+            }
+            this.level = lvl;
+          }
+
+          const newNode = new Node(value, lvl);
+          for (let i = 0; i <= lvl; i++) {
+            newNode.forward[i] = update[i].forward[i];
+            update[i].forward[i] = newNode;
+          }
+        }
+      }
+
+      search(value) {
+        let current = this.header;
+        for (let i = this.level; i >= 0; i--) {
+          while (current.forward[i] && current.forward[i].value < value) {
+            current = current.forward[i];
+          }
+        }
+        current = current.forward[0];
+        return current !== null && current.value === value;
+      }
+
+      delete(value) {
+        let update = new Array(this.maxLevel + 1);
+        let current = this.header;
+
+        for (let i = this.level; i >= 0; i--) {
+          while (
+            current.forward[i] !== null &&
+            current.forward[i].value < value
+          ) {
+            current = current.forward[i];
+          }
+          update[i] = current;
+        }
+
+        current = current.forward[0];
+
+        if (current && current.value === value) {
+          for (let i = 0; i <= this.level; i++) {
+            if (update[i].forward[i] !== current) break;
+            update[i].forward[i] = current.forward[i];
+          }
+
+          while (this.level > 0 && this.header.forward[this.level] == null) {
+            this.level--;
+          }
+        }
+      }
+
+      getLevels() {
+        const levels = Array.from({ length: this.maxLevel + 1 }, () => []);
+        let node = this.header.forward[0];
+        while (node) {
+          for (let i = 0; i <= node.forward.length - 1; i++) {
+            levels[i].push(node.value);
+          }
+          node = node.forward[0];
+        }
+        return levels;
+      }
+    }
+
+    const list = new SkipList();
+    const input = document.getElementById("valueInput");
+    const status = document.getElementById("status");
+
+    function insert() {
+      const val = parseInt(input.value);
+      if (!isNaN(val)) {
+        list.insert(val);
+        render();
+        status.textContent = `Inserted ${val}`;
+      }
+    }
+
+    function search() {
+      const val = parseInt(input.value);
+      if (!isNaN(val)) {
+        const found = list.search(val);
+        status.textContent = found ? `Found ${val}` : `Not found: ${val}`;
+      }
+    }
+
+    function remove() {
+      const val = parseInt(input.value);
+      if (!isNaN(val)) {
+        list.delete(val);
+        render();
+        status.textContent = `Deleted ${val}`;
+      }
+    }
+
+    function render() {
+      const vis = document.getElementById("visualizer");
+      vis.innerHTML = "";
+      const levels = list.getLevels();
+
+      for (let i = levels.length - 1; i >= 0; i--) {
+        const levelDiv = document.createElement("div");
+        levelDiv.className = "level";
+        const label = document.createElement("span");
+        label.className = "level-label";
+        label.textContent = `L${i}:`;
+        levelDiv.appendChild(label);
+
+        levels[i].forEach(val => {
+          const node = document.createElement("div");
+          node.className = "node";
+          node.textContent = val;
+          levelDiv.appendChild(node);
+        });
+
+        vis.appendChild(levelDiv);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 /* 
+20. Valid Parentheses
 https://leetcode.com/problems/valid-parentheses/
 Type: Easy
 
@@ -39,37 +40,9 @@ Contraint:
  * @param {string} s
  * @return {boolean}
  */
-/*
-Approach I  (Using Stack)
-Time complexity; O(N)
-Space Complexityl O(N)
-Runtime: 80 ms, faster than 71.70% of JavaScript online submissions for Valid Parentheses.
-Memory Usage: 40 MB, less than 20.37% of JavaScript online submissions for Valid Parentheses.
-*/
-var isValid = function (s) {
-  const stack = [];
-  for (let char of s) {
-    if (stack.length) {
-      if (stack[stack.length - 1] == "(" && char == ")") {
-        stack.pop();
-      } else if (stack[stack.length - 1] == "[" && char == "]") {
-        stack.pop();
-      } else if (stack[stack.length - 1] == "{" && char == "}") {
-        stack.pop();
-      } else {
-        stack.push(char);
-      }
-    } else {
-      stack.push(char);
-    }
-  }
-  console.log(`stack; ${stack}`);
-  return stack.length ? false : true;
-};
 
-//Solution reference
 /*
-Approach II: Using Stack
+Approach I: Using Stack
 Idea is to keep adding the closing braces for openning braces encountered and when 
 closing braces char is encountere the top of stack should have the same char otherwise its invalid parenthesis
 Runtime: 84 ms, faster than 46.15% of JavaScript online submissions for Valid Parentheses.
@@ -92,7 +65,7 @@ var isValid = function (s) {
 };
 
 /*
-Approach III: Using Map
+Approach II: Stack with braces Map
 Runtime: 84 ms, faster than 46.15% of JavaScript online submissions for Valid Parentheses.
 Memory Usage: 39 MB, less than 51.90% of JavaScript online submissions for Valid Parentheses.
  */

@@ -1,6 +1,8 @@
 /*
+155. Min Stack
 https://leetcode.com/problems/min-stack
 Type: Medium
+
 Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
 
 Implement the MinStack class:
@@ -45,23 +47,20 @@ Min Stack implementation using the array
 Time Complexity: O(1) for all operations (push, pop, top, getMin)
 Space: O(N)
 
-Runtime: 76 ms, faster than 94.66% of JavaScript online submissions for Min Stack.
-Memory Usage: 59.43 MB, less than 37.63% of JavaScript online submissions for Min Stack.
+Runtime: 10 ms Beats 47.45%
+Memory Usage: 66.11 MB Beats 23.69%
 */
 class MinStack {
   constructor() {
-    this.arr = [];
+    this.stack = [];
   }
-  /**
-   * @param {number} val
-   * @return {void}
-   */
+
   push(val) {
-    if (this.arr.length == 0) {
-      this.arr.push([val, val]);
-    } else {
-      const currentMin = this._last()[1];
-      this.arr.push([val, Math.min(val, currentMin)]);
+    if (this.stack.length == 0) this.stack.push([val, val]);
+    else {
+      //get current min
+      const currMin = this._last()[1];
+      this.stack.push([val, Math.min(val, currMin)]);
     }
   }
 
@@ -69,8 +68,7 @@ class MinStack {
    * @return {void}
    */
   pop() {
-    const top = this.arr.pop();
-    return top[0];
+    this.stack.pop();
   }
 
   /**
@@ -88,7 +86,7 @@ class MinStack {
   }
 
   _last() {
-    return this.arr[this.arr.length - 1];
+    return this.stack[this.stack.length - 1];
   }
 }
 
@@ -149,11 +147,6 @@ class MinStack {
     this._minStack = [];
   }
 
-  //internal method
-  _last(arr) {
-    return arr[arr.length - 1];
-  }
-
   push(x) {
     // We always put the number onto the main stack.
     this._stack.push(x);
@@ -191,19 +184,23 @@ class MinStack {
   getMin() {
     return this._last(this._minStack)[0];
   }
+
+  //internal method
+  _last(arr) {
+    return arr[arr.length - 1];
+  }
+
 }
 
-
-// Approach IV: Linked List
 /* 
+Approach IV: Linked List
 Time:  O(1) for all operations (push, pop, top, getMin)
 Space: O(N)
 
-Runtime: 92 ms Beats 45.97%
-Memory: 58.66 MB Beats 75.64%
+Runtime: 12 ms Beats 27.83%
+Memory: 63.94 MB Beats 95.24%
 */
 class MinStack {
-  
   static Node = class {
     constructor(value, min, next = null) {
       this.value = value;
@@ -211,39 +208,23 @@ class MinStack {
       this.next = next;
     }
   };
-
   constructor() {
-    this.head = null;    
+    this.head = null;
   }
-  /**
-   * @param {number} val
-   * @return {void}
-   */
+
   push(val) {
-    if (this.head == null) {
-        this.head = new MinStack.Node(val, val);
-    } else {
-        this.head = new MinStack.Node(val, Math.min(val, this.head.min), this.head);
+    if (this.head == null) this.head = new MinStack.Node(val, val);
+    else {
+      //point head to next node with new min value
+      this.head = new MinStack.Node(val, Math.min(val, this.head.min), this.head);
     }
   }
-
-  /**
-   * @return {void}
-   */
   pop() {
     this.head = this.head.next;
   }
-
-  /**
-   * @return {number}
-   */
   top() {
     return this.head.value;
   }
-
-  /**
-   * @return {number}
-   */
   getMin() {
     return this.head.min;
   }

@@ -38,51 +38,41 @@ Constraints:
 */
 /* 
 Approach: 
-Runtime: 58 ms Beats 44.96%
-Memory: 102.54 MB Beats 11.04%
+Runtime: 51 ms Beats 79.40%
+Memory: 102.40 MB Beats 15.93%
 */
-var TimeMap = function () {
-  this.map = new Map();
-};
-
-/**
- * @param {string} key
- * @param {string} value
- * @param {number} timestamp
- * @return {void}
- */
-TimeMap.prototype.set = function (key, value, timestamp) {
-  //if key does not exist then add key and empty array
-  if (!this.map.has(key)) this.map.set(key, []);
-  this.map.get(key).push([value, timestamp]);
-};
-
-/**
- * @param {string} key
- * @param {number} timestamp
- * @return {string}
- */
-TimeMap.prototype.get = function (key, timestamp) {
-  const valArr = this.map.get(key);
-  //not entry found for this key
-  if (!valArr || valArr.length == 0) return "";
-  //enrty exists, perform binary search
-  let lo = 0;
-  let hi = valArr.length - 1;
-  let result = "";
-  while (lo <= hi) {
-    const mid = lo + Math.floor((hi - lo) / 2);
-    const [val, time] = valArr[mid];
-    if (time == timestamp) return val;
-    //mid timestamp is less than given timestamp, move right
-    if (time < timestamp) {
-      lo = mid + 1;
-      //potential result
-      result = val;
-    } else hi = mid - 1;
+class TimeMap {
+  constructor() {
+    this.keyMap = new Map();
   }
-  return result;
-};
+  set(key, value, timestamp) {
+    //if no entry exists for this key then create one
+    if (!this.keyMap.has(key)) this.keyMap.set(key, []);
+    //now add the key value with timestamp
+    this.keyMap.get(key).push([value, timestamp]);
+  }
+
+  get(key, timestamp) {
+    if (!this.keyMap.has(key)) return "";
+    //perform binary search
+    const values = this.keyMap.get(key);
+    let lo = 0;
+    let hi = values.length - 1;
+    let result = "";
+    while (lo <= hi) {
+      const mid = lo + Math.floor((hi - lo) / 2);
+      const [value, time] = values[mid];
+      if (time == timestamp) return value;
+      //if the mid timestamp is lower than given timestamp then try towards right
+      if (time < timestamp) {
+        lo = mid + 1;
+        //potential result
+        result = value;
+      } else hi = mid - 1;
+    }
+    return result;
+  }
+}
 
 /**
  * Your TimeMap object will be instantiated and called as such:

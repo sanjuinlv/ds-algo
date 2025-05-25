@@ -1,4 +1,5 @@
 /*
+150. Evaluate Reverse Polish Notation
 https://leetcode.com/problems/evaluate-reverse-polish-notation/
 Category - Medium
 
@@ -32,9 +33,8 @@ Explanation: ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
 = 22
 
 Constraints:
-
-1 <= tokens.length <= 104
-tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
+ - 1 <= tokens.length <= 10^4
+ - tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
 
 */
 /**
@@ -47,28 +47,23 @@ Approach: Stack
 Time: O(N)
 Space: O(N)
 
-Runtime: 114 ms, faster than 43.00% of JavaScript online submissions for Evaluate Reverse Polish Notation.
-Memory Usage: 44.7 MB, less than 76.01% of JavaScript online submissions for Evaluate Reverse Polish Notation.
+Runtime: 5 ms Beats 77.75%
+Memory Usage: 59.45 MB Beats 26.03%
  */
 var evalRPN = function (tokens) {
+  const result = [];
   const operatorMap = new Map();
   operatorMap.set("+", (a, b) => a + b);
   operatorMap.set("-", (a, b) => a - b);
   operatorMap.set("*", (a, b) => a * b);
   operatorMap.set("/", (a, b) => parseInt(a / b));
-  const resultStack = [];
-  for (let i = 0; i < tokens.length; i++) {
-    const char = tokens[i];
-    //if the char is operator then evaluate it
-    if (operatorMap.has(char)) {
-      const operation = operatorMap.get(char);
-      const val2 = parseInt(resultStack.pop());
-      const val1 = parseInt(resultStack.pop());
-      const result = operation(val1, val2);
-      resultStack.push(result);
-    } else {
-      resultStack.push(char);
-    }
+  for (const token of tokens) {
+    if (operatorMap.has(token)) {
+      const operation = operatorMap.get(token);
+      const val2 = result.pop();
+      const val1 = result.pop();
+      result.push(operation(val1, val2));
+    } else result.push(parseInt(token));
   }
-  return resultStack.pop();
+  return result.pop();
 };

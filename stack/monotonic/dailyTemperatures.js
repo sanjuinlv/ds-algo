@@ -53,29 +53,33 @@ var dailyTemperatures = function (temperatures) {
   return result;
 };
 
-//II: Loop index variation (NGR)
+/*
+Approach II: Loop index variation (NGR) 
+Runtime: 29 ms Beats 42.91%
+Memory: 78.56 MB Beats 85.76%
+*/
 var dailyTemperatures = function (temperatures) {
   const N = temperatures.length;
-  const stack = new Array();
   const result = new Array(N);
+  const stack = [];
+  //push the last item to the stack with its index
+  stack.push[[temperatures[N - 1], N - 1]];
   const top = (A) => A[A.length - 1];
   for (let i = N - 1; i >= 0; i--) {
-    //pop until the top is less than current element
-    while (stack.length !== 0 && top(stack)[0] <= temperatures[i]) {
-      stack.pop();
-    }
-    if (stack.length) {
-      result[i] = top(stack)[1] - i;
-    } else {
-      result[i] = 0;
-    }
-    stack.push([temperatures[i], i]);
+    const temperature = temperatures[i];
+    //until top is smaller than current remove from it
+    while (stack.length && top(stack)[0] <= temperature) stack.pop();
+    //store the diff between top index and curr index
+    if (stack.length) result[i] = top(stack)[1] - i;
+    //add curr to the stack
+    stack.push([temperature, i]);
   }
   return result;
 };
 
-//III: Only storing the index
+
 /* 
+Approach III: Only storing the index
 Runetime: 224 ms Beats 37.84%
 Memory: 76.56 MB Beats 23.97%
 */

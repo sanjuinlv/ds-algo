@@ -57,32 +57,30 @@ Approach: Sliding Window
 Time: O(N)
 Space: O(M) - The maximum number of keys in the map equals the number of unique characters in the string. Considering uppercase English letters only, m=26, it will be O(1)
 
-Runtime: 19 ms Beats 69.81%
-Memory Usage: 57.17 MB Beats 28.89%
+Runtime: 16 ms Beats 80.56%
+Memory Usage: 55.70 MB Beats 81.73%
  */
 var characterReplacement = function (s, k) {
   const N = s.length;
-  const charMap = {};
   let left = 0;
   let right = 0;
   let maxFrequency = 0;
   let maxLength = 0;
+  //character count map
+  const charMap = {};
   while (right < N) {
     const char = s[right];
-    //increase this char frequence
+    //increment this char count
     charMap[char] = (charMap[char] || 0) + 1;
+    //record the max char freq
     maxFrequency = Math.max(maxFrequency, charMap[char]);
-    //curr window lenght
+    //window length
     const windowLength = right - left + 1;
-    //letters to change = windowLength - maxFreq
+    //character replacement required in this window
     const lettersToChange = windowLength - maxFrequency;
     //if char replacement requirement is more than k then we need to shrink the window
-    if (lettersToChange > k) {
-      //remove the left char from the window and decrease its count
-      charMap[s[left++]]--;
-    }
-    // the window is valid at this point, store length
-    // size of the window never decreases
+    if (lettersToChange > k) charMap[s[left++]]--;
+    //record the max window lenght
     maxLength = Math.max(maxLength, right - left + 1);
     right++;
   }

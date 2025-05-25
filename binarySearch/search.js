@@ -1,5 +1,6 @@
 /* 
-https://leetcode.com/problems/binary-search/description/
+704. Binary Search
+https://leetcode.com/problems/binary-search
 Type: Easy
 
 Given an array of integers nums which is sorted in ascending order, and an integer

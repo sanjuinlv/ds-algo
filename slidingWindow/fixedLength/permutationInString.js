@@ -49,8 +49,8 @@ var checkInclusion = function (s1, s2) {
       const outChar = s2[i];
       if (charMap.has(outChar)) {
         const outCharCount = charMap.get(outChar);
-        if (charMap.get(outChar) == 0) count++;
-        charMap.set(outChar, charMap.get(outChar) + 1);
+        if (outCharCount == 0) count++;
+        charMap.set(outChar, outCharCount + 1);
       }
       i++;
     }
