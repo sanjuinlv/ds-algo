@@ -39,49 +39,55 @@ Explanation: Given linked list is empty (null pointer), so return null.
  * @return {Node}
  */
 /* 
-Approach I: One pass
-Create copy node while going through the nodes
-Time: O(N)
-Space; O(N)
+Approach I: One pass with node copy
 
-Runtime: 46 ms Beats 47.41%
-Memory: 55.12 MB Beats 71.00%
+Runtime: 49 ms Beats 27.88%
+Memory Usage: 55.28 MB Beats 69.76%
 */
 var copyRandomList = function (head) {
-  const clone = new _Node();
-  let curr = clone;
-  const nodeMap = new Map();
-  while (head != null) {
-    //Node creation
-    if (!nodeMap.has(head)) {
-      const newNode = new _Node(head.val);
-      nodeMap.set(head, newNode);
-      curr.next = newNode;
-    } else curr.next = nodeMap.get(head);
-    //node next pointer
-    if (head.next != null) {
-      if (!nodeMap.has(head.next)) {
-        const newNode = new _Node(head.next.val);
-        nodeMap.set(head.next, newNode);
-        curr.next.next = newNode;
-      } else curr.next.next = nodeMap.get(head.next);
-    }
-    //node's random pointer
-    if (head.random != null) {
-      if (!nodeMap.has(head.random)) {
-        const newNode = new _Node(head.random.val);
-        nodeMap.set(head.random, newNode);
-        curr.next.random = newNode;
-      } else curr.next.random = nodeMap.get(head.random);
-    }
-    head = head.next;
-    curr = curr.next;
+  let current = head;
+  let nodeMap = new Map();
+  const getFromCache = (key, map) => {
+    if (key == null) return null;
+    if (!map.has(key)) map.set(key, new Node(key.val));
+    return map.get(key);
+  };
+  while (current != null) {
+    const node = getFromCache(current, nodeMap);
+    node.next = getFromCache(current.next, nodeMap);
+    node.random = getFromCache(current.random, nodeMap);
+    current = current.next;
   }
-  return clone.next;
+  return nodeMap.get(head);
 };
 
 /* 
-Approach II: two pass (cleaner code)
+Approach II: One pass with dummy node
+Runtime: 50 ms Beats 23.17%
+Memory: 55.36 MB Beats 63.44%
+*/
+var copyRandomList = function (head) {
+  let dummy = new _Node();
+  copy = dummy;
+  let curr = head;
+  const nodeMap = new Map();
+  const createOrGetNode = (node) => {
+    if (node == null) return null;
+    if (!nodeMap.has(node)) nodeMap.set(node, new _Node(node.val));
+    return nodeMap.get(node);
+  };
+  while (curr != null) {
+    copy.next = createOrGetNode(curr);
+    copy.next.next = createOrGetNode(curr.next);
+    copy.next.random = createOrGetNode(curr.random);
+    curr = curr.next;
+    copy = copy.next;
+  }
+  return dummy.next;
+};
+
+/* 
+Approach III: two pass (cleaner code)
 
 Runtime: 42 ms Beats 69.33%
 Memory Usage: 55.41 MB Beats 50.92% 
@@ -102,34 +108,6 @@ var copyRandomList = function (head) {
     node.next = curr.next ? nodeMap.get(curr.next) : null;
     node.random = curr.random ? nodeMap.get(curr.random) : null;
     curr = curr.next;
-  }
-  return nodeMap.get(head);
-};
-
-/* 
-Approach III: 
-Runtime: 76 ms, 
-faster than 87.25% of JavaScript online submissions for Copy List with Random Pointer.
-Memory Usage: 40.2 MB, less than 74.70% of JavaScript online submissions for Copy List with Random Pointer.
-*/
-var copyRandomList = function (head) {
-  console.log(head);
-  let current = head;
-  let nodeMap = new Map();
-  const getFromCache = (key, map) => {
-    if (key) {
-      if (map.has(key)) return map.get(key);
-      const node = new Node(key.val, null, null);
-      map.set(key, node);
-      return node;
-    }
-    return null;
-  };
-  while (current != null) {
-    const node = getFromCache(current, nodeMap);
-    node.next = getFromCache(current.next, nodeMap);
-    node.random = getFromCache(current.random, nodeMap);
-    current = current.next;
   }
   return nodeMap.get(head);
 };

@@ -101,7 +101,7 @@ var removeNthFromEnd = function (head, n) {
     length--;
   }
   console.log(`curr node: ${curr.val}`);
-  temp = curr.next;
+  let temp = curr.next;
   curr.next = temp.next;
   temp = null;
   return dummy.next;
@@ -137,8 +137,33 @@ var removeNthFromEnd = function (head, n) {
     second = second.next;
   }
   //3. remove the next node of second
-  const nodeToDelete = second.next;
+  let nodeToDelete = second.next;
   second.next = nodeToDelete.next;
   nodeToDelete = null;
+  return dummy.next;
+};
+
+/* 
+variant of above
+Time: 0 ms Beats 100.00%
+Space: 52.91 MB Beats 96.48%
+ */
+var removeNthFromEnd = function (head, n) {
+  let dummy = new ListNode(0, head);
+  let first = dummy;
+  let second = dummy;
+  let k = n;
+  //move first pointer n+1 steps
+  while (k >= 0) {
+    k--;
+    first = first.next;
+  }
+  while (first != null) {
+    second = second.next;
+    first = first.next;
+  }
+  let nodeToBeDeleted = second.next;
+  second.next = nodeToBeDeleted.next;
+  nodeToBeDeleted = null;
   return dummy.next;
 };

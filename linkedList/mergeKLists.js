@@ -94,37 +94,38 @@ var mergeKLists = function (lists) {
   const N = lists.length;
   if (N == 0) return null;
   if (N == 1) return lists[0];
-  const mergeTwoList = (l1, l2) => {
-    const dummy = new ListNode();
-    let curr = dummy;
-    while (l1 != null && l2 != null) {
-      if (l1.val <= l2.val) {
-        curr.next = l1;
-        l1 = l1.next;
-      } else {
-        curr.next = l2;
-        l2 = l2.next;
-      }
-      curr = curr.next;
-    }
-    curr.next = l1 == null ? l2 : l1;
-    return dummy.next;
-  };
-
-  const divideAndConquer = (lists, lo, hi) => {
-    if (lo > hi) return null; //nothing to merge
-    if (lo == hi) return lists[lo];
-    const mid = lo + Math.floor((hi - lo) / 2);
-    //sort left
-    const left = divideAndConquer(lists, lo, mid);
-    //sort right
-    const right = divideAndConquer(lists, mid + 1, hi);
-    //merge two parts
-    return mergeTwoList(left, right);
-  };
-
   return divideAndConquer(lists, 0, N - 1);
 };
+
+function divideAndConquer(lists, lo, hi) {
+  if (lo > hi) return null;
+  if (lo == hi) return lists[lo];
+  const mid = lo + Math.floor((hi - lo) / 2);
+  //sort left part
+  const left = divideAndConquer(lists, lo, mid);
+  //sort right part
+  const right = divideAndConquer(lists, mid + 1, hi);
+  //merge left and right
+  return mergeTwoList(left, right);
+}
+
+function mergeTwoList(l1, l2) {
+  let dummy = new ListNode();
+  let curr = dummy;
+  while (l1 != null && l2 != null) {
+    if (l1.val <= l2.val) {
+      curr.next = l1;
+      l1 = l1.next;
+    } else {
+      curr.next = l2;
+      l2 = l2.next;
+    }
+    curr = curr.next;
+  }
+  //copy left out of l1/l2
+  curr.next = l1 == null ? l2 : l1;
+  return dummy.next;
+}
 
 /* 
 Approach III: Min priority queue
@@ -138,7 +139,7 @@ var mergeKLists = function (lists) {
   const N = lists.length;
   if (N == 0) return null;
   if (N == 1) return lists[0];
-  //Min priority queue
+  //Min priority queue  
   const pq = new PriorityQueue((a, b) => {
     return a.val - b.val;
   });

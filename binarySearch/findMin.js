@@ -49,17 +49,18 @@ Approach: Binary Search
 Time: O(LogN)
 Space: O(1)
 
-Runtime: 56 ms, faster than 98.29% of JavaScript online submissions for Find Minimum in Rotated Sorted Array.
-Memory Usage: 42.6 MB, less than 7.25% of JavaScript online submissions for Find Minimum in Rotated Sorted Array.
+Runtime: 0 ms Beats 100.00%
+Memory Usage: 53.29 MB Beats 79.35%
 */
 var findMin = function (nums) {
+  const N = nums.length;
   let left = 0;
-  let right = nums.length - 1;
-  if (nums.length == 1) return nums[0];
+  let right = N - 1;
+  if (N == 1) return nums[left];
   // if the last element is greater than the first element then there is no rotation.
   // e.g. 1 < 2 < 3 < 4 < 5 < 7. Already sorted array.
   // Hence the smallest element is first element. A[0]
-  if (nums[right] > nums[left]) return nums[0];
+  if (nums[right] > nums[left]) return nums[left];
   while (left < right) {
     const mid = parseInt(left + (right - left) / 2);
     // if the mid element is lesser than its previous element then mid element is the smallest

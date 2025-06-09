@@ -35,8 +35,8 @@ Approach: Reverse the list from middle and merge the two list
 Time: O(N)
 Space: O(1)
 
-Runtime: 1 ms Beats 84.93%
-Memory: 65.69 MB Beats 9.04%
+Runtime: 0 ms Beats 100.00%
+Memory: 65.56 MB Beats 45.28%
 */
 var reorderList = function (head) {
   //1. find middle of the node

@@ -45,7 +45,7 @@ var addTwoNumbers = function (l1, l2) {
     const digit1 = l1 ? l1.val : 0;
     const digit2 = l2 ? l2.val : 0;
     const digitSum = digit1 + digit2 + carryOver;
-    carryOver = Math.floor(sum / 10);
+    carryOver = Math.floor(digitSum / 10);
     curr.next = new ListNode(digitSum % 10);
     curr = curr.next;
     if (l1 != null) l1 = l1.next;

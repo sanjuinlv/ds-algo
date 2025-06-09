@@ -111,7 +111,7 @@ class LRUCache {
 }
 
 /*
-Minor optimisation
+Minor optimization
 
 Runtime: 123 ms Beats 21.33%
 Memory: 105.02 MB Beats 75.76%

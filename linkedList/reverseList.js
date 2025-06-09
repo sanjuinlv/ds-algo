@@ -55,7 +55,7 @@ var reverseList = function (head) {
     currNode.next = prevNode;
     //now prev node is curre node
     prevNode = currNode;
-    //change curr node to previously save next node
+    //change curr node to previously saved next node
     currNode = nextNode;
   }
   return prevNode;
@@ -89,3 +89,60 @@ var reverseList = function (head) {
   head.next = null;
   return reversedHead;
 };
+/* 
+call stacks for above:
+1. Call stack builds:
+ - reverseList(1) → waits for reverseList(2)
+ - reverseList(2) → waits for reverseList(3)
+ - reverseList(3) → base case: returns 3
+
+2. Stack unwinds:
+ From reverseList(2):
+  -  head is 2
+  - head.next is 3 
+  - head.next.next = head → 3.next = 2
+  - head.next = null → 2.next = null
+  - Returns node 3 (head of reversed list)
+  - Now 3 -> 2 -> null
+
+From reverseList(1): 
+ - head is 1
+ - head.next is 2
+ - head.next.next = head → 2.next = 1 
+ - head.next = null → 1.next = null
+ - Returns node 3
+ -  Final reversed list: 3 -> 2 -> 1 -> null
+
+✅ Correctly reversed list.
+
+If we change the above code to:
+var reverseList = function (head) {
+  if (head == null || head.next == null) return head;
+  const reversedHead = reverseList(head.next);
+  head.next.next = head;
+  head.next = null;
+  return reversedHead;
+};
+
+1. Call stack builds:
+ - reverseList(1) → reverseList(2) → reverseList(3) → base case returns 3
+
+2. Stack unwinds:
+ From reverseList(2):
+  - head is 2
+  - reversedHead is 3
+  - reversedHead.next = head → 3.next = 2
+  - head.next = null → 2.next = null
+  - Returns 3
+
+ From reverseList(1):
+  - head is 1
+  - reversedHead is still 3 (which now points to 2)
+  - reversedHead.next = head → 3.next = 1 (⚠️ overwrites the earlier 3.next = 2)
+  - head.next = null → 1.next = null
+  - Returns 3
+
+What’s wrong:
+Each recursive step overwrites reversedHead.next, which is always pointing to the last head instead of chaining them.
+Final list: 3 -> 1 -> null (and 2 is now disconnected)
+*/
