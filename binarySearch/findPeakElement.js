@@ -1,4 +1,5 @@
 /* 
+162. Find Peak Element
 https://leetcode.com/problems/find-peak-element
 Type: Medium
 
@@ -77,8 +78,8 @@ peak element correctly in this case as well.
 Time: O(N)
 Space: O(1)
 
-Runtime: 51 ms Beats 60.14%
-Memory: 48.87 MB Beats 67.81%
+Runtime: 0 ms Beats 100.00%
+Memory: 53.71 MB Beats 44.53%
 */
 var findPeakElement = function (nums) {
   const N = nums.length;
@@ -136,5 +137,31 @@ var findPeakElement = function (nums) {
     //mid is on ascending slope. The peak must be on right side
     else lo = mid + 1;
   }
+  return lo;
+};
+
+/* 
+Approach III: Binary search - return early if the mid is peak
+Runtime: 0 ms Beats 100.00%
+Memory: 53.77 MB Beats 44.53%
+*/
+var findPeakElement = function (nums) {
+  const N = nums.length;
+  if (N == 1) return 0;
+  //check if first element is peak
+  if (nums[0] > nums[1]) return 0;
+  //check if last element is peak
+  if (nums[N - 1] > nums[N - 2]) return N - 1;
+  let lo = 1;
+  let hi = N - 2;
+  while (lo <= hi) {
+    const mid = lo + Math.floor((hi - lo) / 2);
+    //check if this is a peak element
+    if (nums[mid] > nums[mid - 1] && nums[mid] > nums[mid + 1]) return mid;
+    //mid is greater than next element so the peak will be in left, and possible this one as peack
+    if (nums[mid] > nums[mid + 1]) hi = mid - 1;
+    else lo = mid + 1;
+  }
+  //since there is always a peack we will never come to this line
   return lo;
 };

@@ -78,3 +78,35 @@ var findMin = function (nums) {
   }
   return nums[left];
 };
+
+/* 
+Approach II: Without using peak and valley. Normal binary search
+Runtime: 0 ms Beats 100.00%
+Memory; 53.69 MB Beats 52.77%
+*/
+var findMin = function (nums) {
+  const N = nums.length;
+  let lo = 0;
+  let hi = N - 1;
+  if (N == 1) return nums[lo];
+  let min = Infinity;
+  while (lo <= hi) {
+    //array is sorted between lo and hi then lo will be smallest
+    if (nums[lo] <= nums[hi]) {
+      min = Math.min(min, nums[lo]);
+      break;
+    }
+    const mid = lo + Math.floor((hi - lo) / 2);
+    //check if array is sorted between lo and mid, if so record the lo as min
+    //  and move to right half as min might be right side
+    if (nums[lo] <= nums[mid]) {
+      min = Math.min(min, nums[lo]);
+      lo = mid + 1;
+    } else {
+      //if array is not sorted between lo and mid then min will be between lo and mid
+      min = Math.min(min, nums[mid]);
+      hi = mid - 1;
+    }
+  }
+  return min;
+};

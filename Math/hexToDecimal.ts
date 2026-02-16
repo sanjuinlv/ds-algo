@@ -1,3 +1,33 @@
+function hexToDecimal(hex) {
+  if (typeof hex !== 'string' || hex.length === 0) {
+    return 'Invalid input';
+  }
+
+  const hexDigits = '0123456789ABCDEF';
+  hex = hex.toUpperCase(); // Normalize to uppercase for consistency
+  let decimal = 0;
+
+  for (let i = 0; i < hex.length; i++) {
+    const currentChar = hex[i];
+    const value = hexDigits.indexOf(currentChar);
+
+    if (value === -1) {
+      return 'Invalid hex character: ' + currentChar;
+    }
+
+    decimal = decimal * 16 + value;
+  }
+
+  return decimal;
+}
+
+//Test cases
+console.log(hexToDecimal("A"));      // Output: 10
+console.log(hexToDecimal("FF"));     // Output: 255
+console.log(hexToDecimal("0"));      // Output: 0
+console.log(hexToDecimal("1000"));   // Output: 4096
+console.log(hexToDecimal("1E240"));  // Output: 123456
+
 /* 
 Java code
 class GFG {
